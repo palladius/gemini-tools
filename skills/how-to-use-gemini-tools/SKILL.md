@@ -72,6 +72,18 @@ Discovers and filters available Gemini models by capability or keyword.
 ./list-gemini-models.py --full
 ```
 
+### 4. Veo Video Generation Harness (`omni-video-gen.py`)
+
+Orchestrates AI video generation using Google Veo models (`veo-2.0`, `veo-3.0`).
+
+```bash
+# Generate video from prompt
+./omni-video-gen.py --prompt "A sleek marble rolling down a golden track"
+
+# Show status of generated video assets in out/
+./omni-video-gen.py --status
+```
+
 ## Included Demo Characters
 
 - `yukihiro`: Yukihiro Takahashi ("Taka Sensei 🥋") - Retired martial arts master & vibe coder.

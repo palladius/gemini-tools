@@ -21,6 +21,10 @@ A collection of lightweight, standalone Python CLI utilities powered by **Google
    - Rich interactive CLI for discovering and filtering available Gemini models by name, category, or capability (`veo`, `image`, `embed`, etc.).
    - Visual capability badges (`🎙️` Audio, `🖼️` Vision, `🎥` Veo Video, `🧠` Reasoning).
 
+4. **🎥 `omni-video-gen.py` (Veo Video Generation Harness)**
+   - High-level orchestrator for generating AI videos with Google Veo (`veo-2.0`, `veo-3.0`) supporting both Text-to-Video and Image-to-Video.
+   - Built-in status inspector (`--status`) for listing generated MP4 assets, verdicts, and critiques.
+
 ---
 
 ## 📦 Requirements & Setup

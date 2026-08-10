@@ -10,8 +10,13 @@ test-photo:
 models filter="":
     ./list-gemini-models.py {{filter}}
 
+# Show generated video assets status
+video-status:
+    ./omni-video-gen.py --status
+
 # Run help on all scripts
 help:
     ./generate_photo.py --help
     ./judge_video.py --help
     ./list-gemini-models.py --help
+    ./omni-video-gen.py --help
