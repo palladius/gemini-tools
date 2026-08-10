@@ -1,0 +1,9 @@
+{
+  "generated_asset_path": "~/git/gemini-tools/data/characters/aline/004_ipanema.png",
+  "source_reference_paths": [
+    "~/git/gemini-tools/data/characters/aline/001_brazil_tshirt.png"
+  ],
+  "prompt": "A candid lifestyle photograph of the exact same 28-year-old Afro-Brazilian woman (Aline) from the reference image, maintaining her exact face, skin tone, and curly Afro hair. She is strolling carefree along the sunny Ipanema beach boardwalk in Rio de Janeiro, wearing casual summer clothes and chic sunglasses rested on top of her hair, smiling at the ocean.",
+  "model_used": "gemini-3.1-flash-image-preview",
+  "generation_timestamp": "2026-08-10T10:30:35Z"
+}

@@ -1,0 +1,9 @@
+{
+  "generated_asset_path": "~/git/gemini-tools/data/characters/aline/003_sporty.png",
+  "source_reference_paths": [
+    "~/git/gemini-tools/data/characters/aline/001_brazil_tshirt.png"
+  ],
+  "prompt": "A dynamic action photograph of the exact same 28-year-old Afro-Brazilian woman (Aline) from the reference image, preserving her facial features, skin tone, and curly Afro hair tied in a athletic ponytail. She is wearing vibrant modern sportswear at a sunny outdoor running track, looking energetic and smiling.",
+  "model_used": "gemini-3.1-flash-image-preview",
+  "generation_timestamp": "2026-08-10T10:30:22Z"
+}

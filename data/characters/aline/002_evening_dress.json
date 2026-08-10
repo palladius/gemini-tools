@@ -1,0 +1,9 @@
+{
+  "generated_asset_path": "~/git/gemini-tools/data/characters/aline/002_evening_dress.png",
+  "source_reference_paths": [
+    "~/git/gemini-tools/data/characters/aline/001_brazil_tshirt.png"
+  ],
+  "prompt": "A full-length photograph of the exact same 28-year-old Afro-Brazilian woman (Aline) from the reference image, preserving her facial structure, skin tone, and natural curly Afro hair. She is wearing an elegant floor-length emerald green evening gown at a grand gala, looking graceful and smiling warmly.",
+  "model_used": "gemini-3.1-flash-image-preview",
+  "generation_timestamp": "2026-08-10T10:30:08Z"
+}

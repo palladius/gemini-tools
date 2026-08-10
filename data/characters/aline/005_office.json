@@ -1,0 +1,9 @@
+{
+  "generated_asset_path": "~/git/gemini-tools/data/characters/aline/005_office.png",
+  "source_reference_paths": [
+    "~/git/gemini-tools/data/characters/aline/001_brazil_tshirt.png"
+  ],
+  "prompt": "A professional business portrait of the exact same 28-year-old Afro-Brazilian woman (Aline) from the reference image, preserving her facial features, skin tone, and styled natural curly Afro hair. She is sitting in a modern corporate office, wearing a tailored navy blazer and crisp white blouse, looking confident and smiling at the camera.",
+  "model_used": "gemini-3.1-flash-image-preview",
+  "generation_timestamp": "2026-08-10T10:30:47Z"
+}
