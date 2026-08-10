@@ -1,5 +1,7 @@
 # 🛠️ Gemini Tools (`palladius/gemini-tools`)
 
+![Gemini Tools Logo](./assets/logo.png)
+
 A collection of lightweight, standalone Python CLI utilities powered by **Google GenAI** (`google-genai` SDK and `uv`) for character-consistent photo synthesis and forensic video quality/biometric evaluation.
 
 ---
