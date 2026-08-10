@@ -1,0 +1,20 @@
+# Output directory for synthesized images and video audit reports
+out/
+
+# Python & Environment
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.local
+
+# OS & IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Ignore any private character folders if added locally
+# (data/characters/yukihiro is tracked as the public demo subject)
+data/characters/alessandro/
+data/characters/sebastian/
+data/characters/riccardo/

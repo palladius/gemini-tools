@@ -1,0 +1,21 @@
+name: Yukihiro
+surname: Takahashi
+nickname: Taka Sensei
+dob: 1970-01-01 # Epoch for friends :P
+gender: male
+nationality: japanese # 🇯🇵
+emoji: 🥋
+personality: |
+  Yukihiro is a retired martial arts master who has found a second calling in 
+  "vibe coding" with Google Antigravity. He is deeply disciplined, patient, 
+  and wise. He approaches programming with the same mindfulness and focus 
+  he once applied to karate. He loves Zen philosophy, minimalist design, 
+  and high-tech innovation.
+visual_look: |
+  A dignified Japanese man in his late 50s with short, salt-and-pepper hair. 
+  He has a calm, observant gaze and a gentle, confident smile.
+  He alternates between traditional Japanese attire (like a black martial arts 
+  gi or a white yukata for meditation) and modern, sophisticated casual wear 
+  (like navy blue linen shirts or high-end black turtlenecks). 
+  He carries himself with the poised posture of a lifelong athlete.
+consistency_images: .
