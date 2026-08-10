@@ -8,20 +8,20 @@ A collection of lightweight, standalone Python CLI utilities powered by **Google
 
 ## 🚀 Features
 
-1. **🎨 `generate_photo.py` (Universal Photo Synthesizer)**
+1. **🎨 `bin/generate_photo.py` (Universal Photo Synthesizer)**
    - Character consistency out-of-the-box (automatically loads reference photos from `data/characters/<name>/`).
    - Supports both Text-to-Image and Image-to-Image with automatic model fallbacks (`gemini-3.1-flash-image-preview`, `nano-banana-pro-preview`, `gemini-3-pro-image`).
    - Saves clean, structured **provenance metadata sidecars** (`.json`) with tilde-shortened file paths (`~/...`).
 
-2. **👨‍⚖️ `judge_video.py` (Hollywood Forensic Video Judge)**
+2. **👨‍⚖️ `bin/judge_video.py` (Hollywood Forensic Video Judge)**
    - Evaluates video assets for **Video Quality** (smoothness, cinematic lighting, lack of AI artifacts) and **Biometric Character Consistency** against authentic reference photographs using `gemini-3.5-flash`.
    - Generates strict structured JSON reports with actionable next steps and anti-AI-doll-drift scoring.
 
-3. **📋 `list-gemini-models.py` (GenAI Model Lister)**
+3. **📋 `bin/list-gemini-models.py` (GenAI Model Lister)**
    - Rich interactive CLI for discovering and filtering available Gemini models by name, category, or capability (`veo`, `image`, `embed`, etc.).
    - Visual capability badges (`🎙️` Audio, `🖼️` Vision, `🎥` Veo Video, `🧠` Reasoning).
 
-4. **🎥 `omni-video-gen.py` (Veo Video Generation Harness)**
+4. **🎥 `bin/omni-video-gen.py` (Veo Video Generation Harness)**
    - High-level orchestrator for generating AI videos with Google Veo (`veo-2.0`, `veo-3.0`) supporting both Text-to-Video and Image-to-Video.
    - Built-in status inspector (`--status`) for listing generated MP4 assets, verdicts, and critiques.
 
@@ -29,7 +29,7 @@ A collection of lightweight, standalone Python CLI utilities powered by **Google
 
 ## 📦 Requirements & Setup
 
-No complex virtualenv setup required! Scripts use `uv` inline dependency metadata.
+No complex virtualenv setup required! Scripts use `uv` inline dependency metadata and are located in `bin/`.
 
 Ensure `uv` is installed and set your Gemini API key:
 
@@ -40,15 +40,16 @@ export GEMINI_API_KEY="your-api-key-here"
 Make scripts executable (if not already):
 
 ```bash
-chmod +x generate_photo.py judge_video.py
+chmod +x bin/*
 ```
 
 ---
 
 ## 🥋 Public Demo Subject
 
-The repository comes pre-packaged with a public demo character under `data/characters/yukihiro/`:
+The repository comes pre-packaged with public demo characters under `data/characters/`:
 - **Yukihiro Takahashi (Taka Sensei 🥋)**: A retired martial arts master turned vibe coder.
+- **Aline Santos (Lilli 🇧🇷)**: A 28-year-old Afro-Brazilian digital strategist.
 
 ---
 
@@ -56,12 +57,12 @@ The repository comes pre-packaged with a public demo character under `data/chara
 
 ### 1. Synthesize a Photo with Character Consistency
 ```bash
-./generate_photo.py -c yukihiro -p "Yukihiro Takahashi singing at a Tokyo karaoke bar, wearing a navy linen shirt, vibrant 90s neon lights"
+./bin/generate_photo.py -c yukihiro -p "Yukihiro Takahashi singing at a Tokyo karaoke bar, wearing a navy linen shirt, vibrant 90s neon lights"
 ```
 
 ### 2. Judge an AI Video Asset
 ```bash
-./judge_video.py -v out/yukihiro_karaoke_video.mp4 -c yukihiro
+./bin/judge_video.py -v out/yukihiro_karaoke_video.mp4 -c yukihiro
 ```
 
 ---

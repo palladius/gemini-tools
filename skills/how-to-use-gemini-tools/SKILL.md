@@ -18,21 +18,21 @@ description: >-
 - **Python Runtime**: `uv` (scripts use inline metadata headers: `#!/usr/bin/env -S uv run`).
 - **Environment Variable**: `GEMINI_API_KEY` must be set in your shell environment.
 
-## CLI Tools Reference
+## CLI Tools Reference (in `bin/`)
 
-### 1. Photo Synthesis with Character Consistency (`generate_photo.py`)
+### 1. Photo Synthesis with Character Consistency (`bin/generate_photo.py`)
 
 Synthesizes new photos using Text-to-Image or Image-to-Image with reference images loaded automatically from character folders.
 
 ```bash
 # Generate a photo using a pre-configured character (e.g. yukihiro or aline)
-./generate_photo.py -c yukihiro -p "Yukihiro Takahashi coding with Google Antigravity in a Zen garden"
+./bin/generate_photo.py -c yukihiro -p "Yukihiro Takahashi coding with Google Antigravity in a Zen garden"
 
 # Specify custom reference images explicitly
-./generate_photo.py -i data/characters/aline/001_brazil_tshirt.png -o out/aline_gala.png -p "Aline in an emerald green gown"
+./bin/generate_photo.py -i data/characters/aline/001_brazil_tshirt.png -o out/aline_gala.png -p "Aline in an emerald green gown"
 
 # Specify primary model
-./generate_photo.py -m gemini-3.1-flash-image-preview -p "A futuristic city skyline"
+./bin/generate_photo.py -m gemini-3.1-flash-image-preview -p "A futuristic city skyline"
 ```
 
 **Key Features:**
@@ -40,16 +40,16 @@ Synthesizes new photos using Text-to-Image or Image-to-Image with reference imag
 - Automatic model fallbacks (`gemini-3.1-flash-image-preview`, `nano-banana-pro-preview`, `gemini-3-pro-image-preview`, `gemini-3-pro-image`).
 - Saves provenance metadata sidecars (`.json`) with tilde-shortened paths (`~/...`).
 
-### 2. Forensic Video Quality & Biometric Judge (`judge_video.py`)
+### 2. Forensic Video Quality & Biometric Judge (`bin/judge_video.py`)
 
 Evaluates an AI-generated video (`.mp4`) against authentic reference photographs using `gemini-3.5-flash`.
 
 ```bash
 # Judge a video against character reference photos
-./judge_video.py -v out/my_generated_video.mp4 -c sebastian
+./bin/judge_video.py -v out/my_generated_video.mp4 -c sebastian
 
 # Judge with extra explicit reference images
-./judge_video.py -v out/my_generated_video.mp4 -c yukihiro -r custom_ref.jpg
+./bin/judge_video.py -v out/my_generated_video.mp4 -c yukihiro -r custom_ref.jpg
 ```
 
 **Key Features:**
@@ -57,31 +57,31 @@ Evaluates an AI-generated video (`.mp4`) against authentic reference photographs
 - Strictly penalizes generic AI facial drift (AI doll appearance).
 - Outputs a clean JSON report alongside the video asset with tilde-shortened paths (`~/...`).
 
-### 3. GenAI Model Lister (`list-gemini-models.py`)
+### 3. GenAI Model Lister (`bin/list-gemini-models.py`)
 
 Discovers and filters available Gemini models by capability or keyword.
 
 ```bash
 # List all models
-./list-gemini-models.py
+./bin/list-gemini-models.py
 
 # Filter models by keyword (e.g., veo, 2.5, image)
-./list-gemini-models.py veo
+./bin/list-gemini-models.py veo
 
 # Display full table with supported actions and descriptions
-./list-gemini-models.py --full
+./bin/list-gemini-models.py --full
 ```
 
-### 4. Veo Video Generation Harness (`omni-video-gen.py`)
+### 4. Veo Video Generation Harness (`bin/omni-video-gen.py`)
 
 Orchestrates AI video generation using Google Veo models (`veo-2.0`, `veo-3.0`).
 
 ```bash
 # Generate video from prompt
-./omni-video-gen.py --prompt "A sleek marble rolling down a golden track"
+./bin/omni-video-gen.py --prompt "A sleek marble rolling down a golden track"
 
 # Show status of generated video assets in out/
-./omni-video-gen.py --status
+./bin/omni-video-gen.py --status
 ```
 
 ## Included Demo Characters
