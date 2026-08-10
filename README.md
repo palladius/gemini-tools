@@ -17,6 +17,10 @@ A collection of lightweight, standalone Python CLI utilities powered by **Google
    - Evaluates video assets for **Video Quality** (smoothness, cinematic lighting, lack of AI artifacts) and **Biometric Character Consistency** against authentic reference photographs using `gemini-3.5-flash`.
    - Generates strict structured JSON reports with actionable next steps and anti-AI-doll-drift scoring.
 
+3. **📋 `list-gemini-models.py` (GenAI Model Lister)**
+   - Rich interactive CLI for discovering and filtering available Gemini models by name, category, or capability (`veo`, `image`, `embed`, etc.).
+   - Visual capability badges (`🎙️` Audio, `🖼️` Vision, `🎥` Veo Video, `🧠` Reasoning).
+
 ---
 
 ## 📦 Requirements & Setup

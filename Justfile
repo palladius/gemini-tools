@@ -6,7 +6,12 @@ list:
 test-photo:
     ./generate_photo.py -c yukihiro -p "Yukihiro Takahashi coding with Google Antigravity in a Zen garden"
 
-# Run help on both scripts
+# List available Gemini models (or filter e.g. just models veo)
+models filter="":
+    ./list-gemini-models.py {{filter}}
+
+# Run help on all scripts
 help:
     ./generate_photo.py --help
     ./judge_video.py --help
+    ./list-gemini-models.py --help
