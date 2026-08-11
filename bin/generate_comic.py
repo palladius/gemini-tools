@@ -24,12 +24,12 @@ console = Console()
 
 COMIC_TEMPLATES = {
     "dnd": (
-        "A vibrant, highly detailed 4-panel 2x2 grid comic book page depicting an epic D&D fantasy adventure. "
-        "Top-Left Panel: A diverse party of 5 adventurers (a female elven ranger with bow, a female tiefling sorceress with glowing magenta horns, a female dwarf cleric with warhammer, a male paladin in silver plate armor, and a halfling rogue) standing outside a mystical ancient grotto entrance overgrown with glowing blue flora. "
+        "A vibrant 4-panel 2x2 grid cartoon fantasy comic page depicting an epic D&D adventure. "
+        "Top-Left Panel: A heroic party of 5 fantasy adventurers (a female elven ranger with long golden hair and bow, a female dwarf cleric with warhammer, a female halfling rogue, a male wizard with glowing staff, and a paladin in armor) standing outside a mystical glowing grotto entrance. "
         "Top-Right Panel: Deep inside a moody dungeon corridor, torchlight casting warm golden light and flickering shadows on ancient stone runes. "
-        "Bottom-Left Panel: The halfling rogue accidentally triggers a pressure plate trap, causing glowing dart traps to click and a flock of cute panicked mice to scurry from a stone crevice, the heroes reacting with surprised humor. "
+        "Bottom-Left Panel: The halfling rogue accidentally triggers a pressure plate trap, causing a flock of cute panicked mice to scurry from a stone crevice, the heroes reacting with humor. "
         "Bottom-Right Panel: Epic climax battle against a majestic colossal BLUE DRAGON breathing crackling blue lightning in a massive crystal cavern chamber. "
-        "Clean black comic panel borders, vibrant high-fantasy comic illustration style, cinematic lighting."
+        "Clean black 2x2 grid panel borders, vibrant cartoon fantasy comic art style."
     ),
     "marvel": (
         "A colorful 4-panel 2x2 comic page showing futuristic fantasy champions. "
@@ -46,6 +46,15 @@ COMIC_TEMPLATES = {
         "Bottom-Left Panel: Summoning a magical creature emerging from a swirling mana vortex. "
         "Bottom-Right Panel: Epic showdown confronting the fierce Shivan Dragon in a mountain wilderness. "
         "High-fantasy trading card art style, rich magical lighting, crisp 2x2 grid borders."
+    ),
+    "lake_garda_family": (
+        "A cheerful, colorful 4-panel 2x2 grid cartoon comic page depicting a happy family vacationing at Lake Garda (Altomincio Water Park resort). "
+        "The family consists of 4 people: a friendly father with short dark hair, a beautiful mother with long blonde hair, an 8-year-old son with dark hair, and a 6-year-old son with dark hair. "
+        "Top-Left Panel: The family of 4 arriving at a sunny Lake Garda resort with palm trees, blue water slides, and scenic Italian mountains, waving happily. "
+        "Top-Right Panel: Swimming together in a turquoise resort pool with water park splash buckets spilling water. "
+        "Bottom-Left Panel: Eating Italian gelato cones together under a sunny outdoor pergola overlooking the blue lake. "
+        "Bottom-Right Panel: Enjoying a sunset boat cruise on Lake Garda, smiling together with scenic Italian hills behind them. "
+        "Clean black 2x2 grid panel borders, vibrant cartoon family comic illustration style."
     )
 }
 
@@ -88,7 +97,7 @@ def main():
     )
     parser.add_argument(
         "-t", "--template",
-        choices=["dnd", "marvel", "mtg", "custom"],
+        choices=["dnd", "marvel", "mtg", "lake_garda_family", "custom"],
         default="dnd",
         help="Comic strip template to generate (default: dnd)."
     )

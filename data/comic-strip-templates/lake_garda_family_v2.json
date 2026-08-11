@@ -1,0 +1,8 @@
+{
+  "generated_comic_path": "~/git/gemini-tools/data/comic-strip-templates/lake_garda_family_v2.png",
+  "template": "lake_garda_family",
+  "character": null,
+  "prompt": "A cheerful, colorful 4-panel 2x2 grid cartoon comic page depicting a happy family vacationing at Lake Garda (Altomincio Water Park resort). The family consists of 4 people: a friendly father with short dark hair, a beautiful mother with long blonde hair, an 8-year-old son with dark hair, and a 6-year-old son with dark hair. Top-Left Panel: The family of 4 arriving at a sunny Lake Garda resort with palm trees, blue water slides, and scenic Italian mountains, waving happily. Top-Right Panel: Swimming together in a turquoise resort pool with water park splash buckets spilling water. Bottom-Left Panel: Eating Italian gelato cones together under a sunny outdoor pergola overlooking the blue lake. Bottom-Right Panel: Enjoying a sunset boat cruise on Lake Garda, smiling together with scenic Italian hills behind them. Clean black 2x2 grid panel borders, vibrant cartoon family comic illustration style.",
+  "model_used": "gemini-3.1-flash-image-preview",
+  "timestamp": "2026-08-11T16:57:50Z"
+}
