@@ -24,20 +24,20 @@ console = Console()
 
 COMIC_TEMPLATES = {
     "dnd": (
-        "A vibrant 4-panel 2x2 grid comic book page depicting a D&D fantasy adventure. "
-        "Top-Left Panel: A party of 6 adventurers (wizard, cleric, dwarf warrior, elf ranger, rogue, and hero) standing outside a dark mysterious grotto entrance. "
-        "Top-Right Panel: Inside a dark dungeon corridor lit by a flickering torch, shadows dancing on stone walls. "
-        "Bottom-Left Panel: The rogue accidentally triggers a stone floor trap, a flock of panicked mice squirting out of a wall hole, heroes surprised but unhurt. "
-        "Bottom-Right Panel: Epic climax battle against a massive majestic BLUE DRAGON breathing lightning in a glowing cavernous chamber. "
-        "Clean black comic panel borders, vibrant comic book illustration style."
+        "A vibrant, highly detailed 4-panel 2x2 grid comic book page depicting an epic D&D fantasy adventure. "
+        "Top-Left Panel: A diverse party of 5 adventurers (a female elven ranger with bow, a female tiefling sorceress with glowing magenta horns, a female dwarf cleric with warhammer, a male paladin in silver plate armor, and a halfling rogue) standing outside a mystical ancient grotto entrance overgrown with glowing blue flora. "
+        "Top-Right Panel: Deep inside a moody dungeon corridor, torchlight casting warm golden light and flickering shadows on ancient stone runes. "
+        "Bottom-Left Panel: The halfling rogue accidentally triggers a pressure plate trap, causing glowing dart traps to click and a flock of cute panicked mice to scurry from a stone crevice, the heroes reacting with surprised humor. "
+        "Bottom-Right Panel: Epic climax battle against a majestic colossal BLUE DRAGON breathing crackling blue lightning in a massive crystal cavern chamber. "
+        "Clean black comic panel borders, vibrant high-fantasy comic illustration style, cinematic lighting."
     ),
     "marvel": (
-        "A dramatic 4-panel 2x2 grid superhero comic book page. "
-        "Top-Left Panel: Thanos standing menacingly on a ruined battlefield with a glowing Infinity Gauntlet. "
-        "Top-Right Panel: Thor summoning thunder and lightning alongside Iron Man firing repulsor rays. "
-        "Bottom-Left Panel: The Incredible Hulk roaring and smashing giant debris. "
-        "Bottom-Right Panel: The heroes standing united in an epic Avengers Assemble finale pose. "
-        "Dynamic Marvel comic art style, vivid colors, crisp panel borders."
+        "A colorful 4-panel 2x2 comic page showing futuristic fantasy champions. "
+        "Top-Left Panel: A space warrior holding a glowing crystal gauntlet on a rocky planet. "
+        "Top-Right Panel: A hammer knight and a metallic armor defender standing side-by-side. "
+        "Bottom-Left Panel: A colossal emerald beast crushing boulders in anger. "
+        "Bottom-Right Panel: Four champions standing victorious together in a hero stance. "
+        "Vibrant fantasy comic illustration style, crisp 2x2 grid panel borders."
     ),
     "mtg": (
         "A mystical 4-panel 2x2 grid Magic: The Gathering inspired comic book page. "

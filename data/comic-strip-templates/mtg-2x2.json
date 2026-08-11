@@ -1,0 +1,8 @@
+{
+  "generated_comic_path": "~/git/gemini-tools/data/comic-strip-templates/mtg-2x2.png",
+  "template": "mtg",
+  "character": null,
+  "prompt": "A mystical 4-panel 2x2 grid Magic: The Gathering inspired comic book page. Top-Left Panel: A hero sealed inside an ornate glowing MTG card frame titled 'The Planeswalker'. Top-Right Panel: Ancestral Recall magic animation with glowing sapphire cards drawing rapidly from a levitating deck. Bottom-Left Panel: Summoning a magical creature emerging from a swirling mana vortex. Bottom-Right Panel: Epic showdown confronting the fierce Shivan Dragon in a mountain wilderness. High-fantasy trading card art style, rich magical lighting, crisp 2x2 grid borders.",
+  "model_used": "gemini-3.1-flash-image-preview",
+  "timestamp": "2026-08-11T16:02:37Z"
+}

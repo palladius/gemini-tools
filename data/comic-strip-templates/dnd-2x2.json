@@ -1,0 +1,8 @@
+{
+  "generated_comic_path": "~/git/gemini-tools/data/comic-strip-templates/dnd-2x2.png",
+  "template": "dnd",
+  "character": null,
+  "prompt": "A vibrant, highly detailed 4-panel 2x2 grid comic book page depicting an epic D&D fantasy adventure. Top-Left Panel: A diverse party of 5 adventurers (a female elven ranger with bow, a female tiefling sorceress with glowing magenta horns, a female dwarf cleric with warhammer, a male paladin in silver plate armor, and a halfling rogue) standing outside a mystical ancient grotto entrance overgrown with glowing blue flora. Top-Right Panel: Deep inside a moody dungeon corridor, torchlight casting warm golden light and flickering shadows on ancient stone runes. Bottom-Left Panel: The halfling rogue accidentally triggers a pressure plate trap, causing glowing dart traps to click and a flock of cute panicked mice to scurry from a stone crevice, the heroes reacting with surprised humor. Bottom-Right Panel: Epic climax battle against a majestic colossal BLUE DRAGON breathing crackling blue lightning in a massive crystal cavern chamber. Clean black comic panel borders, vibrant high-fantasy comic illustration style, cinematic lighting.",
+  "model_used": "gemini-3.1-flash-image-preview",
+  "timestamp": "2026-08-11T16:01:47Z"
+}
