@@ -84,6 +84,22 @@ Orchestrates AI video generation using Google Veo models (`veo-2.0`, `veo-3.0`).
 ./bin/omni-video-gen.py --status
 ```
 
+### 5. Comic Strip Panel Slicer (`bin/slice_comic.py`)
+
+Slices a 2x3 or custom grid comic strip image into individual panel images.
+
+```bash
+./bin/slice_comic.py -i data/fumetti/altomincio_strip.png --rows 2 --cols 3
+```
+
+### 6. Multi-Scene Comic Video Orchestrator (`bin/comic_to_video.py`)
+
+Slices comic panels, generates Veo video clips for each panel, and stitches them with `ffmpeg`.
+
+```bash
+./bin/comic_to_video.py -i data/fumetti/altomincio_strip.png --rows 2 --cols 3 --character alessandro
+```
+
 ## Included Demo Characters
 
 - `yukihiro`: Yukihiro Takahashi ("Taka Sensei 🥋") - Retired martial arts master & vibe coder.

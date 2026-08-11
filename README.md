@@ -25,6 +25,12 @@ A collection of lightweight, standalone Python CLI utilities powered by **Google
    - High-level orchestrator for generating AI videos with Google Veo (`veo-2.0`, `veo-3.0`) supporting both Text-to-Video and Image-to-Video.
    - Built-in status inspector (`--status`) for listing generated MP4 assets, verdicts, and critiques.
 
+5. **✂️ `bin/slice_comic.py` (Comic Strip Grid Panel Slicer)**
+   - Slices 2x3 or custom grid comic strips (*fumetti*) into individual high-resolution panel images (`panel_01.png` .. `panel_06.png`).
+
+6. **🎞️ `bin/comic_to_video.py` (Multi-Scene Comic Video Orchestrator)**
+   - Animates each panel of a comic strip into separate video clips with Veo and automatically stitches them into a full movie using `ffmpeg`.
+
 ---
 
 ## 📦 Requirements & Setup
