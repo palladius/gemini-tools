@@ -122,6 +122,10 @@ def main():
         "--max-scene-retries", type=int, default=2,
         help="Max retries for individual scenes that fail quality/biometric audit (default: 2)."
     )
+    parser.add_argument(
+        "--no-image-anchor", action="store_true", default=False,
+        help="Do NOT pass 2D panel image as frame 0 to video generator. Use text-to-video inspired mode to avoid 2D/3D visual mix."
+    )
 
     args = parser.parse_args()
 
@@ -163,7 +167,12 @@ def main():
         attempt = 1
         max_attempts = args.max_scene_retries if hasattr(args, "max_scene_retries") else 2
         scene_passed = False
-        scene_prompt = f"{args.prompt} Animate this comic panel realistically."
+        scene_prompt = (
+            f"{args.prompt} IMPORTANT: Even though the reference input is a 2D cartoon panel, "
+            f"generate a photorealistic live-action 3D IMAX cinematic film scene inspired by it. "
+            f"Do NOT render 2D cartoon animation. Transform it into a high-budget live-action movie shot "
+            f"with real actors, realistic lighting, atmospheric fog, and 70mm movie composition."
+        )
 
         while attempt <= max_attempts and not scene_passed:
             if attempt > 1:
@@ -171,13 +180,20 @@ def main():
 
             try:
                 console.print(f"📡 Sending video request for panel {idx} via Interactions API ({args.model})...")
-                with open(pfile, "rb") as pf_file:
-                    b64_data = base64.b64encode(pf_file.read()).decode("utf-8")
                 
-                payload = [
-                    {"type": "image", "data": b64_data, "mime_type": "image/png"},
-                    {"type": "text", "text": scene_prompt}
-                ]
+                if args.no_image_anchor:
+                    console.print("  💡 [bold yellow]--no-image-anchor active: Using pure text-to-video prompt inspired by comic panel (eliminating 2D/3D frame 0 mix).[/bold yellow]")
+                    payload = [
+                        {"type": "text", "text": f"High-budget 3D IMAX live-action movie scene depicting Panel {idx} of comic story: {scene_prompt}"}
+                    ]
+                else:
+                    with open(pfile, "rb") as pf_file:
+                        b64_data = base64.b64encode(pf_file.read()).decode("utf-8")
+                    
+                    payload = [
+                        {"type": "image", "data": b64_data, "mime_type": "image/png"},
+                        {"type": "text", "text": scene_prompt}
+                    ]
                 
                 interaction = client.interactions.create(
                     model=args.model,
