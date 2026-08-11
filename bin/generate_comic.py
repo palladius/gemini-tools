@@ -64,6 +64,14 @@ COMIC_TEMPLATES = {
         "Bottom-Left Panel: Alessandro and his new baby golden dragon friend sliding down a massive blue water park slide at a sunny water park resort with splashes of water and sparkling floating diamonds. "
         "Bottom-Right Panel: Alessandro, the baby golden dragon, and the giant golden parent dragons celebrating together in a pool at sunset, surrounded by shiny gold coins and diamonds, waving happily. "
         "Clean black 2x2 grid panel borders, vibrant cinematic fantasy comic illustration style."
+    ),
+    "riccardo_altomincio": (
+        "A colorful 4-panel 2x2 grid cartoon comic page depicting a hilarious summer vacation at Lake Garda (Altomincio Glamping resort). "
+        "Top-Left Panel: A man standing on a scenic cliff overlooking Lake Garda at sunrise with palm trees and mountains. "
+        "Top-Right Panel: The Altomincio glamping resort campsite surrounded by loud, cheerful Dutch tourists from Eindhoven, featuring a 15-year-old Dutch girl wearing a dark navy blue and white Eindhoven sports t-shirt. "
+        "Bottom-Left Panel: A man sitting under a sunny outdoor pergola enjoying a delicious slice of Neapolitan pizza and Italian espresso. "
+        "Bottom-Right Panel: A man piloting a sleek speedboat across sparkling blue waters of Lake Garda into the sunset. "
+        "Clean black 2x2 grid panel borders, vibrant cartoon comic illustration style."
     )
 }
 
@@ -106,7 +114,7 @@ def main():
     )
     parser.add_argument(
         "-t", "--template",
-        choices=["dnd", "marvel", "mtg", "lake_garda_family", "alessandro_dragon", "custom"],
+        choices=["dnd", "marvel", "mtg", "lake_garda_family", "alessandro_dragon", "riccardo_altomincio", "custom"],
         default="dnd",
         help="Comic strip template to generate (default: dnd)."
     )
