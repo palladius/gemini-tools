@@ -148,7 +148,7 @@ def main():
     base_prompt = args.prompt if args.prompt else COMIC_TEMPLATES.get(args.template, COMIC_TEMPLATES["dnd"])
     
     if args.character:
-        char_prompt = f" Feature the character '{args.character}' (preserving their face, hair, glasses, clean-shaved face with NO beard, and exact biometric likeness from the reference photos) as the main hero in the panels."
+        char_prompt = f" Feature the character '{args.character}' (preserving their facial features, mature Italian man with short balding grey-brown hair, clean-shaved face with NO beard, and exact biometric likeness from the reference photos) as the main hero in the panels."
         full_prompt = base_prompt + char_prompt
     else:
         full_prompt = base_prompt
