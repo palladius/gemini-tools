@@ -55,6 +55,15 @@ COMIC_TEMPLATES = {
         "Bottom-Left Panel: Eating Italian gelato cones together under a sunny outdoor pergola overlooking the blue lake. "
         "Bottom-Right Panel: Enjoying a sunset boat cruise on Lake Garda, smiling together with scenic Italian hills behind them. "
         "Clean black 2x2 grid panel borders, vibrant cartoon family comic illustration style."
+    ),
+    "alessandro_dragon": (
+        "A magical 4-panel 2x2 grid cinematic comic page depicting Alessandro's Golden Dragon Adventure. "
+        "Hero: Alessandro, a brave 8-year-old boy with short brown hair and bright green eyes, wearing a red t-shirt. "
+        "Top-Left Panel: Alessandro enters a glowing underground cavern filled with sparkling diamonds and glittering gemstones, discovering a cute baby golden dragon surrounded by sparkling diamonds. "
+        "Top-Right Panel: Two giant friendly golden Mother & Father Dragons arrive inside the diamond cavern; Alessandro smiles, holds out his hand asking 'Volete essere miei amici?' and the baby golden dragon happily nods. "
+        "Bottom-Left Panel: Alessandro and his new baby golden dragon friend sliding down a massive blue water park slide at a sunny water park resort with splashes of water and sparkling floating diamonds. "
+        "Bottom-Right Panel: Alessandro, the baby golden dragon, and the giant golden parent dragons celebrating together in a pool at sunset, surrounded by shiny gold coins and diamonds, waving happily. "
+        "Clean black 2x2 grid panel borders, vibrant cinematic fantasy comic illustration style."
     )
 }
 
@@ -97,7 +106,7 @@ def main():
     )
     parser.add_argument(
         "-t", "--template",
-        choices=["dnd", "marvel", "mtg", "lake_garda_family", "custom"],
+        choices=["dnd", "marvel", "mtg", "lake_garda_family", "alessandro_dragon", "custom"],
         default="dnd",
         help="Comic strip template to generate (default: dnd)."
     )
@@ -131,7 +140,7 @@ def main():
     base_prompt = args.prompt if args.prompt else COMIC_TEMPLATES.get(args.template, COMIC_TEMPLATES["dnd"])
     
     if args.character:
-        char_prompt = f" Feature the character '{args.character}' (preserving their face, hair, glasses, and likeness from the reference photos) as the main hero in the panels."
+        char_prompt = f" Feature the character '{args.character}' (preserving their face, hair, glasses, clean-shaved face with NO beard, and exact biometric likeness from the reference photos) as the main hero in the panels."
         full_prompt = base_prompt + char_prompt
     else:
         full_prompt = base_prompt
