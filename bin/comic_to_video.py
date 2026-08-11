@@ -10,6 +10,7 @@
 
 import os
 import sys
+import base64
 import argparse
 import glob
 import time
@@ -102,12 +103,12 @@ def main():
         help="Base prompt / cinematic directive for panel animation."
     )
     parser.add_argument(
-        "--character", default=None,
+        "-C", "--character", default=None,
         help="Optional character name for biometric verification."
     )
     parser.add_argument(
-        "-m", "--model", default="veo-2.0-generate-001",
-        help="Veo / Omni video model to use (default: veo-2.0-generate-001)."
+        "-m", "--model", default="gemini-omni-flash-preview",
+        help="Veo / Omni video model to use (default: gemini-omni-flash-preview)."
     )
     parser.add_argument(
         "-o", "--output-dir", default=None,
@@ -116,7 +117,7 @@ def main():
 
     args = parser.parse_args()
 
-    if not args.comic_strip and not args.panels-dir:
+    if not args.comic_strip and not args.panels_dir:
         console.print("[bold red]Error: Specify either --comic-strip <file> or --panels-dir <directory>[/bold red]")
         sys.exit(1)
 
@@ -154,32 +155,49 @@ def main():
         scene_prompt = f"{args.prompt} Animate this comic panel realistically."
         
         try:
-            # Check interaction endpoint vs models endpoint
-            console.print(f"📡 Sending Veo request for panel {idx}...")
-            img_input = PILImage.open(pfile)
+            console.print(f"📡 Sending video request for panel {idx} via Interactions API ({args.model})...")
+            with open(pfile, "rb") as pf_file:
+                b64_data = base64.b64encode(pf_file.read()).decode("utf-8")
             
-            # Use interactions or generate_content based on model
-            operation = client.models.generate_content(
+            payload = [
+                {"type": "image", "data": b64_data, "mime_type": "image/png"},
+                {"type": "text", "text": scene_prompt}
+            ]
+            
+            interaction = client.interactions.create(
                 model=args.model,
-                contents=[img_input, scene_prompt],
-                config=types.GenerateContentConfig(response_modalities=["VIDEO"])
+                input=payload,
+                background=True
             )
             
-            # Save output if inline video returned
+            # Poll for completion
+            start_time = time.time()
+            while True:
+                status = interaction.status
+                if status == "completed":
+                    break
+                elif status in ["failed", "canceled"]:
+                    raise RuntimeError(f"Interaction failed with status: {status}")
+                time.sleep(4)
+                elapsed = int(time.time() - start_time)
+                console.print(f"  [scene {idx}] Status: {status}... ({elapsed}s elapsed)")
+                interaction = client.interactions.get(interaction.id)
+
+            # Extract video bytes
             saved = False
-            if operation.candidates and operation.candidates[0].content and operation.candidates[0].content.parts:
-                for part in operation.candidates[0].content.parts:
-                    if part.inline_data and part.inline_data.mime_type.startswith("video/"):
-                        with open(scene_output, "wb") as vf:
-                            vf.write(part.inline_data.data)
-                        saved = True
-                        break
+            output_video = getattr(interaction, "output_video", None)
+            if output_video and getattr(output_video, "data", None):
+                vdata = output_video.data
+                raw_bytes = base64.b64decode(vdata) if isinstance(vdata, str) else vdata
+                with open(scene_output, "wb") as vf:
+                    vf.write(raw_bytes)
+                saved = True
             
             if saved:
                 console.print(f"✅ Saved scene video to: [blue]{to_tilde_path(scene_output)}[/blue]")
                 scene_videos.append(scene_output)
             else:
-                console.print(f"[yellow]⚠️ Scene {idx} video generation completed without video bytes.[/yellow]")
+                console.print(f"[yellow]⚠️ Scene {idx} video completed without video bytes.[/yellow]")
         except Exception as e:
             console.print(f"[bold red]Scene {idx} failed: {e}[/bold red]")
 
