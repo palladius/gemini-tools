@@ -114,6 +114,14 @@ def main():
         "-o", "--output-dir", default=None,
         help="Output directory for generated scenes & final stitched movie."
     )
+    parser.add_argument(
+        "--judge-per-scene", action="store_true", default=True,
+        help="Run LLM-as-a-Judge audit on each individual scene video as soon as generated."
+    )
+    parser.add_argument(
+        "--max-scene-retries", type=int, default=2,
+        help="Max retries for individual scenes that fail quality/biometric audit (default: 2)."
+    )
 
     args = parser.parse_args()
 
@@ -147,59 +155,103 @@ def main():
     client = genai.Client(api_key=api_key)
     scene_videos = []
 
-    # 2. Animate each panel
+    # 2. Animate each panel (with optional per-scene forensic judging and selective retry)
     for idx, pfile in enumerate(panel_files, 1):
         scene_output = out_dir / f"scene_{idx:02d}.mp4"
         console.print(f"\n🎥 [bold cyan]Processing Scene {idx}/{len(panel_files)}:[/bold cyan] {pfile.name}")
 
+        attempt = 1
+        max_attempts = args.max_scene_retries if hasattr(args, "max_scene_retries") else 2
+        scene_passed = False
         scene_prompt = f"{args.prompt} Animate this comic panel realistically."
-        
-        try:
-            console.print(f"📡 Sending video request for panel {idx} via Interactions API ({args.model})...")
-            with open(pfile, "rb") as pf_file:
-                b64_data = base64.b64encode(pf_file.read()).decode("utf-8")
-            
-            payload = [
-                {"type": "image", "data": b64_data, "mime_type": "image/png"},
-                {"type": "text", "text": scene_prompt}
-            ]
-            
-            interaction = client.interactions.create(
-                model=args.model,
-                input=payload,
-                background=True
-            )
-            
-            # Poll for completion
-            start_time = time.time()
-            while True:
-                status = interaction.status
-                if status == "completed":
-                    break
-                elif status in ["failed", "canceled"]:
-                    raise RuntimeError(f"Interaction failed with status: {status}")
-                time.sleep(4)
-                elapsed = int(time.time() - start_time)
-                console.print(f"  [scene {idx}] Status: {status}... ({elapsed}s elapsed)")
-                interaction = client.interactions.get(interaction.id)
 
-            # Extract video bytes
-            saved = False
-            output_video = getattr(interaction, "output_video", None)
-            if output_video and getattr(output_video, "data", None):
-                vdata = output_video.data
-                raw_bytes = base64.b64decode(vdata) if isinstance(vdata, str) else vdata
-                with open(scene_output, "wb") as vf:
-                    vf.write(raw_bytes)
-                saved = True
-            
-            if saved:
-                console.print(f"✅ Saved scene video to: [blue]{to_tilde_path(scene_output)}[/blue]")
-                scene_videos.append(scene_output)
-            else:
-                console.print(f"[yellow]⚠️ Scene {idx} video completed without video bytes.[/yellow]")
-        except Exception as e:
-            console.print(f"[bold red]Scene {idx} failed: {e}[/bold red]")
+        while attempt <= max_attempts and not scene_passed:
+            if attempt > 1:
+                console.print(f"🔄 [bold yellow]Retrying Scene {idx} (Attempt {attempt}/{max_attempts})...[/bold yellow]")
+
+            try:
+                console.print(f"📡 Sending video request for panel {idx} via Interactions API ({args.model})...")
+                with open(pfile, "rb") as pf_file:
+                    b64_data = base64.b64encode(pf_file.read()).decode("utf-8")
+                
+                payload = [
+                    {"type": "image", "data": b64_data, "mime_type": "image/png"},
+                    {"type": "text", "text": scene_prompt}
+                ]
+                
+                interaction = client.interactions.create(
+                    model=args.model,
+                    input=payload,
+                    background=True
+                )
+                
+                # Poll for completion
+                start_time = time.time()
+                while True:
+                    status = interaction.status
+                    if status == "completed":
+                        break
+                    elif status in ["failed", "canceled"]:
+                        raise RuntimeError(f"Interaction failed with status: {status}")
+                    time.sleep(4)
+                    elapsed = int(time.time() - start_time)
+                    console.print(f"  [scene {idx}] Status: {status}... ({elapsed}s elapsed)")
+                    interaction = client.interactions.get(interaction.id)
+
+                # Extract video bytes
+                saved = False
+                output_video = getattr(interaction, "output_video", None)
+                if output_video and getattr(output_video, "data", None):
+                    vdata = output_video.data
+                    raw_bytes = base64.b64decode(vdata) if isinstance(vdata, str) else vdata
+                    with open(scene_output, "wb") as vf:
+                        vf.write(raw_bytes)
+                    saved = True
+                
+                if saved:
+                    console.print(f"✅ Saved scene video to: [blue]{to_tilde_path(scene_output)}[/blue]")
+                    
+                    # Run per-scene judging if character specified or --judge-per-scene active
+                    if args.character and args.judge_per_scene:
+                        console.print(f"👨‍⚖️ [bold cyan]Auditing Scene {idx} with LLM-as-a-Judge for character '{args.character}'...[/bold cyan]")
+                        audit_res = subprocess.run([
+                            sys.executable, str(Path(__file__).parent / "judge_video.py"),
+                            "-v", str(scene_output),
+                            "-c", args.character
+                        ], capture_output=True, text=True)
+                        
+                        # Read per-scene audit sidecar JSON if generated
+                        audit_json = scene_output.parent / f"{scene_output.stem}_biometric_audit.json"
+                        if audit_json.exists():
+                            try:
+                                with open(audit_json, "r", encoding="utf-8") as ajf:
+                                    adata = json.load(ajf)
+                                score = float(adata.get("overall_score", 0))
+                                feedback = adata.get("actionable_next_step", "")
+                                console.print(f"  👨‍⚖️ Scene {idx} Score: [bold yellow]{score}/10[/bold yellow]")
+                                if score >= 7:
+                                    console.print(f"  🎉 [bold green]Scene {idx} PASSED audit! Keeping scene video.[/bold green]")
+                                    scene_passed = True
+                                else:
+                                    console.print(f"  ⚠️ [bold red]Scene {idx} score low ({score}/10). Incorporating judge feedback for retry...[/bold red]")
+                                    if feedback:
+                                        scene_prompt += f" Feedback to fix: {feedback}"
+                            except Exception as parse_err:
+                                console.print(f"[yellow]Could not parse audit JSON: {parse_err}[/yellow]")
+                                scene_passed = True
+                        else:
+                            scene_passed = True
+                    else:
+                        scene_passed = True
+
+                    if scene_output not in scene_videos:
+                        scene_videos.append(scene_output)
+                else:
+                    console.print(f"[yellow]⚠️ Scene {idx} video completed without video bytes.[/yellow]")
+            except Exception as e:
+                console.print(f"[bold red]Scene {idx} failed: {e}[/bold red]")
+
+            attempt += 1
 
     # 3. Concatenate scenes into final movie
     final_movie = out_dir / "full_comic_movie.mp4"
