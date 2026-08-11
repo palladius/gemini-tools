@@ -66,7 +66,7 @@ def main():
         description="👨‍⚖️ Universal Biometric & Cinematic Video Judge (Outputs rigorous JSON report & scores)."
     )
     parser.add_argument("-v", "--video", required=True, help="Path to the generated MP4 video to evaluate.")
-    parser.add_argument("-c", "--character", required=True, help="Character/Subject name (auto-loads real photos from data/characters/<name>/).")
+    parser.add_argument("-c", "--character", default=None, help="Optional character/subject name (auto-loads real photos from data/characters/<name>/).")
     parser.add_argument("-r", "--reference", action="append", default=[], help="Optional specific extra reference image paths.")
     parser.add_argument("-m", "--model", default="gemini-3.5-flash", help="Evaluation model to use (default: gemini-3.5-flash).")
     
@@ -78,16 +78,15 @@ def main():
         sys.exit(1)
 
     ref_images = list(args.reference)
-    auto_imgs = resolve_character_images(args.character)
-    for img in auto_imgs:
-        if img not in ref_images:
-            ref_images.append(img)
-
-    if not ref_images:
-        console.print(f"[yellow]⚠️ Warning: No reference photographs found for character '{args.character}'. Judging video quality standalone.[/yellow]")
+    if args.character:
+        auto_imgs = resolve_character_images(args.character)
+        for img in auto_imgs:
+            if img not in ref_images:
+                ref_images.append(img)
 
     console.print(f"\n👨‍⚖️ [bold cyan]INITIALIZING HOLLYWOOD TRIBUNAL FOR:[/bold cyan] {video_path.name}")
-    console.print(f"👤 Character Target: [bold magenta]{args.character.upper()}[/bold magenta]")
+    char_label = args.character.upper() if args.character else "STANDALONE_QUALITY_AUDIT"
+    console.print(f"👤 Character Target: [bold magenta]{char_label}[/bold magenta]")
     console.print(f"📸 Loaded Authentic Biometric Reference Photos: [green]{ref_images}[/green]")
 
     client = genai.Client(api_key=api_key)
