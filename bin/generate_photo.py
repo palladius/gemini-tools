@@ -99,6 +99,16 @@ def main():
         action="store_true",
         help="Upload reference images via Google Files API (client.files.upload) for full uncompressed resolution."
     )
+    parser.add_argument(
+        "--gcs-bucket",
+        default="ricc-family-character-vault-pvt",
+        help="Private GCS bucket containing character photos for direct gs:// URI references (default: ricc-family-character-vault-pvt)"
+    )
+    parser.add_argument(
+        "--use-gcs",
+        action="store_true",
+        help="Pass references as direct gs:// URIs (types.Part.from_uri) via Google Cloud Storage."
+    )
 
     args = parser.parse_args()
 
@@ -116,7 +126,16 @@ def main():
     loaded_images = []
 
     for img_path in image_paths:
-        if os.path.exists(img_path):
+        if args.use_gcs:
+            # Map local path or filename to GCS URI gs://bucket/Char/filename
+            fname = Path(img_path).name
+            char_folder = Path(img_path).parent.name
+            gcs_uri = f"gs://{args.gcs_bucket}/{char_folder}/{fname}"
+            mime_type = "image/png" if fname.lower().endswith(".png") else "image/jpeg"
+            console.print(f"☁️ Passing direct GCS URI reference: [bold cyan]{gcs_uri}[/bold cyan]...")
+            gcs_part = types.Part.from_uri(file_uri=gcs_uri, mime_type=mime_type)
+            loaded_images.append(gcs_part)
+        elif os.path.exists(img_path):
             try:
                 if args.files_api:
                     console.print(f"📡 Uploading lossless reference via Files API: [cyan]{img_path}[/cyan]...")
