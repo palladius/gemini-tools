@@ -13,8 +13,8 @@ __pycache__/
 .idea/
 .vscode/
 
-# Ignore any private character folders if added locally
-# (data/characters/yukihiro is tracked as the public demo subject)
+# Ignore private benchmarks and local kid photo collections
+private/
 data/characters/alessandro/
 data/characters/sebastian/
 data/characters/riccardo/
