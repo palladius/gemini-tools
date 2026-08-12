@@ -33,15 +33,18 @@ Using `bin/judge_image.py` powered by `gemini-3.5-flash`, generated photos were 
 | Asset | Subject | Prompt Style | AI Judge Score | Human Parent Score | Verdict & Insights |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | `alessandro_dragon_test1.png` | Alessandro | Pixar 3D Animation | **3.5 / 10.0** | N/A | 🗑️ TRASH. Generic 3D cartoon template; lost authentic biometrics. |
-| `alessandro_waterslide_test2.png` | Alessandro | Photorealistic 8K | **6.5 / 10.0** | **7.5 - 8.0 / 10** | ✅ GOOD. High emotional and facial resemblance; recognized instantly by parent. |
-| `alessandro_photo_park.png` | Alessandro | 85mm Candid Park Photo | **6.8 / 10.0** | **7.5 / 10** | ✅ GOOD. High resemblance; lively expression, well captured hair texture. |
+| `alessandro_photo_portrait.png` | Alessandro | 35mm Sunlight Portrait | **3.8 / 10.0** | **4.0 / 10** | 🗑️ **Exact AI-Human Alignment!** ("Schifo totale"). AI prompt glitch with dark tones. |
+| `alessandro_photo_park.png` | Alessandro | 85mm Candid Park Photo | **6.8 / 10.0** | 🌟 **9.0 / 10** | 🌟 **Parent Favorite!** ("Wow un 9"). Outstanding motion, natural smile, and realistic hair texture. |
+| `alessandro_waterslide_test2.png` | Alessandro | Photorealistic 8K | **6.5 / 10.0** | **7.5 - 8.0 / 10** | ✅ GOOD. High resemblance on water slide; recognized instantly by parent. |
+| `sebastian_photo_portrait.png` | Sebastian | 35mm Natural Portrait | **7.8 / 10.0** | **7.5 - 8.0 / 10** | 🌟 **Near Perfect AI-Human Alignment!** Excellent facial structure, blue-green eyes, and chin cleft. |
 | `sebastian_superhero_test1.png` | Sebastian | Superhero Action Photo | **6.5 / 10.0** | **6.5 - 7.0 / 10** | ✅ GOOD. **Exact AI-Human Alignment!** Captured short brown hair and friendly eye expression. |
 | `sebastian_gelato_test2.png` | Sebastian | Outdoor Pergola Photo | **4.8 / 10.0** | **8.5 / 10** | 🌟 **Parent Favorite!** AI judge penalized chin contour, but parent rated 8.5/10 for capturing authentic smile vibe. |
-| `sebastian_photo_portrait.png` | Sebastian | 35mm Natural Portrait | **7.8 / 10.0** | **8.0 - 8.5 / 10** | 🌟 EXCELLENT. Outstanding facial structure, blue-green eyes, and hair texture fidelity. |
+| `sebastian_photo_park.png` | Sebastian | Yellow Bicycle Photo | **5.8 / 10.0** | **6.5 - 7.0 / 10** | ⚠️ MEDIOCRE ("Meh, non gli somiglia"). Slightly too generic child facial features. |
 
 ### Key Takeaway for Image Generation:
 - **Photorealistic Prompts > 3D Animation Prompts**: Prompting for 3D animation (e.g., Pixar/Disney) causes the model to abandon authentic facial biometrics in favor of stylized cartoon archetypes. Photorealistic prompts (`8k photorealistic capture`, `natural outdoor lighting`) retain authentic child likeness significantly better.
-- **Human Vibe Perception vs. AI Forensic Metric**: Strict LLM forensic judges scrutinize micro-contour measurements (chin clefts, dental spacing), while human parents prioritize overall expression, smile vibe, and emotional authenticity (e.g., rating `sebastian_gelato_test2` an 8.5/10 despite a 4.8/10 AI forensic score).
+- **Strong AI-Human Alignment on Failures and High-Fidelity Assets**: The LLM Forensic Judge (`gemini-3.5-flash`) and Human Parent aligned almost perfectly on identifying failures (`alessandro_photo_portrait.png` rated 3.8 AI vs. 4.0 Human) and top-tier portraits (`sebastian_photo_portrait.png` rated 7.8 AI vs. 7.5-8.0 Human).
+- **Human Vibe Perception vs. AI Forensic Metric**: Strict LLM forensic judges scrutinize micro-contour measurements (chin clefts, dental spacing), while human parents prioritize overall expression, candid motion vibe, and emotional authenticity (e.g., rating `alessandro_photo_park.png` a **9.0/10** and `sebastian_gelato_test2.png` an **8.5/10**).
 
 ---
 
