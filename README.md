@@ -53,9 +53,8 @@ chmod +x bin/*
 
 ## 🥋 Public Demo Subject
 
-The repository comes pre-packaged with public demo characters under `data/characters/`:
+The repository comes pre-packaged with a public demo character under `data/characters/yukihiro/`:
 - **Yukihiro Takahashi (Taka Sensei 🥋)**: A retired martial arts master turned vibe coder.
-- **Aline Santos (Lilli 🇧🇷)**: A 28-year-old Afro-Brazilian digital strategist.
 
 ---
 

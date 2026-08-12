@@ -15,3 +15,4 @@ This repository contains standalone Python CLI tools for Google GenAI photo synt
 3. **Character Folder Structure**: Reference images must be organized under `data/characters/<character_name>/`.
 4. **Justfile**: Maintain `Justfile` tasks pointing to `./bin/<script_name>`. The default target must always be `list -> just -l`.
 5. **Git Commit Messages**: Use single quotes in `git commit -m '...'` to avoid backtick expansion issues in shell.
+6. **Auto-Opening Generated Assets**: ALWAYS open newly generated PNG images or MP4 videos on macOS immediately (`open <file_path>`) so the user can inspect them instantly and provide feedback.
