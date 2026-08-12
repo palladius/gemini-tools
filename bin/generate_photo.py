@@ -87,6 +87,12 @@ def main():
         help="Automatically open the generated picture on screen."
     )
 
+    parser.add_argument(
+        "--files-api",
+        action="store_true",
+        help="Upload reference images via Google Files API (client.files.upload) for full uncompressed resolution."
+    )
+
     args = parser.parse_args()
 
     # Gather images
@@ -99,15 +105,22 @@ def main():
             console.print(f"👤 Found {len(char_imgs)} reference photo(s) for character [bold cyan]{args.character}[/bold cyan]: {char_imgs}")
             image_paths.extend(char_imgs)
 
+    client = genai.Client(api_key=api_key)
     loaded_images = []
+
     for img_path in image_paths:
         if os.path.exists(img_path):
             try:
-                im = PILImage.open(img_path)
-                if im.mode != "RGB":
-                    im = im.convert("RGB")
-                loaded_images.append(im)
-                console.print(f"📸 Loaded reference: [green]{img_path}[/green]")
+                if args.files_api:
+                    console.print(f"📡 Uploading lossless reference via Files API: [cyan]{img_path}[/cyan]...")
+                    fref = client.files.upload(file=img_path)
+                    loaded_images.append(fref)
+                else:
+                    im = PILImage.open(img_path)
+                    if im.mode != "RGB":
+                        im = im.convert("RGB")
+                    loaded_images.append(im)
+                    console.print(f"📸 Loaded reference: [green]{img_path}[/green]")
             except Exception as e:
                 console.print(f"[bold red]Failed to load image {img_path}: {e}[/bold red]")
         else:
@@ -138,7 +151,6 @@ def main():
         if d not in models_to_try:
             models_to_try.append(d)
 
-    client = genai.Client(api_key=api_key)
     payload = loaded_images + [args.prompt]
 
     console.print(f"\n🎨 [bold magenta]Starting Synthesis...[/bold magenta]")
