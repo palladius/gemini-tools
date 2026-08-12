@@ -50,4 +50,15 @@ Passing reference images via **Google Files API** (`client.files.upload` / `--fi
 | `candidate6.png` | Inline Base64 (Green eyes + cheek mole) | **7.8 / 10.0** (GOOD) | **7.0 / 10** | ⚠️ Below threshold (< 8.0). Captured cheek mole well. |
 | **`candidate7_files_api.png`** | **Files API Upload (`--files-api`)** | **7.8 / 10.0** (GOOD) | 🏆 **8.2 / 10** | 🏆 **PASSED EVAL THRESHOLD (> 8.0)!** Uncompressed Files API reference preserved authentic facial likeness, eyes, and cheek mole! |
 
+### 📊 Benchmark Score Matrix (Kate in Greece Candidates)
+
+| Candidate Asset | Scenario Description | AI Judge Score (`gemini-3.5-flash`) | Human Husband Rating (Riccardo) | Verdict & Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `kate_greece_batch_cand2.png` | Rhodes Alley | **3.0 / 10.0** (TRASH 🗑️) | 🤮 **0.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** ("fa SCHIFO"). Silhouetted, dark curly hair. |
+| `kate_greece_batch_cand4.png` | Corfu Salad | **3.5 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** "non le somiglia per niente". |
+| `kate_greece_batch_cand5.png` | Paros Sunset | **4.2 / 10.0** (TRASH 🗑️) | **5.5 / 10** | 🗑️ "bad". Generic stock model face. |
+| `kate_greece_batch_cand1.png` | Naxos Taverna | **5.2 / 10.0** (MEDIOCRE) | **6.0 / 10** | ⚠️ Mediocre. Idealized stock photo look. |
+| **`kate_greece_batch_cand3.png`** | **Crete Deck & Wine** | 👑 **6.8 / 10.0** (GOOD) | 👑 **7.0 / 10** | 👑 **Highest Rank Correlation!** "Le somiglia ma è ORRIBILE". Captured fine smile lines & eye shape. |
+
+
 
