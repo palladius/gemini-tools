@@ -15,6 +15,6 @@ __pycache__/
 
 # Ignore private benchmarks and local kid photo collections
 private/
-data/characters/alessandro/
-data/characters/sebastian/
-data/characters/riccardo/
+data/characters/alessandro*
+data/characters/sebastian*
+data/characters/riccardo*
