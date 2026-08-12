@@ -34,8 +34,9 @@ Using `bin/judge_image.py` powered by `gemini-3.5-flash`, generated photos were 
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | `alessandro_dragon_test1.png` | Alessandro | Pixar 3D Animation | **3.5 / 10.0** | 🗑️ TRASH | Generic 3D cartoon template; incorrectly assigned bright green eyes instead of brown, added uncharacteristic freckles, altered jawline into cartoon archetype. |
 | `alessandro_waterslide_test2.png` | Alessandro | Photorealistic 8K | **6.5 / 10.0** | ✅ GOOD | Recognizable likeness; hair color, eye shape, and nose bridge well preserved. Face slightly too elongated compared to authentic rounded chin. |
+| `alessandro_photo_park.png` | Alessandro | 85mm Candid Park Photo | **6.8 / 10.0** | ✅ GOOD | High resemblance; lively expression, well captured hair texture and eye shape. |
 | `sebastian_superhero_test1.png` | Sebastian | Superhero Action Photo | **6.5 / 10.0** | ✅ GOOD | High resemblance; captured short brown hair and friendly eye expression. Jawline slightly softened into default child model geometry. |
-| `sebastian_gelato_test2.png` | Sebastian | Outdoor Pergola Photo | **4.8 / 10.0** | ⚠️ MEDIOCRE | Facial features softened into generic AI child face; obscured light blue-green eye tone and smoothed unique chin cleft. |
+| `sebastian_photo_portrait.png` | Sebastian | 35mm Natural Portrait | **7.8 / 10.0** | 🌟 EXCELLENT | **Outstanding likeness!** Facial structure, light blue-green eyes, hair texture, and characteristic smile match authentic reference photos closely. |
 
 ### Key Takeaway for Image Generation:
 - **Photorealistic Prompts > 3D Animation Prompts**: Prompting for 3D animation (e.g., Pixar/Disney) causes the model to abandon authentic facial biometrics in favor of stylized cartoon archetypes. Photorealistic prompts (`8k photorealistic capture`, `natural outdoor lighting`) retain authentic child likeness significantly better.
