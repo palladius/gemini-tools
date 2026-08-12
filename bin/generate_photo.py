@@ -93,12 +93,14 @@ def main():
     # Gather images
     image_paths = list(args.image)
     if args.character:
-        char_imgs = resolve_character_images(args.character)
-        if not char_imgs:
-            console.print(f"[bold yellow]⚠️ No images found for character '{args.character}' in data/.[/bold yellow]")
-        else:
-            console.print(f"👤 Found {len(char_imgs)} reference photo(s) for character [bold cyan]{args.character}[/bold cyan]: {char_imgs}")
-            image_paths.extend(char_imgs)
+        chars = [c.strip() for c in args.character.split(",") if c.strip()]
+        for char_name in chars:
+            char_imgs = resolve_character_images(char_name, max_images=2)
+            if not char_imgs:
+                console.print(f"[bold yellow]⚠️ No images found for character '{char_name}' in data/.[/bold yellow]")
+            else:
+                console.print(f"👤 Found {len(char_imgs)} reference photo(s) for character [bold cyan]{char_name}[/bold cyan]: {char_imgs}")
+                image_paths.extend(char_imgs)
 
     loaded_images = []
     for img_path in image_paths:
