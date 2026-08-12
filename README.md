@@ -56,6 +56,7 @@ chmod +x bin/*
 The repository comes pre-packaged with public demo characters under `data/characters/`:
 - **Yukihiro Takahashi (Taka Sensei 🥋)**: A retired martial arts master turned vibe coder (`data/characters/yukihiro/`).
 - **Aline Santos (Lilli 🇧🇷)**: A 28-year-old Afro-Brazilian digital strategist (`data/characters/aline/`).
+- **Zenzile Mkhize (Zen 💎🇿🇦)**: A 31-year-old South African tech lead and AI researcher (`data/characters/zenzile/`).
 
 ---
 

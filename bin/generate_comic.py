@@ -72,6 +72,16 @@ COMIC_TEMPLATES = {
         "Bottom-Left Panel: A man sitting under a sunny outdoor pergola enjoying a delicious slice of Neapolitan pizza and Italian espresso. "
         "Bottom-Right Panel: A man piloting a sleek speedboat across sparkling blue waters of Lake Garda into the sunset. "
         "Clean black 2x2 grid panel borders, vibrant cartoon comic illustration style."
+    ),
+    "altomincio_aragosta": (
+        "A multi-panel vibrant colorful European comic book storyboard strip (6 panels in a 2x3 grid) depicting an unforgettable summer day at Altomincio Glamping Resort in Italy. "
+        "Panel 1: The happy Italian family walking from their modern glamping bungalow toward the lively swimming pool area carrying an ENORMOUS deflated inflatable lobster toy. "
+        "Panel 2: Papino Riccardo and blonde mother Kate proudly carrying the inflated GIANT bright red and orange lobster toy into the pool. "
+        "Panel 3: Close-up on the two energetic young brothers climbing excitedly onto the giant red-and-orange inflatable lobster: older brother Alessandro and younger brother Sebastian. "
+        "Panel 4: Both brothers floating triumphantly across the pool atop the dual-seat giant inflatable red lobster while waving happily. "
+        "Panel 5: Papino and Kate splashing playfully beside the floating lobster, everyone laughing with high summer holiday energy under the golden sunshine. "
+        "Panel 6: A wide scenic joyful celebration shot of the entire sunny swimming pool at Altomincio Glamping. "
+        "Style: High quality modern colorful graphic novel illustration, bright vivid summer holiday lighting, clean inked outlines."
     )
 }
 
@@ -114,7 +124,7 @@ def main():
     )
     parser.add_argument(
         "-t", "--template",
-        choices=["dnd", "marvel", "mtg", "lake_garda_family", "alessandro_dragon", "riccardo_altomincio", "custom"],
+        choices=["dnd", "marvel", "mtg", "lake_garda_family", "alessandro_dragon", "riccardo_altomincio", "altomincio_aragosta", "custom"],
         default="dnd",
         help="Comic strip template to generate (default: dnd)."
     )

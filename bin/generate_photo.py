@@ -1,21 +1,20 @@
 #!/usr/bin/env -S uv run
 # /// script
-# requires-python = ">=3.11"
 # dependencies = [
-#     "google-genai",
-#     "pillow",
-#     "rich",
-#     "python-slugify",
+#   "google-genai>=1.0.0",
+#   "rich>=13.0.0",
+#   "python-slugify>=8.0.0",
+#   "pillow>=10.0.0"
 # ]
 # ///
 
 import os
 import sys
-import argparse
 import glob
-import io
 import time
+import io
 import json
+import argparse
 from pathlib import Path
 from PIL import Image as PILImage
 from rich.console import Console
@@ -79,8 +78,8 @@ def main():
     )
     parser.add_argument(
         "-m", "--model",
-        default="gemini-3.1-flash-image-preview",
-        help="Primary image model to try (default: gemini-3.1-flash-image-preview)"
+        default="imagen-4.0-generate-001",
+        help="Primary image model to try (default: imagen-4.0-generate-001)"
     )
     parser.add_argument(
         "--open",
@@ -93,20 +92,21 @@ def main():
     # Gather images
     image_paths = list(args.image)
     if args.character:
-        chars = [c.strip() for c in args.character.split(",") if c.strip()]
-        for char_name in chars:
-            char_imgs = resolve_character_images(char_name, max_images=2)
-            if not char_imgs:
-                console.print(f"[bold yellow]⚠️ No images found for character '{char_name}' in data/.[/bold yellow]")
-            else:
-                console.print(f"👤 Found {len(char_imgs)} reference photo(s) for character [bold cyan]{char_name}[/bold cyan]: {char_imgs}")
-                image_paths.extend(char_imgs)
+        char_imgs = resolve_character_images(args.character)
+        if not char_imgs:
+            console.print(f"[bold yellow]⚠️ No images found for character '{args.character}' in data/.[/bold yellow]")
+        else:
+            console.print(f"👤 Found {len(char_imgs)} reference photo(s) for character [bold cyan]{args.character}[/bold cyan]: {char_imgs}")
+            image_paths.extend(char_imgs)
 
     loaded_images = []
     for img_path in image_paths:
         if os.path.exists(img_path):
             try:
-                loaded_images.append(PILImage.open(img_path))
+                im = PILImage.open(img_path)
+                if im.mode != "RGB":
+                    im = im.convert("RGB")
+                loaded_images.append(im)
                 console.print(f"📸 Loaded reference: [green]{img_path}[/green]")
             except Exception as e:
                 console.print(f"[bold red]Failed to load image {img_path}: {e}[/bold red]")
@@ -131,9 +131,8 @@ def main():
     models_to_try = [args.model]
     defaults = [
         "gemini-3.1-flash-image-preview",
-        "nano-banana-pro-preview",
-        "gemini-3-pro-image-preview",
-        "gemini-3-pro-image"
+        "gemini-3.1-flash-image",
+        "gemini-2.5-flash-image"
     ]
     for d in defaults:
         if d not in models_to_try:
@@ -158,8 +157,34 @@ def main():
             json.dump(meta, f, indent=2, ensure_ascii=False)
         console.print(f"📊 Provenance metadata saved to: [blue]{meta_file}[/blue]")
 
+    # Try Imagen direct API if model starts with imagen
     for model_name in models_to_try:
-        console.print(f"\n⚡ Trying generator model: [cyan]{model_name}[/cyan] (via generate_content)")
+        if "imagen" in model_name.lower():
+            console.print(f"\n⚡ Trying Imagen model: [cyan]{model_name}[/cyan] (via generate_images)")
+            try:
+                result = client.models.generate_images(
+                    model=model_name,
+                    prompt=args.prompt,
+                    config=types.GenerateImagesConfig(
+                        number_of_images=1,
+                        output_mime_type="image/png",
+                        aspect_ratio="1:1"
+                    )
+                )
+                if result.generated_images:
+                    img_bytes = result.generated_images[0].image.image_bytes
+                    out_img = PILImage.open(io.BytesIO(img_bytes))
+                    output_path.parent.mkdir(parents=True, exist_ok=True)
+                    out_img.save(output_path)
+                    console.print(f"✅ [bold green]SUCCESS![/bold green] Saved photo to: [blue]{output_path}[/blue]")
+                    save_provenance(output_path, model_name)
+                    if args.open:
+                        os.system(f"open '{output_path}'")
+                    return
+            except Exception as e:
+                console.print(f"[red]Imagen failed with {model_name}: {e}[/red]")
+
+        console.print(f"\n⚡ Trying multimodal generator model: [cyan]{model_name}[/cyan] (via generate_content)")
         try:
             response = client.models.generate_content(
                 model=model_name,
@@ -181,32 +206,7 @@ def main():
         except Exception as e:
             console.print(f"[red]Failed with {model_name}: {e}[/red]")
 
-    # Fallback to interactions API
-    console.print("\n🍌 Trying fallback via client.interactions.create...")
-    for model_name in models_to_try:
-        try:
-            console.print(f"Calling interactions API with model: [cyan]{model_name}[/cyan]...")
-            interaction = client.interactions.create(
-                model=model_name,
-                input=payload,
-                config=types.GenerateContentConfig(response_modalities=["IMAGE"])
-            )
-            for event in interaction:
-                if event.candidates and event.candidates[0].content and event.candidates[0].content.parts:
-                    for part in event.candidates[0].content.parts:
-                        if part.inline_data and part.inline_data.mime_type.startswith("image/"):
-                            out_img = PILImage.open(io.BytesIO(part.inline_data.data))
-                            output_path.parent.mkdir(parents=True, exist_ok=True)
-                            out_img.save(output_path)
-                            console.print(f"✅ [bold green]SUCCESS via Interactions![/bold green] Saved to: [blue]{output_path}[/blue]")
-                            save_provenance(output_path, f"interactions/{model_name}")
-                            if args.open:
-                                os.system(f"open '{output_path}'")
-                            return
-        except Exception as e:
-            console.print(f"[red]Interaction failed with {model_name}: {e}[/red]")
-
-    console.print("\n❌ [bold red]All models and endpoints failed to generate the photo.[/bold red]")
+    console.print("\n❌ [bold red]All models failed to generate the photo.[/bold red]")
     sys.exit(1)
 
 if __name__ == "__main__":

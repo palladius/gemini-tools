@@ -104,6 +104,7 @@ Slices comic panels, generates Veo video clips for each panel, and stitches them
 
 - `yukihiro`: Yukihiro Takahashi ("Taka Sensei 🥋") - Retired martial arts master & vibe coder.
 - `aline`: Aline Santos ("Lilli 🇧🇷") - 28-year-old Afro-Brazilian digital strategist.
+- `zenzile`: Zenzile Mkhize ("Zen 💎🇿🇦") - 31-year-old South African tech lead & AI researcher.
 
 ## Data & Provenance Conventions
 
