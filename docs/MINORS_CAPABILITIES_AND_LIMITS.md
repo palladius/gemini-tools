@@ -15,10 +15,10 @@ This document details empirical findings, safety policy behavior, biometric like
   ```
 - **Zero-Commit Policy**: AI generated outputs featuring minor subjects are stored under `out/` which is also ignored by Git.
 
-### B. Direct Video Safety Block for Photorealistic Children (Veo Code 400)
-- **Official Google Veo API Error**: Passing a photorealistic input image featuring a child into Veo Image-to-Video API triggers an explicit safety block:
+### B. Direct Video Safety Block for Photorealistic Children (Veo 3.1 & Omni)
+- **Official Google Veo API Error**: Passing a photorealistic input image featuring a child into Veo Image-to-Video API (`veo-3.1-generate-preview`) triggers an explicit safety block:
   ```text
-  Error code: 400 - Input blocked: Sorry, we can't create videos from inputs containing photorealistic children. Please remove the reference and try again.
+  Video generation blocked by safety filters: ["Sorry, we can't create videos from input images containing photorealistic children. Please remove the reference and try again."]
   ```
 - **Workaround (Cartoon / Illustrated Anchor)**:
   1. **Photorealistic Image Input**: Blocked by Google Safety Filters to protect children's privacy and prevent deepfakes of minors.
