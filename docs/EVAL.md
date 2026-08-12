@@ -56,9 +56,9 @@ Passing reference images via **Google Files API** (`client.files.upload` / `--fi
 | :--- | :--- | :--- | :--- | :--- |
 | `kate_greece_batch_cand2.png` | Rhodes Alley | **3.0 / 10.0** (TRASH 🗑️) | 🤮 **0.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** ("fa SCHIFO"). Silhouetted, dark curly hair. |
 | `kate_greece_batch_cand4.png` | Corfu Salad | **3.5 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** "non le somiglia per niente". |
-| `kate_greece_batch_cand5.png` | Paros Sunset | **4.2 / 10.0** (TRASH 🗑️) | **5.5 / 10** | 🗑️ "bad". Generic stock model face. |
-| `kate_greece_batch_cand1.png` | Naxos Taverna | **5.2 / 10.0** (MEDIOCRE) | **6.0 / 10** | ⚠️ Mediocre. Idealized stock photo look. |
-| **`kate_greece_batch_cand3.png`** | **Crete Deck & Wine** | 👑 **6.8 / 10.0** (GOOD) | 👑 **7.0 / 10** | 👑 **Highest Rank Correlation!** "Le somiglia ma è ORRIBILE". Captured fine smile lines & eye shape. |
-
-
-
+| `3a` (`kate_greece_refined_cand3a.png`) | Crete Portrait | **4.2 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ "bad". Abbellimento artificiale. |
+| `3b` (`kate_greece_refined_cand3b.png`) | Crete Linen Deck | **4.5 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ "bad". Viso levigato. |
+| `3d` (`kate_greece_refined_cand3d.png`) | Crete Rustic Table | **4.2 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ "bad. Troppo gnocca". Abbellimento AI irrealistico. |
+| `3e` (`kate_greece_refined_cand3e.png`) | Crete Cliffside | **3.8 / 10.0** (TRASH 🗑️) | **6.0 / 10** | ⚠️ "Qualcosa che vagamente la ricorda". |
+| `cand1` (`kate_greece_batch_cand1.png`) | Naxos Taverna | **5.2 / 10.0** (MEDIOCRE) | **6.0 / 10** | ⚠️ Mediocre. Look da modella generica. |
+| **`cand3` (`kate_greece_batch_cand3.png`)** | **Crete Deck & Wine** | 👑 **6.8 / 10.0** (GOOD) | 👑 **7.0 / 10** | 👑 **Highest Rank Correlation!** "Le somiglia ma è ORRIBILE". Captured fine smile lines & eye shape. |
