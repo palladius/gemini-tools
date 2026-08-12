@@ -12,6 +12,7 @@ import os
 import sys
 import json
 import argparse
+import datetime
 from pathlib import Path
 from PIL import Image as PILImage
 from pydantic import BaseModel, Field
@@ -21,16 +22,20 @@ from google.genai import types
 
 console = Console()
 
+class CharacterBiometricScore(BaseModel):
+    character_name: str = Field(description="Name of the evaluated character (e.g. alessandro, sebastian).")
+    biometric_resemblance_score: float = Field(description="Biometric face & likeness similarity score for this specific character (1.0 to 10.0).")
+    specific_critique: str = Field(description="Forensic analysis of facial features, hair, eyes, and bone structure for this character.")
+
 class ImageAuditReport(BaseModel):
     target_asset_path: str = Field(description="Path to the evaluated image file.")
     source_reference_paths: list[str] = Field(description="Paths to the authentic reference photos used.")
     evaluation_timestamp: str = Field(description="ISO 8601 timestamp.")
-    character_name: str = Field(description="Name of the character evaluated.")
-    image_quality_score: int = Field(description="Overall image quality score (1 to 10).")
-    biometric_resemblance_score: float = Field(description="Biometric face & likeness similarity score (1.0 to 10.0).")
+    character_scores: list[CharacterBiometricScore] = Field(description="Per-character biometric similarity scores and critiques.")
+    image_quality_score: int = Field(description="Overall image visual quality score (1 to 10).")
     overall_score: int = Field(description="Final composite score (1 to 10).")
     verdict: str = Field(description="Verdict label (CAPOLAVORO / GOOD / TRASH).")
-    expert_critique: str = Field(description="Detailed forensic critique of likeness, facial bones, eye color, and hair style.")
+    expert_critique: str = Field(description="Summary critique of overall composition and multi-subject fidelity.")
     actionable_next_step: str = Field(description="Concrete recommendation to improve biometric fidelity.")
 
 def to_tilde_path(p: str | Path) -> str:
@@ -41,7 +46,7 @@ def to_tilde_path(p: str | Path) -> str:
     return res
 
 def resolve_character_images(character_name: str) -> list[str]:
-    char_dir = Path("data/characters") / character_name.lower()
+    char_dir = Path("data/characters") / character_name.lower().strip()
     if not char_dir.exists():
         return []
     valid_exts = {".png", ".jpg", ".jpeg", ".webp"}
@@ -53,9 +58,9 @@ def main():
         console.print("[bold red]ERROR: GEMINI_API_KEY environment variable not set.[/bold red]")
         sys.exit(1)
 
-    parser = argparse.ArgumentParser(description="👨‍⚖️ Image Biometric & Quality Judge.")
+    parser = argparse.ArgumentParser(description="👨‍⚖️ Image Biometric & Quality Judge (Multi-Character Support).")
     parser.add_argument("-i", "--image", required=True, help="Path to the generated image to evaluate.")
-    parser.add_argument("-c", "--character", required=True, help="Character name (e.g. alessandro, sebastian).")
+    parser.add_argument("-c", "--character", required=True, help="Character name(s), comma-separated for multi-subject evaluation (e.g. alessandro,sebastian).")
     parser.add_argument("-m", "--model", default="gemini-3.5-flash", help="Model to use for judging (default: gemini-3.5-flash).")
 
     args = parser.parse_args()
@@ -64,17 +69,26 @@ def main():
         console.print(f"[bold red]Error: Image file '{img_path}' does not exist.[/bold red]")
         sys.exit(1)
 
-    ref_images = resolve_character_images(args.character)
+    char_names = [c.strip().lower() for c in args.character.split(",") if c.strip()]
+    
+    all_ref_images = []
+    char_ref_map = {}
+    for cname in char_names:
+        imgs = resolve_character_images(cname)
+        char_ref_map[cname] = imgs
+        all_ref_images.extend(imgs)
+
     console.print(f"\n👨‍⚖️ [bold cyan]INITIALIZING BIOMETRIC IMAGE AUDIT FOR:[/bold cyan] {img_path.name}")
-    console.print(f"👤 Character Target: [bold magenta]{args.character.upper()}[/bold magenta]")
-    console.print(f"📸 Loaded Reference Photos: [green]{ref_images}[/green]")
+    console.print(f"👤 Target Characters: [bold magenta]{', '.join(char_names).upper()}[/bold magenta]")
+    for cname, imgs in char_ref_map.items():
+        console.print(f"📸 Loaded Reference Photos for [green]{cname.upper()}[/green]: {imgs}")
 
     client = genai.Client(api_key=api_key)
 
     contents = []
     try:
         contents.append(PILImage.open(img_path))
-        for rpath in ref_images:
+        for rpath in all_ref_images:
             contents.append(PILImage.open(rpath))
     except Exception as err:
         console.print(f"[bold red]Failed loading image files: {err}[/bold red]")
@@ -82,12 +96,17 @@ def main():
 
     prompt = f"""
     You are an unsparing forensic biometric likeness and visual quality judge evaluating AI-generated images.
-    Target subject: {args.character.upper()}.
-    The first image provided is the generated image under evaluation.
-    The remaining images are authentic reference photographs of {args.character.upper()}.
+    Target subject character(s) to evaluate: {', '.join(char_names).upper()}.
+    
+    INPUT IMAGE ORDER:
+    - Image 1: The AI-generated target image under evaluation.
+    - Subsequent images: Authentic real-life reference photographs for each character listed ({char_ref_map}).
 
-    Analyze facial structure, eye color, hair texture, nose shape, lip shape, and age representation.
-    Be brutally honest. If the subject looks like a generic stock child/person rather than the actual person in reference photos, penalize biometric_resemblance_score harshly (3.0 - 6.0).
+    REQUIREMENTS:
+    1. Evaluate EACH character listed in {char_names} individually.
+    2. Populate the 'character_scores' array with one entry for each character ({', '.join(char_names)}).
+    3. Calculate their specific 'biometric_resemblance_score' (1.0 to 10.0) by scrutinizing facial bone structure, eye color, nose shape, lip shape, hair texture, and distinct facial traits against their authentic reference photos.
+    4. Be brutally honest. If a character looks like a generic stock child/person rather than the authentic reference subject, penalize their resemblance score (3.0 - 6.0).
 
     Output strictly according to the requested JSON schema.
     """
@@ -105,24 +124,33 @@ def main():
         )
         parsed_json = json.loads(response.text.strip())
         parsed_json["target_asset_path"] = to_tilde_path(img_path)
-        parsed_json["source_reference_paths"] = [to_tilde_path(p) for p in ref_images]
+        parsed_json["source_reference_paths"] = [to_tilde_path(p) for p in all_ref_images]
+        parsed_json["evaluation_timestamp"] = datetime.datetime.now().isoformat()
 
         console.print(f"\n==========================================================================")
-        console.print(f"🏆 BIOMETRIC IMAGE VERDICT FOR: [bold yellow]{args.character.upper()}[/bold yellow]")
+        console.print(f"🏆 MULTI-CHARACTER BIOMETRIC VERDICT FOR: [bold yellow]{', '.join(char_names).upper()}[/bold yellow]")
         console.print(f"==========================================================================")
         console.print(f"🎬 Image Quality Score       : {parsed_json.get('image_quality_score')}/10")
-        console.print(f"🧬 Likeness Resemblance Score  : {parsed_json.get('biometric_resemblance_score')}/10.0")
+        
+        cscores = parsed_json.get("character_scores", [])
+        for cs in cscores:
+            cname = cs.get("character_name", "UNKNOWN").upper()
+            cscore = cs.get("biometric_resemblance_score", 0)
+            critique = cs.get("specific_critique", "")
+            console.print(f"🧬 Likeness Score [{cname}] : [bold cyan]{cscore}/10.0[/bold cyan]")
+            console.print(f"   💬 {critique}")
+
         console.print(f"👑 Overall Total Score       : [bold green]{parsed_json.get('overall_score')}/10[/bold green]")
         console.print(f"🗑️ FINAL VERDICT             : [bold magenta]{parsed_json.get('verdict')}[/bold magenta]")
         console.print(f"==========================================================================")
-        console.print(f"🔍 Expert Critique:\n{parsed_json.get('expert_critique')}")
+        console.print(f"🔍 Summary Critique:\n{parsed_json.get('expert_critique')}")
         console.print(f"➡️ Recommendation:\n{parsed_json.get('actionable_next_step')}")
         console.print(f"==========================================================================\n")
 
-        json_out = img_path.parent / f"{img_path.stem}_biometric_audit.json"
+        json_out = img_path.parent / f"{img_path.stem}_multi_biometric_audit.json"
         with open(json_out, "w", encoding="utf-8") as f:
             json.dump(parsed_json, f, indent=2)
-        console.print(f"📁 Audit saved to: [blue]{to_tilde_path(json_out)}[/blue]\n")
+        console.print(f"📁 Multi-character audit saved to: [blue]{to_tilde_path(json_out)}[/blue]\n")
 
     except Exception as e:
         console.print(f"[bold red]Audit failed: {e}[/bold red]")
