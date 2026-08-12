@@ -31,20 +31,27 @@ def to_tilde_path(p: str | Path) -> str:
         return "~" + res[len(home):]
     return res
 
-def resolve_character_images(character_name: str, max_images: int = 4):
-    """Finds reference photos for a character under data/characters/ or data/."""
-    search_paths = [
-        f"data/characters/{character_name.lower()}/*.jpg",
-        f"data/characters/{character_name.lower()}/*.png",
-        f"data/{character_name.lower()}/*.jpg",
-        f"data/{character_name.lower()}/*.png",
-    ]
+def resolve_character_images(character_name: str, max_images: int = 4) -> list[str]:
+    """Finds reference photos for a character or comma-separated list of characters."""
     found = []
-    for p in search_paths:
-        found.extend(glob.glob(p))
-    # Sort by size descending (usually better resolution/detail)
-    found = sorted(found, key=lambda x: os.path.getsize(x), reverse=True)
-    return found[:max_images]
+    char_names = [c.strip().lower() for c in character_name.split(",") if c.strip()]
+    
+    for cname in char_names:
+        search_paths = [
+            f"data/characters/{cname}/*.jpg",
+            f"data/characters/{cname}/*.png",
+            f"data/characters/{cname}/*.JPG",
+            f"data/characters/{cname}/*.PNG",
+            f"data/{cname}/*.jpg",
+            f"data/{cname}/*.png",
+        ]
+        sub_found = []
+        for p in search_paths:
+            sub_found.extend(glob.glob(p))
+        sub_found = sorted(sub_found, key=lambda x: os.path.getsize(x), reverse=True)
+        found.extend(sub_found[:max_images])
+        
+    return found
 
 def main():
     api_key = os.environ.get("GEMINI_API_KEY")
