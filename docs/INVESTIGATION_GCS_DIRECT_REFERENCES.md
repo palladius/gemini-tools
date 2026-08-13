@@ -12,7 +12,7 @@ This document summarizes the empirical investigation into reducing AI face-washi
 | **Exp 1: Minimal Prompt** | Single base64 image + minimal prompt (*"The person in image..."*) | **3.0 / 10.0** (TRASH 🗑️) | ❌ **High Hallucination**: Model generated an elderly woman. Text descriptors are mandatory in multimodal diffusion. |
 | **Exp 2: Base64 Single Anchor** | Inline PIL image + detailed prompt | **5.2 - 6.0 / 10.0** | ⚠️ **AI Beautification**: Client-side resampling caused facial smoothing and generic model features. |
 | **Exp 3: Files API Lossless Upload** | `client.files.upload()` + uncompressed references | **6.8 - 7.2 / 10.0** (GOOD) | 🟢 **Biometric Gain**: Preserved authentic fine facial lines and eye shapes (Alessandro reached 8.2 / 10 human score). |
-| **Exp 4: GCS Direct URI Reference** | `types.Part.from_uri("gs://ricc-family-character-vault-pvt/kate/...")` | **6.8 - 7.5 / 10.0** (GOOD) | 🏆 **Zero Network Overhead & Lowest Hallucination**: Passing direct GCS URIs across all 4 characters prevented client-side degradation and stabilized multi-character identity. |
+| **Exp 4: GCS Direct URI Reference** | `types.Part.from_uri("gs://ricc-family-character-vault-pvt/kate/...")` | **4.8 / 10.0 (Likeness)** / **7.0 / 10 (Quality)** | 🏆 **Zero Network Overhead**: Passing direct GCS URIs across all 4 characters prevented client-side degradation. **AI Forensic Judge Critique**: Identified missing mouth-corner dimples, narrower nose bridge, and warm golden hair vs cool ash-blonde reference tone. |
 
 ---
 
