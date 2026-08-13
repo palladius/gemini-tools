@@ -59,6 +59,6 @@ Passing reference images via **Google Files API** (`client.files.upload` / `--fi
 | `3a` (`kate_greece_refined_cand3a.png`) | Crete Portrait | **4.2 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ "bad". Abbellimento artificiale. |
 | `exp1_cand1..3` | Strategy 1: Explicit A/B/C Binding | **7.5 - 7.8 / 10.0** (GOOD) | ⚠️ **6.5 / 10** | ⚠️ "Tutte orribili, sembra troppo vecchia e brutta". |
 | `exp2_cand1..3` | Strategy 2: Negative Constraints | **4.2 - 4.5 / 10.0** (TRASH) | 🤮 **0.0 / 10** | 🗑️ "Tutti cattivi". Caused hazel eyes & broad nose drift. |
-| `exp3_cand1..3` | Strategy 3: Biometric Blueprint | **7.2 - 7.8 / 10.0** (GOOD) | *Pending Riccardo* | 🟢 In fase di valutazione a schermo. |
+| `exp3_cand1..3` | Strategy 3: Biometric Blueprint | **7.2 - 7.8 / 10.0** (GOOD) | ⚠️ **6.5 / 10** | ⚠️ "Sempre brutte". Invecchiamento AI irrealistico. |
 | `cand1` (`kate_greece_batch_cand1.png`) | Naxos Taverna | **5.2 / 10.0** (MEDIOCRE) | **6.0 / 10** | ⚠️ Mediocre. Look da modella generica. |
 | **`cand3` (`kate_greece_batch_cand3.png`)** | **Crete Deck & Wine** | 👑 **6.8 / 10.0** (GOOD) | 👑 **7.0 / 10** | 👑 **Highest Rank Correlation!** "Le somiglia ma è ORRIBILE". Captured fine smile lines & eye shape. |
