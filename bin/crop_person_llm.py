@@ -284,6 +284,7 @@ def main():
     console.print(summary_table)
     
     if args.sync_gcs:
+        console.print("[bold yellow]⚠️ GCS Sync Requested. Checking safety requirement...[/bold yellow]")
         gcs_bucket = f"gs://ricc-family-character-vault-pvt/{args.character}/"
         console.print(f"☁️ Syncing cleaned cropped images to GCS: [bold cyan]{gcs_bucket}[/bold cyan]...")
         subprocess.run(["gcloud", "storage", "rsync", str(output_dir), gcs_bucket], check=True)
