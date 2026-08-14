@@ -1,8 +1,12 @@
 {
   "id": "llm_person_cropper_20260814",
   "type": "feature",
-  "status": "new",
+  "status": "completed",
   "title": "LLM-Driven Person Bounding Box Isolator & Image Cropper",
+  "worktree": {
+    "path": ".worktrees/llm_person_cropper-cropper",
+    "branch": "feature/llm_person_cropper"
+  },
   "created_at": "2026-08-14T15:30:00Z",
-  "updated_at": "2026-08-14T15:30:00Z"
+  "updated_at": "2026-08-14T15:59:00Z"
 }
