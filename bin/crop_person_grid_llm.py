@@ -67,7 +67,7 @@ def draw_grid_overlay(image_path: Path, grid_size: int = 10, color: str = "#00FF
     return img
 
 def get_grid_crop_coordinates(client: genai.Client, reference_paths: list[Path], gridded_img: Image.Image, person_name: str, grid_size: int = 10) -> GridCropResult:
-    """Queries Gemini 3.5 Flash with gridded visual overlay to return grid cell bounding coordinates."""
+    """Queries Gemini 3.5 Flash with gridded visual overlay to return grid cell bounding coordinates with auto-retry."""
     contents = []
     for idx, ref_p in enumerate(reference_paths):
         contents.append(f"Reference Image {chr(65+idx)} (Subject '{person_name}' alone):")
@@ -87,16 +87,25 @@ INSTRUCTIONS:
     """
     contents.append(prompt)
     
-    response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=contents,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema=GridCropResult,
-            temperature=0.1
-        )
-    )
-    return GridCropResult.model_validate_json(response.text)
+    import time
+    max_retries = 4
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model="gemini-3.5-flash",
+                contents=contents,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=GridCropResult,
+                    temperature=0.1
+                )
+            )
+            return GridCropResult.model_validate_json(response.text)
+        except Exception as e:
+            if attempt < max_retries - 1:
+                time.sleep(2 * (attempt + 1))
+            else:
+                raise e
 
 def crop_original_by_grid(original_path: Path, grid_res: GridCropResult, output_path: Path, grid_size: int = 10):
     """Crops ungridded original image using grid coordinates."""
