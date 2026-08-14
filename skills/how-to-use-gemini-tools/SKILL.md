@@ -100,17 +100,28 @@ Slices comic panels, generates Veo video clips for each panel, and stitches them
 ./bin/comic_to_video.py -i data/fumetti/altomincio_strip.png --rows 2 --cols 3 --character alessandro
 ```
 
-### 7. LLM-Driven Person Bounding Box Cropper (`bin/crop_person_llm.py`)
+### 7. Deterministic 10x10 Grid Overlay Person Isolator (`bin/crop.py`)
 
-Uses Gemini's 2D spatial grounding capability (`gemini-3.5-flash`) to locate a specific target subject in group photos, crop them with Pillow while cutting out surrounding individuals, audit identity match, and rsync cleaned crops to GCS.
+Uses **Grid Overlay Visual Grounding** (`gemini-3.5-flash`) to draw a 10x10 coordinate grid over group photos, locate the exact target person matching single-subject reference photos, and deterministically crop the subject with Pillow while cutting out surrounding individuals.
 
 ```bash
-# Crop target subject from a single group photo
-./bin/crop_person_llm.py -c kate2016 -t "data/characters/kate2016/kate2016  KR-e-0133.jpg" -r data/characters/kate/kate_golden_wine_anchor.png
+# Isolate a subject from a group photo using a reference anchor photo
+./bin/crop.py --reference riccardo-alone.jpg --target riccardo-with-friends.jpg
 
-# Batch crop all group photos in character directory and sync to GCS
-./bin/crop_person_llm.py -c kate2016 -r data/characters/kate/kate_golden_wine_anchor.png --sync-gcs
+# Batch crop all photos in character directory using a reference anchor
+./bin/crop.py -c kate2016 -r "data/characters/kate2016/kate2016  DSC06755.jpg"
 ```
+
+**Key Features:**
+- Draws a 10x10 green grid overlay with coordinate labels `(0,0)` .. `(9,9)`.
+- Asks Gemini `gemini-3.5-flash` to return grid cell bounding ranges `[grid_xmin, grid_xmax, grid_ymin, grid_ymax]`.
+- Crops the ungridded original photo using exact cell boundaries.
+- Generates testable triplet validation folders (`data/characters/<character>/grid_validation/<photo>/`) containing:
+  - `1_original.jpg`: Full resolution original group photo.
+  - `2_gridded.jpg`: Image with 10x10 green grid overlay.
+  - `3_cropped.jpg`: Final cropped subject photo.
+- Automatically opens the `grid_validation/` directory in Finder upon completion.
+
 
 
 ## Included Demo Characters

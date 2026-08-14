@@ -31,6 +31,10 @@ A collection of lightweight, standalone Python CLI utilities powered by **Google
 6. **🎞️ `bin/comic_to_video.py` (Multi-Scene Comic Video Orchestrator)**
    - Animates each panel of a comic strip into separate video clips with Veo and automatically stitches them into a full movie using `ffmpeg`.
 
+7. **📐 `bin/crop.py` (Deterministic 10x10 Grid Overlay Person Isolator)**
+   - Uses **Grid Overlay Visual Grounding** (`gemini-3.5-flash`) to draw a 10x10 coordinate grid over group photos, locate the exact target person matching single-subject reference photos, and deterministically crop the subject with Pillow while cutting out surrounding individuals.
+   - Automatically generates testable triplet validation folders (`1_original.jpg`, `2_gridded.jpg`, `3_cropped.jpg`) for side-by-side verification.
+
 ---
 
 ## 📦 Requirements & Setup
@@ -67,10 +71,15 @@ The repository comes pre-packaged with public demo characters under `data/charac
 ./bin/generate_photo.py -c yukihiro -p "Yukihiro Takahashi singing at a Tokyo karaoke bar, wearing a navy linen shirt, vibrant 90s neon lights"
 ```
 
-### 2. Judge an AI Video Asset
+### 3. Crop a Specific Subject Out of a Group Photo (Grid Grounding)
 ```bash
-./bin/judge_video.py -v out/yukihiro_karaoke_video.mp4 -c yukihiro
+# Isolate a single subject from a group photo using a reference anchor photo
+./bin/crop.py --reference riccardo-alone.jpg --target riccardo-with-friends.jpg
+
+# Batch crop a character folder with custom output and grid validation triplets
+./bin/crop.py -c kate2016 -r data/characters/kate2016/kate2016\ \ DSC06755.jpg
 ```
+
 
 ---
 
