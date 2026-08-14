@@ -127,9 +127,9 @@ def main():
 
     for img_path in image_paths:
         if args.use_gcs:
-            # Map local path or filename to GCS URI gs://bucket/Char/filename
+            # Map local path or filename to GCS URI gs://bucket/char_lowercase/filename
             fname = Path(img_path).name
-            char_folder = Path(img_path).parent.name
+            char_folder = Path(img_path).parent.name.lower()
             gcs_uri = f"gs://{args.gcs_bucket}/{char_folder}/{fname}"
             mime_type = "image/png" if fname.lower().endswith(".png") else "image/jpeg"
             console.print(f"☁️ Passing direct GCS URI reference: [bold cyan]{gcs_uri}[/bold cyan]...")
@@ -243,6 +243,42 @@ def main():
             console.print(f"[dim]No image data returned from {model_name}.[/dim]")
         except Exception as e:
             console.print(f"[red]Failed with {model_name}: {e}[/red]")
+            if "Google Cloud Storage" in str(e) or "Register" in str(e):
+                console.print("[yellow]🔄 Falling back to local reference images for all models...[/yellow]")
+                new_payload = []
+                for p_item in payload:
+                    if isinstance(p_item, types.Part) and hasattr(p_item, "file_data") and p_item.file_data and p_item.file_data.file_uri and p_item.file_data.file_uri.startswith("gs://"):
+                        pass
+                    else:
+                        new_payload.append(p_item)
+                # Append local PIL images
+                local_imgs = []
+                for img_p in image_paths:
+                    if os.path.exists(img_p):
+                        im = PILImage.open(img_p)
+                        if im.mode != "RGB":
+                            im = im.convert("RGB")
+                        local_imgs.append(im)
+                payload = local_imgs + new_payload
+                try:
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=payload,
+                        config=types.GenerateContentConfig(response_modalities=["IMAGE"])
+                    )
+                    if response.candidates and response.candidates[0].content and response.candidates[0].content.parts:
+                        for part in response.candidates[0].content.parts:
+                            if part.inline_data and part.inline_data.mime_type.startswith("image/"):
+                                out_img = PILImage.open(io.BytesIO(part.inline_data.data))
+                                output_path.parent.mkdir(parents=True, exist_ok=True)
+                                out_img.save(output_path)
+                                console.print(f"✅ [bold green]SUCCESS![/bold green] Saved photo to: [blue]{output_path}[/blue]")
+                                save_provenance(output_path, model_name)
+                                if args.open:
+                                    os.system(f"open '{output_path}'")
+                                return
+                except Exception as fb_e:
+                    console.print(f"[red]Fallback failed with {model_name}: {fb_e}[/red]")
 
     console.print("\n❌ [bold red]All models failed to generate the photo.[/bold red]")
     sys.exit(1)
