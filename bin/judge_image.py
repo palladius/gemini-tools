@@ -47,10 +47,15 @@ def to_tilde_path(p: str | Path) -> str:
 
 def resolve_character_images(character_name: str) -> list[str]:
     char_dir = Path("data/characters") / character_name.lower().strip()
+    grid_cleaned_dir = char_dir / "grid_cleaned"
+    valid_exts = {".png", ".jpg", ".jpeg", ".webp"}
+    if grid_cleaned_dir.exists():
+        grid_imgs = [str(p) for p in grid_cleaned_dir.iterdir() if p.suffix.lower() in valid_exts]
+        if grid_imgs:
+            return grid_imgs
     if not char_dir.exists():
         return []
-    valid_exts = {".png", ".jpg", ".jpeg", ".webp"}
-    return [str(p) for p in char_dir.iterdir() if p.suffix.lower() in valid_exts]
+    return [str(p) for p in char_dir.iterdir() if p.is_file() and p.suffix.lower() in valid_exts]
 
 def main():
     api_key = os.environ.get("GEMINI_API_KEY")
