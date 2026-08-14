@@ -2,6 +2,10 @@
 list:
     just -l
 
+# Serve interactive Character Consistency Approval Web App (Queue & Ranked Leaderboard)
+web port="3333":
+    PORT={{port}} node web/server.js
+
 # Synthesize a photo of the public demo character (Yukihiro)
 test-photo:
     ./bin/generate_photo.py -c yukihiro -p "Yukihiro Takahashi coding with Google Antigravity in a Zen garden"

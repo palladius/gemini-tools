@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Consistency Approval & Leaderboard Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <span class="emoji">🍌</span>
+            <h1>Character Consistency Portal</h1>
+        </div>
+
+        <!-- Character Filter Selector -->
+        <div class="char-filter-bar" id="charFilterBar">
+            <span class="filter-label">Character:</span>
+            <div class="filter-pills" id="filterPills">
+                <button data-subject="ALL" class="pill-btn active">ALL</button>
+            </div>
+        </div>
+
+        <!-- View Switcher -->
+        <div class="view-mode-bar">
+            <button id="modeVoteBtn" class="mode-btn active">📝 Vote Queue</button>
+            <button id="modeAlbumBtn" class="mode-btn">🏆 Ranked Leaderboard</button>
+            <span class="badge" id="queueBadge">Loading Queue...</span>
+        </div>
+    </header>
+
+    <main class="container" id="mainContainer">
+        <!-- 1. Interactive Voting Workspace -->
+        <div class="eval-workspace" id="voteWorkspace">
+            <!-- Left Pane: Generated Target Image -->
+            <div class="pane left-pane">
+                <div class="card-header">
+                    <span class="tag" id="subjectTag">Subject</span>
+                    <h2 id="modelTitle">Model Name</h2>
+                    <div class="view-toggle">
+                        <button id="faceZoomBtn" class="toggle-btn active">🔍 Face Zoom (CC Focus)</button>
+                        <button id="fullPhotoBtn" class="toggle-btn">🖼️ Full Photo</button>
+                    </div>
+                </div>
+                <div class="image-wrapper">
+                    <img id="targetImage" src="" alt="Target Generated Image">
+                </div>
+                <div class="prompt-box">
+                    <label>Prompt:</label>
+                    <p id="promptText">Loading prompt...</p>
+                </div>
+                <div class="robot-score-box">
+                    <div class="robot-score-header">
+                        <span>🤖 Robot LLM Judge Evaluation</span>
+                        <span class="score-pill" id="robotScorePill">Score: -/10</span>
+                    </div>
+                    <p id="robotCritiqueText" class="robot-critique">Loading critique...</p>
+                </div>
+            </div>
+
+            <!-- Right Pane: Reference Photos & Human Voting Control -->
+            <div class="pane right-pane">
+                <div class="card-header">
+                    <h2>📸 Reference Photos Mosaic</h2>
+                    <span class="sub-text">Context used during generation</span>
+                </div>
+
+                <div class="reference-mosaic" id="referenceMosaic">
+                    <!-- Dynamic reference images -->
+                </div>
+
+                <div class="human-vote-card">
+                    <h3>🧑‍⚖️ Your Rating (Human Eval)</h3>
+                    <p class="vote-hint">Enter score from <strong>0.0</strong> to <strong>10.0</strong> (1 decimal max, e.g., 7.2 ok, 7.25 invalid):</p>
+
+                    <div class="score-input-row">
+                        <input type="text" id="scoreInput" placeholder="7.0" value="7.0" autocomplete="off" autofocus>
+                        <span class="validation-msg" id="validationMsg">Valid Score</span>
+                    </div>
+
+                    <div class="rating-presets" id="ratingPresets">
+                        <button data-val="1.0">1.0</button>
+                        <button data-val="3.0">3.0</button>
+                        <button data-val="5.0">5.0</button>
+                        <button data-val="5.5">5.5</button>
+                        <button data-val="6.0">6.0</button>
+                        <button data-val="6.5">6.5</button>
+                        <button data-val="7.0" class="active">7.0</button>
+                        <button data-val="7.2">7.2</button>
+                        <button data-val="7.5">7.5</button>
+                        <button data-val="8.0">8.0</button>
+                        <button data-val="8.5">8.5</button>
+                        <button data-val="9.0">9.0</button>
+                        <button data-val="9.5">9.5</button>
+                        <button data-val="10.0">10.0</button>
+                    </div>
+
+                    <div class="critique-input">
+                        <label for="critiqueInput">Optional Feedback / Notes:</label>
+                        <input type="text" id="critiqueInput" placeholder="e.g. Spot-on hair tone, natural smile match!">
+                    </div>
+
+                    <button class="submit-btn" id="submitVoteBtn">Submit Rating & Next ➔ (Enter)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Ranked Leaderboard Album Gallery (Top Votes First, Low Scores Bottom) -->
+        <div class="leaderboard-workspace hidden" id="leaderboardWorkspace">
+            <div class="leaderboard-header">
+                <h2>🏆 Character Consistency Leaderboard Album</h2>
+                <p>Ranked gallery sorted with <strong>highest human ratings on top</strong> and lower scores at the bottom.</p>
+            </div>
+            <div class="album-grid" id="albumGrid">
+                <!-- Dynamic cards sorted highest score to lowest -->
+            </div>
+        </div>
+    </main>
+
+    <div class="all-done-overlay hidden" id="allDoneOverlay">
+        <div class="all-done-card">
+            <span class="done-emoji">🎉</span>
+            <h2>All Evaluations Complete!</h2>
+            <p>You have reviewed all pending character consistency samples for the selected character filter.</p>
+            <button class="view-album-btn" id="viewAlbumFromOverlayBtn">View Ranked Leaderboard Album 🏆</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
