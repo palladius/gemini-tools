@@ -62,6 +62,7 @@ def main():
     parser.add_argument("-i", "--image", required=True, help="Path to the generated image to evaluate.")
     parser.add_argument("-c", "--character", required=True, help="Character name(s), comma-separated for multi-subject evaluation (e.g. alessandro,sebastian).")
     parser.add_argument("-m", "--model", default="gemini-3.5-flash", help="Model to use for judging (default: gemini-3.5-flash).")
+    parser.add_argument("-n", "--note", default=None, help="Optional out-of-band experimental note or version metadata to log into JSON and JSONL.")
 
     args = parser.parse_args()
     img_path = Path(args.image)
@@ -126,9 +127,13 @@ def main():
         parsed_json["target_asset_path"] = to_tilde_path(img_path)
         parsed_json["source_reference_paths"] = [to_tilde_path(p) for p in all_ref_images]
         parsed_json["evaluation_timestamp"] = datetime.datetime.now().isoformat()
+        if args.note:
+            parsed_json["note"] = args.note
 
         console.print(f"\n==========================================================================")
         console.print(f"🏆 MULTI-CHARACTER BIOMETRIC VERDICT FOR: [bold yellow]{', '.join(char_names).upper()}[/bold yellow]")
+        if args.note:
+            console.print(f"📌 Note / Metadata         : [bold cyan]{args.note}[/bold cyan]")
         console.print(f"==========================================================================")
         console.print(f"🎬 Image Quality Score       : {parsed_json.get('image_quality_score')}/10")
         
@@ -150,7 +155,24 @@ def main():
         json_out = img_path.parent / f"{img_path.stem}_multi_biometric_audit.json"
         with open(json_out, "w", encoding="utf-8") as f:
             json.dump(parsed_json, f, indent=2)
-        console.print(f"📁 Multi-character audit saved to: [blue]{to_tilde_path(json_out)}[/blue]\n")
+        console.print(f"📁 Multi-character audit saved to: [blue]{to_tilde_path(json_out)}[/blue]")
+
+        # Append out-of-band note and record to central JSONL log file
+        jsonl_out = Path("out/judge_experiments.jsonl")
+        jsonl_out.parent.mkdir(parents=True, exist_ok=True)
+        jsonl_entry = {
+            "timestamp": parsed_json["evaluation_timestamp"],
+            "image": to_tilde_path(img_path),
+            "characters": char_names,
+            "overall_score": parsed_json.get("overall_score"),
+            "image_quality_score": parsed_json.get("image_quality_score"),
+            "verdict": parsed_json.get("verdict"),
+            "note": args.note,
+            "audit_file": to_tilde_path(json_out)
+        }
+        with open(jsonl_out, "a", encoding="utf-8") as f:
+            f.write(json.dumps(jsonl_entry) + "\n")
+        console.print(f"📝 Appended experiment record to: [green]{to_tilde_path(jsonl_out)}[/green]\n")
 
     except Exception as e:
         console.print(f"[bold red]Audit failed: {e}[/bold red]")
