@@ -100,6 +100,19 @@ Slices comic panels, generates Veo video clips for each panel, and stitches them
 ./bin/comic_to_video.py -i data/fumetti/altomincio_strip.png --rows 2 --cols 3 --character alessandro
 ```
 
+### 7. LLM-Driven Person Bounding Box Cropper (`bin/crop_person_llm.py`)
+
+Uses Gemini's 2D spatial grounding capability (`gemini-3.5-flash`) to locate a specific target subject in group photos, crop them with Pillow while cutting out surrounding individuals, audit identity match, and rsync cleaned crops to GCS.
+
+```bash
+# Crop target subject from a single group photo
+./bin/crop_person_llm.py -c kate2016 -t "data/characters/kate2016/kate2016  KR-e-0133.jpg" -r data/characters/kate/kate_golden_wine_anchor.png
+
+# Batch crop all group photos in character directory and sync to GCS
+./bin/crop_person_llm.py -c kate2016 -r data/characters/kate/kate_golden_wine_anchor.png --sync-gcs
+```
+
+
 ## Included Demo Characters
 
 - `yukihiro`: Yukihiro Takahashi ("Taka Sensei 🥋") - Retired martial arts master & vibe coder.
