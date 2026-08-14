@@ -32,11 +32,20 @@ def to_tilde_path(p: str | Path) -> str:
     return res
 
 def resolve_character_images(character_name: str, max_images: int = 4) -> list[str]:
-    """Finds reference photos for a character or comma-separated list of characters."""
+    """Finds reference photos for a character, prioritizing grid_cleaned/ crops if available."""
     found = []
     char_names = [c.strip().lower() for c in character_name.split(",") if c.strip()]
     
     for cname in char_names:
+        grid_cleaned_dir = Path(f"data/characters/{cname}/grid_cleaned")
+        if grid_cleaned_dir.exists():
+            valid_exts = {".png", ".jpg", ".jpeg", ".webp"}
+            grid_imgs = [str(p) for p in grid_cleaned_dir.iterdir() if p.suffix.lower() in valid_exts]
+            if grid_imgs:
+                grid_imgs = sorted(grid_imgs, key=lambda x: os.path.getsize(x), reverse=True)
+                found.extend(grid_imgs[:max_images])
+                continue
+                
         search_paths = [
             f"data/characters/{cname}/*.jpg",
             f"data/characters/{cname}/*.png",
@@ -182,6 +191,18 @@ def main():
     console.print(f"\n🎨 [bold magenta]Starting Synthesis...[/bold magenta]")
     console.print(f"📝 Prompt: [italic]'{args.prompt}'[/italic]")
 
+    def run_auto_judge(out_path, char_name, prompt_note=None):
+        if not char_name:
+            return
+        import subprocess
+        judge_script = Path("bin/judge_image.py")
+        if judge_script.exists():
+            console.print(f"\n👨‍⚖️ [bold cyan]Automatically running AI Judge on generated asset...[/bold cyan]")
+            cmd = ["python3", str(judge_script), "-i", str(out_path), "-c", char_name]
+            note_str = f"Auto-evaluated photo generated with character '{char_name}'"
+            cmd.extend(["--note", note_str])
+            subprocess.run(cmd)
+
     def save_provenance(out_path, win_model):
         meta = {
             "generated_asset_path": to_tilde_path(out_path),
@@ -194,6 +215,7 @@ def main():
         with open(meta_file, "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=2, ensure_ascii=False)
         console.print(f"📊 Provenance metadata saved to: [blue]{meta_file}[/blue]")
+        run_auto_judge(out_path, args.character)
 
     # Try Imagen direct API if model starts with imagen
     for model_name in models_to_try:
