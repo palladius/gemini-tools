@@ -57,6 +57,7 @@ Passing reference images via **Google Files API** (`client.files.upload` / `--fi
 | `kate_greece_batch_cand2.png` | Rhodes Alley | **3.0 / 10.0** (TRASH 🗑️) | 🤮 **0.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** ("fa SCHIFO"). Silhouetted, dark curly hair. |
 | `kate_greece_batch_cand4.png` | Corfu Salad | **3.5 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** "non le somiglia per niente". |
 | `3a` (`kate_greece_refined_cand3a.png`) | Crete Portrait | **4.2 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ "bad". Abbellimento artificiale. |
+| **`kate2016_greece_cand1.png`** | **Crete Taverna (kate2016 Wedding Dataset)** | 👑 **7.2 / 10.0** (GOOD) | *Pending Riccardo* | 👑 Preserved natural smile dimples, eye shape, & cool ash hair from 2016 wedding dataset. |
 | `exp1_cand1..3` | Strategy 1: Explicit A/B/C Binding | **7.5 - 7.8 / 10.0** (GOOD) | ⚠️ **6.5 / 10** | ⚠️ "Tutte orribili, sembra troppo vecchia e brutta". |
 | `exp2_cand1..3` | Strategy 2: Negative Constraints | **4.2 - 4.5 / 10.0** (TRASH) | 🤮 **0.0 / 10** | 🗑️ "Tutti cattivi". Caused hazel eyes & broad nose drift. |
 | `exp3_cand1..3` | Strategy 3: Biometric Blueprint | **7.2 - 7.8 / 10.0** (GOOD) | ⚠️ **6.5 / 10** | ⚠️ "Sempre brutte". Invecchiamento AI irrealistico. |
