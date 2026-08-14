@@ -23,14 +23,16 @@ from rich.panel import Panel
 
 console = Console()
 
-class BoundingBox(BaseModel):
-    box_2d: list[int] = Field(description="Normalized bounding box [ymin, xmin, ymax, xmax] from 0 to 1000")
-    label: str = Field(description="Name of the detected person")
-    confidence_explanation: str = Field(description="Explanation of visual feature match against reference photos")
+class PersonDetection(BaseModel):
+    person_id: int
+    label: str = Field(description="Identification label, e.g. 'Bride Kate', 'Groom Riccardo', 'Male Guest', 'Female Guest'")
+    box_2d: list[int] = Field(description="Normalized bounding box [ymin, xmin, ymax, xmax] 0-1000")
+    is_target_kate: bool = Field(description="True ONLY if this person is the blonde bride Kate from Reference Image A")
 
 class BoundingBoxResult(BaseModel):
-    target_found: bool = Field(description="True if the target person in reference photos is present in target image")
-    bounding_box: BoundingBox | None = Field(default=None, description="2D bounding box if target found")
+    all_detected_people: list[PersonDetection] = Field(default_factory=list, description="List of all detected individuals in photo")
+    target_found: bool = Field(description="True if target Kate is found")
+    target_person_id: int | None = Field(default=None, description="person_id of target Kate")
 
 class VerificationResult(BaseModel):
     is_correct_person: bool = Field(description="True if the cropped photo contains ONLY the target person from reference photos")
@@ -39,7 +41,7 @@ class VerificationResult(BaseModel):
     feedback: str = Field(description="Actionable critique of the crop")
 
 def get_bounding_box(client: genai.Client, reference_paths: list[Path], target_path: Path, person_name: str) -> BoundingBoxResult:
-    """Uses Gemini 2D spatial grounding to find target person in target image."""
+    """Uses Gemini 2D spatial grounding with full person enumeration to locate target person."""
     contents = []
     
     # 1. Attach reference images of person alone
@@ -50,17 +52,18 @@ def get_bounding_box(client: genai.Client, reference_paths: list[Path], target_p
         
     # 2. Attach target group image
     target_img = Image.open(target_path)
-    contents.append("Target Image to search and crop:")
+    contents.append("Target Image to process:")
     contents.append(target_img)
     
     prompt = f"""
-Analyze Reference Image A (showing '{person_name}', the blonde bride in white wedding dress).
-Now locate the EXACT SAME female subject ('{person_name}') in the Target Image.
+Step 1: Detect and enumerate ALL people present in the Target Image.
+For each person, provide:
+- `person_id` (1, 2, 3...)
+- `label` (e.g. 'Bride Kate', 'Groom Riccardo', 'Male Guest', 'Female Guest')
+- `box_2d` [ymin, xmin, ymax, xmax] (0 to 1000 scale)
+- `is_target_kate`: Set to True ONLY for the blonde bride matching Reference Image A ('{person_name}').
 
-STRICT BOUNDING BOX INSTRUCTIONS:
-- Return normalized 2D bounding box [ymin, xmin, ymax, xmax] (scale 0-1000) for '{person_name}' (the blonde bride) ONLY.
-- DO NOT frame or bound the groom (man in suit/beard), husband, or any male guest standing next to her.
-- Frame ONLY her head, hair, face, and shoulders.
+Step 2: Set `target_found = True` and set `target_person_id` to the `person_id` of '{person_name}'.
     """
     contents.append(prompt)
     
@@ -105,6 +108,38 @@ def crop_image_with_padding(image_path: Path, box_2d: list[int], output_path: Pa
     output_path.parent.mkdir(parents=True, exist_ok=True)
     cropped_img.save(output_path, quality=95)
     return cropped_img
+
+class IntrudingFaceSide(BaseModel):
+    has_intruding_face: bool = Field(description="True if an unwanted face or person is visible in crop")
+    intruding_side: str = Field(description="Which side contains the unwanted face: 'left', 'right', 'top', 'bottom', or 'none'")
+    trim_percentage: float = Field(description="Percentage (0.05 to 0.35) of that side to trim off to isolate ONLY target lady")
+
+def trim_intruding_sides(client: genai.Client, reference_paths: list[Path], cropped_path: Path, person_name: str) -> IntrudingFaceSide:
+    """Asks Gemini which side contains intruding faces and how much to trim."""
+    contents = []
+    for idx, ref_p in enumerate(reference_paths):
+        contents.append(f"Reference Image {chr(65+idx)}:")
+        contents.append(Image.open(ref_p))
+    contents.append("Cropped Image with unwanted person/face:")
+    contents.append(Image.open(cropped_path))
+    
+    prompt = f"""
+In this Cropped Image, there is an unwanted second person or face (groom, husband, or guest) alongside '{person_name}' (the blonde bride).
+Identify which side of the crop ('left', 'right', 'top', 'bottom') contains the unwanted second person/face.
+Specify `trim_percentage` (0.05 to 0.35) needed to cut off that unwanted side completely.
+    """
+    contents.append(prompt)
+    
+    response = client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=contents,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            response_schema=IntrudingFaceSide,
+            temperature=0.1
+        )
+    )
+    return IntrudingFaceSide.model_validate_json(response.text)
 
 def verify_cropped_identity(client: genai.Client, reference_paths: list[Path], cropped_path: Path, person_name: str) -> VerificationResult:
     """Verifies cropped photo using gemini-3.5-flash with strict single-subject assertion."""
@@ -198,16 +233,48 @@ def main():
         console.print(f"🔍 Detecting 2D spatial bounding box for [yellow]{t_file.name}[/yellow]...")
         try:
             bbox_res = get_bounding_box(client, ref_paths, t_file, args.character)
-            if bbox_res.target_found and bbox_res.bounding_box:
-                box = bbox_res.bounding_box.box_2d
+            target_person = None
+            if bbox_res.target_found:
+                for p in bbox_res.all_detected_people:
+                    if p.is_target_kate or (bbox_res.target_person_id and p.person_id == bbox_res.target_person_id):
+                        target_person = p
+                        break
+            
+            if target_person:
+                box = target_person.box_2d
                 out_path = output_dir / f"crop_{t_file.name}"
-                crop_image_with_padding(t_file, box, out_path, args.padding)
+                
+                # Use tight crop (0% padding) if multiple people are in the photo to avoid including husband/guests
+                has_other_people = len(bbox_res.all_detected_people) > 1
+                padding = 0.0 if has_other_people else args.padding
+                
+                crop_image_with_padding(t_file, box, out_path, padding)
                 
                 # Verify crop with LLM-as-a-Judge
                 audit_res = verify_cropped_identity(client, ref_paths, out_path, args.character)
                 
-                status_str = "[bold green]ISOLATED[/bold green]" if (audit_res.is_correct_person and not audit_res.other_people_visible) else "[yellow]PARTIAL[/yellow]"
-                summary_table.add_row(t_file.name, status_str, str(box), f"{audit_res.likeness_score:.1f}/10", str(out_path))
+                # If audit reveals husband/groom/other person is still visible, ask LLM which side to trim and crop off unwanted side
+                if audit_res.other_people_visible:
+                    console.print(f"[bold yellow]⚠️ Husband/other person detected in crop for {t_file.name}! Asking LLM which side to trim...[/bold yellow]")
+                    trim_info = trim_intruding_sides(client, ref_paths, out_path, args.character)
+                    if trim_info.has_intruding_face and trim_info.intruding_side in ["left", "right", "top", "bottom"]:
+                        console.print(f"✂️ Trimming {trim_info.trim_percentage*100:.0f}% off the [cyan]{trim_info.intruding_side}[/cyan] side...")
+                        crop_img = Image.open(out_path)
+                        cw, ch = crop_img.size
+                        tp = trim_info.trim_percentage
+                        if trim_info.intruding_side == "left":
+                            crop_img = crop_img.crop((int(cw * tp), 0, cw, ch))
+                        elif trim_info.intruding_side == "right":
+                            crop_img = crop_img.crop((0, 0, int(cw * (1.0 - tp)), ch))
+                        elif trim_info.intruding_side == "top":
+                            crop_img = crop_img.crop((0, int(ch * tp), cw, ch))
+                        elif trim_info.intruding_side == "bottom":
+                            crop_img = crop_img.crop((0, 0, cw, int(ch * (1.0 - tp))))
+                        crop_img.save(out_path)
+                        audit_res = verify_cropped_identity(client, ref_paths, out_path, args.character)
+                
+                status_str = "[bold green]ISOLATED[/bold green]" if (audit_res.is_correct_person and not audit_res.other_people_visible) else "[bold red]FAILED - HAS OTHER PEOPLE[/bold red]"
+                summary_table.add_row(t_file.name, status_str, f"{target_person.label}: {box}", f"{audit_res.likeness_score:.1f}/10", str(out_path))
             else:
                 summary_table.add_row(t_file.name, "[red]NOT FOUND[/red]", "-", "-", "-")
         except Exception as e:
