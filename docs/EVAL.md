@@ -57,10 +57,10 @@ Passing reference images via **Google Files API** (`client.files.upload` / `--fi
 | `kate_greece_batch_cand2.png` | Rhodes Alley | **3.0 / 10.0** (TRASH 🗑️) | 🤮 **0.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** ("fa SCHIFO"). Silhouetted, dark curly hair. |
 | `kate_greece_batch_cand4.png` | Corfu Salad | **3.5 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** "non le somiglia per niente". |
 | `3a` (`kate_greece_refined_cand3a.png`) | Crete Portrait | **4.2 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ "bad". Abbellimento artificiale. |
-| **`kate2016_kenya_elephant.png`** | **Kenya Safari (Amboseli Elephants)** | 👑 **7.3 / 10.0** (GOOD) | *Pending Riccardo* | 🐘 Preserved smile structure, nasolabial folds, & eye shape. |
-| **`kate2016_kenya_lion.png`** | **Kenya Safari (Maasai Mara Lion)** | 👑 **7.0 / 10.0** (GOOD) | *Pending Riccardo* | 🦁 Strong biometric alignment & natural sunset lighting. |
-| **`kate2016_kenya_cheetah.png`** | **Kenya Safari (Maasai Mara Cheetah)** | 👑 **6.8 / 10.0** (GOOD) | *Pending Riccardo* | 🐆 Accurate nose shape, jawline, & smile lines. |
-| `kate2016_kenya_giraffe.png` | Kenya Safari (Giraffe Manor) | ⚠️ **5.8 / 10.0** (GOOD) | *Pending Riccardo* | 🦒 Hair color drift (silver-grey instead of ash-blonde). |
+| **`kate2016_kenya_cheetah.png`** | **Kenya Safari (Maasai Mara Cheetah)** | 👑 **6.8 / 10.0** (GOOD) | 👑 **7.0 / 10** | 🎯 **Matched AI-Human Rank!** Accurate nose shape, jawline, & smile lines. |
+| **`kate2016_kenya_lion.png`** | **Kenya Safari (Maasai Mara Lion)** | ⚠️ **7.0 / 10.0** (MISCALIBRATED 🚨) | 🤮 **1.0 / 10** | 🚨 **AI Judge Miscalibration!** ("non le somiglia per niente"). See GHI #2. |
+| **`kate2016_kenya_elephant.png`** | **Kenya Safari (Amboseli Elephants)** | 👑 **7.3 / 10.0** (GOOD) | *Pending Rickurdo ♊* | 🐘 Preserved smile structure, nasolabial folds, & eye shape. |
+| `kate2016_kenya_giraffe.png` | Kenya Safari (Giraffe Manor) | ⚠️ **5.8 / 10.0** (GOOD) | *Pending Rickurdo ♊* | 🦒 Hair color drift (silver-grey instead of ash-blonde). |
 | **`kate2016_greece_cand1.png`** | **Crete Taverna (kate2016 Wedding Dataset)** | 👑 **7.2 / 10.0** (GOOD) | *Pending Riccardo* | 👑 Preserved natural smile dimples, eye shape, & cool ash hair from 2016 wedding dataset. |
 | `exp1_cand1..3` | Strategy 1: Explicit A/B/C Binding | **7.5 - 7.8 / 10.0** (GOOD) | ⚠️ **6.5 / 10** | ⚠️ "Tutte orribili, sembra troppo vecchia e brutta". |
 | `exp2_cand1..3` | Strategy 2: Negative Constraints | **4.2 - 4.5 / 10.0** (TRASH) | 🤮 **0.0 / 10** | 🗑️ "Tutti cattivi". Caused hazel eyes & broad nose drift. |
