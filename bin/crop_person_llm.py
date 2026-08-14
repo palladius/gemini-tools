@@ -54,10 +54,13 @@ def get_bounding_box(client: genai.Client, reference_paths: list[Path], target_p
     contents.append(target_img)
     
     prompt = f"""
-Look at the Reference Image(s) showing '{person_name}' alone.
-Now locate '{person_name}' in the Target Image.
-Return the normalized 2D bounding box [ymin, xmin, ymax, xmax] on a scale of 0 to 1000 for '{person_name}' in the Target Image.
-Isolate ONLY '{person_name}', excluding any adjacent individuals or background people.
+Analyze Reference Image A (showing '{person_name}', the blonde bride in white wedding dress).
+Now locate the EXACT SAME female subject ('{person_name}') in the Target Image.
+
+STRICT BOUNDING BOX INSTRUCTIONS:
+- Return normalized 2D bounding box [ymin, xmin, ymax, xmax] (scale 0-1000) for '{person_name}' (the blonde bride) ONLY.
+- DO NOT frame or bound the groom (man in suit/beard), husband, or any male guest standing next to her.
+- Frame ONLY her head, hair, face, and shoulders.
     """
     contents.append(prompt)
     
@@ -104,21 +107,23 @@ def crop_image_with_padding(image_path: Path, box_2d: list[int], output_path: Pa
     return cropped_img
 
 def verify_cropped_identity(client: genai.Client, reference_paths: list[Path], cropped_path: Path, person_name: str) -> VerificationResult:
-    """Verifies cropped photo using gemini-3.5-flash."""
+    """Verifies cropped photo using gemini-3.5-flash with strict single-subject assertion."""
     contents = []
     for idx, ref_p in enumerate(reference_paths):
-        contents.append(f"Reference Image {chr(65+idx)}:")
+        contents.append(f"Reference Image {chr(65+idx)} (Subject '{person_name}' alone):")
         contents.append(Image.open(ref_p))
         
-    contents.append("Cropped Image to Audit:")
+    contents.append("Cropped Image to Audit (X_CROP):")
     contents.append(Image.open(cropped_path))
     
     prompt = f"""
-Audit this cropped photo against the Reference Image(s) of '{person_name}'.
-Verify:
-1. Is this cropped person '{person_name}'?
-2. Are there any OTHER people's faces or bodies intruding into this crop?
-3. Likeness score (0.0 to 10.0).
+Strictly audit the cropped photo X_CROP against Reference Image(s) of '{person_name}' (the blonde bride).
+
+ASSERTION RULES:
+1. Assert that in X_CROP you ONLY see the blonde lady '{person_name}' from the Reference Image(s).
+2. If ANY male face, groom, beard, husband, guest, or second person's face/body is visible in X_CROP, set `other_people_visible = true` and `is_correct_person = false`.
+3. If the crop is centered on a male face or groom instead of '{person_name}', set `is_correct_person = false` and likeness_score = 0.0.
+4. Set likeness_score (0.0 to 10.0) strictly comparing the cropped face against '{person_name}'.
     """
     contents.append(prompt)
     
