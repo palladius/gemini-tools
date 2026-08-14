@@ -167,11 +167,13 @@ def main():
         sys.exit(1)
         
     output_dir = Path(args.output_dir) if args.output_dir else Path(f"data/characters/{args.character}/grid_cleaned")
+    validation_dir = Path(f"data/characters/{args.character}/grid_validation")
     output_dir.mkdir(parents=True, exist_ok=True)
+    validation_dir.mkdir(parents=True, exist_ok=True)
     
     console.print(Panel(f"[bold green]🟩 Deterministic 10x10 Grid Overlay LLM Cropper[/bold green]\nCharacter: [yellow]{args.character}[/yellow] | References: [green]{len(ref_paths)}[/green] | Targets: [green]{len(target_files)}[/green]"))
     
-    summary_table = Table("Target Image", "Status", "Grid X [min..max]", "Grid Y [min..max]", "Cropped Output File")
+    summary_table = Table("Target Image", "Status", "Grid X [min..max]", "Grid Y [min..max]", "Validation Triplet Folder")
     
     for t_file in target_files:
         console.print(f"📐 Drawing 10x10 Grid Overlay & Querying LLM for [yellow]{t_file.name}[/yellow]...")
@@ -182,7 +184,18 @@ def main():
             if grid_res.success:
                 out_path = output_dir / f"grid_crop_{t_file.name}"
                 crop_original_by_grid(t_file, grid_res, out_path, grid_size=args.grid_size)
-                summary_table.add_row(t_file.name, "[bold green]SUCCESS[/bold green]", f"X: {grid_res.grid_xmin}..{grid_res.grid_xmax}", f"Y: {grid_res.grid_ymin}..{grid_res.grid_ymax}", str(out_path))
+                
+                # Create per-photo triplet validation folder
+                stem = t_file.stem.strip()
+                item_val_dir = validation_dir / stem
+                item_val_dir.mkdir(parents=True, exist_ok=True)
+                
+                # Save 1_original.jpg, 2_gridded.jpg, 3_cropped.jpg
+                Image.open(t_file).save(item_val_dir / "1_original.jpg")
+                gridded_img.save(item_val_dir / "2_gridded.jpg")
+                crop_original_by_grid(t_file, grid_res, item_val_dir / "3_cropped.jpg", grid_size=args.grid_size)
+                
+                summary_table.add_row(t_file.name, "[bold green]SUCCESS[/bold green]", f"X: {grid_res.grid_xmin}..{grid_res.grid_xmax}", f"Y: {grid_res.grid_ymin}..{grid_res.grid_ymax}", str(item_val_dir))
             else:
                 summary_table.add_row(t_file.name, "[red]FAILED[/red]", "-", "-", "-")
         except Exception as e:
@@ -190,6 +203,10 @@ def main():
             summary_table.add_row(t_file.name, "[red]ERROR[/red]", "-", "-", str(e))
             
     console.print(summary_table)
+    
+    # Open validation directory in Finder
+    console.print(f"📂 Opening validation folder in Finder: [bold cyan]{validation_dir}[/bold cyan]...")
+    subprocess.run(["open", str(validation_dir)])
 
 if __name__ == "__main__":
     main()
