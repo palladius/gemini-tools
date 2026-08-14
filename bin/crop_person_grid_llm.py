@@ -11,6 +11,7 @@
 import os
 import sys
 import argparse
+import subprocess
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from pydantic import BaseModel, Field
