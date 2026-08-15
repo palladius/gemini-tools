@@ -41,6 +41,27 @@ def find_reference_images_for_subject(subject_name: str) -> list[dict]:
     return refs[:8]
 
 
+def infer_subject(sub_name: str, base_name: str, prompt: str) -> str:
+    text = f"{sub_name} {base_name} {prompt}".lower()
+    if "kate2016" in text or "kate_2016" in text or "kate 2016" in text:
+        return "Kate 2016"
+    elif "kate" in text:
+        return "Kate"
+    elif "riccardo2016" in text or "riccardo_2016" in text or "riccardo 2016" in text or "ricc2016" in text:
+        return "Riccardo 2016"
+    elif "riccardo" in text or "ricc" in text:
+        return "Riccardo"
+    elif "alessandro" in text:
+        return "Alessandro"
+    elif "sebastian" in text:
+        return "Sebastian"
+    elif "yukihiro" in text:
+        return "Yukihiro"
+    elif sub_name and sub_name.lower() != "general":
+        return sub_name.strip().title()
+    return "General"
+
+
 def sync_out_folder():
     out_dir = Path("out")
     if not out_dir.exists():
@@ -79,8 +100,8 @@ def sync_out_folder():
             sub = audit_data.get("subject", "General")
             verdicts = {sub: audit_data}
 
-        for sub_name, verdict_info in verdicts.items():
-            clean_sub = sub_name.strip().title()
+        for raw_sub_name, verdict_info in verdicts.items():
+            clean_sub = infer_subject(raw_sub_name, base_name, prompt)
             eval_id = f"{slugify(clean_sub)}_{base_name}"
             robot_score = verdict_info.get("likeness_score", verdict_info.get("character_consistency_score", 7))
             critique = verdict_info.get("critique", verdict_info.get("resemblance_critique", ""))
@@ -116,6 +137,7 @@ def sync_out_folder():
             added += 1
 
     return added
+
 
 
 

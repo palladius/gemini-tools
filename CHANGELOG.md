@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2026-08-15
+### Fixed
+- 🧠 Intelligent subject inference (`infer_subject`) in `bin/sync_out_to_evals.py` to automatically classify `Kate`, `Kate 2016`, `Riccardo 2016`, `Alessandro`, and `Sebastian` instead of falling back to `General`.
+- 📸 Auto-discovery and attachment of input reference photos for all inferred character datasets.
+
 ## [0.2.1] - 2026-08-15
+
 ### Added
 - 🏷️ Prominent Subject Evaluation Banner showing active character dataset (e.g. `Kate (Born 1986)`, `Riccardo 2016`).
 - 📸 Interactive Reference Photo Mosaic with full-size zoom Lightbox Modal (click to inspect input photos & detect cheating/direct copies).
