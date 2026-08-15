@@ -2,7 +2,12 @@
 list:
     just -l
 
+# Run unit tests for evaluation datasets and web portal static integrity
+test:
+    uv run --with python-slugify python -m unittest discover -s tests
+
 # Serve interactive Character Consistency Approval Web App (Queue & Ranked Leaderboard)
+
 web port="3333":
     PORT={{port}} node web/server.js
 

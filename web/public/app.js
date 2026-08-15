@@ -221,11 +221,12 @@ async function loadLeaderboardAlbum() {
             if (numScore >= 8.0) badgeClass += ' top-tier';
             else if (numScore <= 4.0) badgeClass += ' low-tier';
 
+            const rawPath = imgObj.annotated_path || imgObj.raw_path || '';
             const card = document.createElement('div');
             card.className = 'album-card';
             card.innerHTML = `
                 <div class="album-card-img-wrap">
-                    <img src="/file/${imgPath}" alt="${item.model_name}">
+                    <img src="/file/${imgPath}" alt="${item.model_name}" onerror="if(this.src!=='/file/${rawPath}'){this.src='/file/${rawPath}';}">
                     <span class="${badgeClass}">★ ${humanScore}</span>
                     <span class="robot-rank-badge">🤖 ${robotScore}/10</span>
                 </div>

@@ -130,7 +130,8 @@ const server = http.createServer((req, res) => {
     // Serve files
     let targetPath = '';
     if (pathname.startsWith('/file/')) {
-        targetPath = decodeURIComponent(pathname.substring(6));
+        const rawPath = decodeURIComponent(pathname.substring(6));
+        targetPath = path.isAbsolute(rawPath) ? rawPath : path.resolve(BASE_DIR, rawPath);
     } else {
         targetPath = path.join(PUBLIC_DIR, pathname === '/' ? 'index.html' : pathname);
     }
@@ -140,8 +141,9 @@ const server = http.createServer((req, res) => {
         fs.createReadStream(targetPath).pipe(res);
     } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 Not Found');
+        res.end(`404 Not Found: ${targetPath}`);
     }
+
 });
 
 server.listen(PORT, () => {
