@@ -41,7 +41,7 @@ def find_reference_images_for_subject(subject_name: str) -> list[dict]:
     return refs[:8]
 
 
-def infer_subject(sub_name: str, base_name: str, prompt: str) -> str:
+def infer_subject(sub_name: str, base_name: str, prompt: str) -> str | None:
     text = f"{sub_name} {base_name} {prompt}".lower()
     if "kate2016" in text or "kate_2016" in text or "kate 2016" in text:
         return "Kate 2016"
@@ -57,9 +57,9 @@ def infer_subject(sub_name: str, base_name: str, prompt: str) -> str:
         return "Sebastian"
     elif "yukihiro" in text:
         return "Yukihiro"
-    elif sub_name and sub_name.lower() != "general":
+    elif sub_name and sub_name.lower() not in ["general", "none", "unknown", ""]:
         return sub_name.strip().title()
-    return "General"
+    return None
 
 
 def sync_out_folder():
@@ -97,11 +97,15 @@ def sync_out_folder():
 
         verdicts = audit_data.get("verdicts", {})
         if not verdicts:
-            sub = audit_data.get("subject", "General")
+            sub = audit_data.get("subject", "")
             verdicts = {sub: audit_data}
 
         for raw_sub_name, verdict_info in verdicts.items():
             clean_sub = infer_subject(raw_sub_name, base_name, prompt)
+            if not clean_sub:
+                # Strictly skip non-character assets (like mosquito checkpoints, general scenery, etc.)
+                continue
+
             eval_id = f"{slugify(clean_sub)}_{base_name}"
             robot_score = verdict_info.get("likeness_score", verdict_info.get("character_consistency_score", 7))
             critique = verdict_info.get("critique", verdict_info.get("resemblance_critique", ""))
@@ -113,6 +117,7 @@ def sync_out_folder():
             
             human_eval = existing_rec.get("human_eval") if existing_rec else None
             ref_imgs = existing_rec.get("reference_images") if (existing_rec and existing_rec.get("reference_images")) else find_reference_images_for_subject(clean_sub)
+
 
             rec = {
                 "eval_id": eval_id,

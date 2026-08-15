@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.3] - 2026-08-15
+### Fixed
+- 🚫 Strict filtering out of non-character assets (e.g., generic scenery, Lido checkpoint zanzikappas) from human evaluation queues.
+- 🗑️ Completely purged legacy `General` subject category from `out/evals/`.
+
 ## [0.2.2] - 2026-08-15
+
 ### Fixed
 - 🧠 Intelligent subject inference (`infer_subject`) in `bin/sync_out_to_evals.py` to automatically classify `Kate`, `Kate 2016`, `Riccardo 2016`, `Alessandro`, and `Sebastian` instead of falling back to `General`.
 - 📸 Auto-discovery and attachment of input reference photos for all inferred character datasets.
