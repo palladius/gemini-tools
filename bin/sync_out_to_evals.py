@@ -16,6 +16,31 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import eval_dataset
 
 
+def find_reference_images_for_subject(subject_name: str) -> list[dict]:
+    slug = slugify(subject_name).replace("-", "")
+    char_base = Path("data/characters")
+    
+    candidate_dirs = []
+    if char_base.exists():
+        for d in char_base.iterdir():
+            d_slug = slugify(d.name).replace("-", "")
+            if d_slug and (d_slug in slug or slug in d_slug):
+                candidate_dirs.append(d)
+                
+    refs = []
+    for cd in candidate_dirs:
+        resolved_d = cd.resolve()
+        if resolved_d.is_dir():
+            for ext in ["*.jpg", "*.JPG", "*.jpeg", "*.png", "*.PNG"]:
+                for img_path in resolved_d.glob(ext):
+                    if "grid" not in img_path.name.lower() and not img_path.name.startswith("."):
+                        refs.append({
+                            "name": img_path.name,
+                            "local_path": str(img_path)
+                        })
+    return refs[:8]
+
+
 def sync_out_folder():
     out_dir = Path("out")
     if not out_dir.exists():
@@ -66,13 +91,14 @@ def sync_out_folder():
             existing_rec = next((r for r in existing_records if r.get("eval_id") == eval_id), None)
             
             human_eval = existing_rec.get("human_eval") if existing_rec else None
+            ref_imgs = existing_rec.get("reference_images") if (existing_rec and existing_rec.get("reference_images")) else find_reference_images_for_subject(clean_sub)
 
             rec = {
                 "eval_id": eval_id,
                 "subject": clean_sub,
                 "model_name": model_name,
                 "prompt": prompt or f"Synthesized asset: {base_name}",
-                "reference_images": [],
+                "reference_images": ref_imgs,
                 "generated_image": {
                     "raw_path": str(img_png),
                     "annotated_path": str(img_png),
@@ -90,6 +116,7 @@ def sync_out_folder():
             added += 1
 
     return added
+
 
 
 if __name__ == "__main__":

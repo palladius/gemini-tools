@@ -282,6 +282,43 @@ function editSingleItemVote(item) {
     }
 }
 
+const lightboxModal = document.getElementById('lightboxModal');
+const lightboxImage = document.getElementById('lightboxImage');
+const lightboxTitle = document.getElementById('lightboxTitle');
+const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+const refCountBadge = document.getElementById('refCountBadge');
+
+function openLightbox(imgSrc, titleStr) {
+    if (!lightboxModal) return;
+    lightboxImage.src = imgSrc;
+    lightboxTitle.textContent = titleStr || 'Full Size Preview';
+    lightboxModal.classList.remove('hidden');
+}
+
+function closeLightbox() {
+    if (!lightboxModal) return;
+    lightboxModal.classList.add('hidden');
+    lightboxImage.src = '';
+}
+
+if (closeLightboxBtn) {
+    closeLightboxBtn.addEventListener('click', closeLightbox);
+}
+if (lightboxModal) {
+    lightboxModal.addEventListener('click', (e) => {
+        if (e.target === lightboxModal) closeLightbox();
+    });
+}
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+});
+
+targetImage.addEventListener('click', () => {
+    if (targetImage.src) {
+        openLightbox(targetImage.src, `Target Generated Image (${subjectTag.textContent})`);
+    }
+});
+
 function renderCurrentItem() {
     if (currentIndex >= pendingQueue.length) {
         allDoneOverlay.classList.remove('hidden');
@@ -305,14 +342,33 @@ function renderCurrentItem() {
     // References Mosaic
     referenceMosaic.innerHTML = '';
     const refs = item.reference_images || [];
-    refs.forEach(r => {
-        const img = document.createElement('img');
-        img.className = 'ref-thumb';
-        const p = r.local_path || r;
-        img.src = `/file/${p}`;
-        img.alt = r.name || 'Reference';
-        referenceMosaic.appendChild(img);
-    });
+    if (refCountBadge) {
+        refCountBadge.textContent = `${refs.length} Reference Photo(s)`;
+    }
+
+    if (refs.length === 0) {
+        referenceMosaic.innerHTML = '<div class="no-refs-hint">No reference photos attached to this record.</div>';
+    } else {
+        refs.forEach((r, idx) => {
+            const img = document.createElement('img');
+            img.className = 'ref-thumb clickable-zoom';
+            const p = typeof r === 'string' ? r : (r.local_path || r.name || '');
+            const fileUrl = p.startsWith('/') ? `/file${p}` : `/file/${p}`;
+            img.src = fileUrl;
+            const titleName = r.name || `Ref Photo #${idx+1}`;
+            img.alt = titleName;
+            img.title = `Click to zoom ${titleName}`;
+            img.onerror = function() {
+                if (r.name && !this.src.includes(r.name)) {
+                    this.src = `/file/data/characters/${(item.subject || '').toLowerCase()}/${r.name}`;
+                }
+            };
+            img.addEventListener('click', () => {
+                openLightbox(img.src, `Reference Photo #${idx+1}: ${titleName} (${item.subject || 'Subject'})`);
+            });
+            referenceMosaic.appendChild(img);
+        });
+    }
 
     // Reset default rating to 7.0
     scoreInput.value = '7.0';
@@ -320,6 +376,7 @@ function renderCurrentItem() {
     critiqueInput.value = '';
     scoreInput.focus();
 }
+
 
 async function submitVote() {
     if (!updateValidationUI()) {

@@ -35,16 +35,24 @@
         <div class="eval-workspace" id="voteWorkspace">
             <!-- Left Pane: Generated Target Image -->
             <div class="pane left-pane">
-                <div class="card-header">
-                    <span class="tag" id="subjectTag">Subject</span>
-                    <h2 id="modelTitle">Model Name</h2>
-                    <div class="view-toggle">
-                        <button id="faceZoomBtn" class="toggle-btn active">🔍 Face Zoom (CC Focus)</button>
-                        <button id="fullPhotoBtn" class="toggle-btn">🖼️ Full Photo</button>
+                <div class="card-header subject-card-header">
+                    <div class="subject-eval-banner">
+                        <span class="banner-icon">🏷️</span>
+                        <div class="banner-details">
+                            <span class="banner-label">EVALUATING CHARACTER</span>
+                            <h2 id="subjectTag">Subject Name</h2>
+                        </div>
+                    </div>
+                    <div class="header-controls">
+                        <span class="model-badge" id="modelTitle">Model Name</span>
+                        <div class="view-toggle">
+                            <button id="faceZoomBtn" class="toggle-btn active">🔍 Face Zoom (CC Focus)</button>
+                            <button id="fullPhotoBtn" class="toggle-btn">🖼️ Full Photo</button>
+                        </div>
                     </div>
                 </div>
                 <div class="image-wrapper">
-                    <img id="targetImage" src="" alt="Target Generated Image">
+                    <img id="targetImage" src="" alt="Target Generated Image" class="clickable-zoom" title="Click to view full screen">
                 </div>
                 <div class="prompt-box">
                     <label>Prompt:</label>
@@ -62,8 +70,11 @@
             <!-- Right Pane: Reference Photos & Human Voting Control -->
             <div class="pane right-pane">
                 <div class="card-header">
-                    <h2>📸 Reference Photos Mosaic</h2>
-                    <span class="sub-text">Context used during generation</span>
+                    <div class="ref-header-row">
+                        <h2>📸 Reference Photos Mosaic</h2>
+                        <span class="ref-count-badge" id="refCountBadge">0 Input Photos</span>
+                    </div>
+                    <span class="sub-text">Click any photo below to inspect full-size reference & detect cheating/direct copy</span>
                 </div>
 
                 <div class="reference-mosaic" id="referenceMosaic">
@@ -80,12 +91,10 @@
                     </div>
 
                     <div class="rating-presets" id="ratingPresets">
-                        <button data-val="1.0">1.0</button>
+                        <button data-val="1.0" class="cheat-preset" title="Flag as Direct Copy / Cheating">1.0 (Cheating/Direct Edit)</button>
                         <button data-val="3.0">3.0</button>
                         <button data-val="5.0">5.0</button>
-                        <button data-val="5.5">5.5</button>
                         <button data-val="6.0">6.0</button>
-                        <button data-val="6.5">6.5</button>
                         <button data-val="7.0" class="active">7.0</button>
                         <button data-val="7.2">7.2</button>
                         <button data-val="7.5">7.5</button>
@@ -98,13 +107,25 @@
 
                     <div class="critique-input">
                         <label for="critiqueInput">Optional Feedback / Notes:</label>
-                        <input type="text" id="critiqueInput" placeholder="e.g. Spot-on hair tone, natural smile match!">
+                        <input type="text" id="critiqueInput" placeholder="e.g. Spot-on hair tone, natural smile match! Or 'Direct copy of ref photo 2'">
                     </div>
 
                     <button class="submit-btn" id="submitVoteBtn">Submit Rating & Next ➔ (Enter)</button>
                 </div>
             </div>
         </div>
+
+        <!-- Fullscreen Lightbox Modal -->
+        <div id="lightboxModal" class="lightbox-modal hidden">
+            <div class="lightbox-content">
+                <button id="closeLightboxBtn" class="close-lightbox-btn">✕</button>
+                <h3 id="lightboxTitle" class="lightbox-title">Reference Image</h3>
+                <div class="lightbox-img-wrap">
+                    <img id="lightboxImage" src="" alt="Fullscreen Lightbox Image">
+                </div>
+            </div>
+        </div>
+
 
         <!-- 2. Ranked Leaderboard Album Gallery (Top Votes First, Low Scores Bottom) -->
         <div class="leaderboard-workspace hidden" id="leaderboardWorkspace">
