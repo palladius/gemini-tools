@@ -112,11 +112,13 @@ def main():
     1. Evaluate EACH character listed in {char_names} individually.
     2. Populate the 'character_scores' array with one entry for each character ({', '.join(char_names)}).
     3. Calculate their specific 'biometric_resemblance_score' (1.0 to 10.0) by scrutinizing facial bone structure, eye color, nose shape, lip shape, hair texture, and distinct facial traits against their authentic reference photos.
-    4. Be brutally honest. If a character looks like a generic stock child/person rather than the authentic reference subject, penalize their resemblance score (3.0 - 6.0).
+    4. FACE SCALE & FRAMING CHECK: Check if any target character's face in Image 1 is TOO SMALL or DISTANT (e.g. distant full-body shot where facial features occupy less than ~15% of image height or are tiny/un-evaluable). IF THE FACE IS TOO SMALL OR DISTANT TO PROPERLY EVALUATE BIOMETRICS, YOU MUST SET overall_score TO LESS THAN 5.0 (e.g., 3.0 or 4.0), set verdict to 'TRASH', and explain in expert_critique that the face is too small for evaluation.
+    5. Be brutally honest. If a character looks like a generic stock child/person rather than the authentic reference subject, penalize their resemblance score (3.0 - 6.0).
 
     Output strictly according to the requested JSON schema.
     """
     contents.append(prompt)
+
 
     try:
         response = client.models.generate_content(
