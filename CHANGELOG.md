@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.12] - 2026-08-20
+### Added
+- 👑 Updated Kate's `character.yaml` with British fashion elegance and royal purple/violet color preferences.
+- 📸 Synthesized and verified 8 high-quality solo family photos (2 for Kate, 2 for Riccardo, 2 for Alessandro, 2 for Sebastian) passing AI Judge (>5/10).
+
 ## [0.2.11] - 2026-08-20
+
 ### Added
 - 📄 Enhanced JSON provenance metadata (`.json`) with `md5`, `seed`, `software_version`, `git_commit`, and `final_injected_prompt` for full reproducibility.
 
