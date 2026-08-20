@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.16] - 2026-08-20
+### Added
+- 👑 Synthesized 3 new high-quality portraits of Kate in Royal Purple / Violet British fashion (`kate_positano_plum_dress_v1.png`, `kate_kyoto_violet_chic_v1.png`, `kate_venice_purple_evening_v1.png`).
+- 📸 Auto-opened all approved assets on Mac screen and synced to `out/evals/` dataset.
+
 ## [0.2.15] - 2026-08-20
+
 ### Added
 - 👕 Created `character.yaml` for `riccardo2016` prohibiting formal wedding suit/tie/vest to remove the "wedding groom aura".
 - 📸 Synthesized casual portrait `solo_riccardo_casual_tshirt_v1.png` in navy t-shirt at Shibuya Crossing (Likeness Score: 7.2/10 GOOD).
