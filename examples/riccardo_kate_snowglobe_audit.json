@@ -1,0 +1,38 @@
+{
+  "target_asset_path": "~/git/gemini-tools/out/snowglobe_20260820_173234.png",
+  "source_reference_paths": [
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-za-view-with-kids.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-za-lake.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-za-wine-tasting.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-pineapple-pizza.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-google-switzerland.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/riccardosouthafrica.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/COLOR_POP (2).jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/PXL_20210729_191121625.MP.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/IMG_9817.JPG",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/COLOR_POP (1).jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/PXL_20230106_141651928.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/kate_golden_wine_anchor.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/PXL_20210404_120950729.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/COLOR_POP.jpg"
+  ],
+  "evaluation_timestamp": "2026-08-20T17:32:59.558842",
+  "character_scores": [
+    {
+      "character_name": "riccardo",
+      "biometric_resemblance_score": 6.5,
+      "specific_critique": "The figurine captures Riccardo's signature smile and stubble, though the claymation style softens his distinct bone structure and nose shape."
+    },
+    {
+      "character_name": "kate",
+      "biometric_resemblance_score": 6.2,
+      "specific_critique": "Kate's likeness is recognizable through her blonde hair and smile lines, but the stylized figurine format simplifies her facial geometry."
+    }
+  ],
+  "image_quality_score": 7,
+  "overall_score": 6,
+  "verdict": "GOOD",
+  "expert_critique": "A well-crafted festive snow globe scene. The stylized figurine approach successfully conveys the subjects' likenesses, though it naturally limits precise biometric accuracy.",
+  "actionable_next_step": "Use a realistic photographic style instead of a figurine aesthetic to capture finer facial details and textures.",
+  "note": "Auto-evaluated photo generated with prompt 'snowglobe'"
+}
