@@ -1,0 +1,8 @@
+{
+  "track_id": "multipic_20260819",
+  "type": "feature",
+  "status": "in_progress",
+  "created_at": "2026-08-19T18:27:00Z",
+  "updated_at": "2026-08-19T18:27:00Z",
+  "description": "Create a multipic script that generates images using multiple input photos and predefined prompts (e.g. snowglobe)."
+}

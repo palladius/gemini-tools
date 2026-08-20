@@ -40,7 +40,33 @@ Synthesizes new photos using Text-to-Image or Image-to-Image with reference imag
 - Automatic model fallbacks (`gemini-3.1-flash-image-preview`, `nano-banana-pro-preview`, `gemini-3-pro-image-preview`, `gemini-3-pro-image`).
 - Saves provenance metadata sidecars (`.json`) with tilde-shortened paths (`~/...`).
 
-### 2. Forensic Video Quality & Biometric Judge (`bin/judge_video.py`)
+### 2. Multipic Synthesizer (`bin/multipic.py`)
+
+Generates an image using multiple reference photos (up to 3) and a predefined prompt from `etc/prompts/`.
+
+```bash
+# Generate a snowglobe image using 3 character folders
+./bin/multipic.py --prompt snowglobe --characters aline,zenzile,yukihiro
+
+# Generate using explicit image paths
+./bin/multipic.py --prompt snowglobe --images photo1.jpg,photo2.png
+
+# Generate using a directory of images
+./bin/multipic.py --prompt snowglobe --dir path/to/family/photos
+
+# Append text to the static prompt for extra dynamic instructions
+./bin/multipic.py --prompt snowglobe --characters aline,yukihiro -a "Yukihiro is holding a katana."
+```
+
+**Key Features:**
+- Supports predefined prompts from `etc/prompts/<name>.md`.
+- Appending dynamic prompt text with `-a` / `--append-prompt`.
+- Combines up to 3 reference images from explicit paths, directories, or character names.
+- **Automatically runs AI Judge (`bin/judge_image.py`)** on the generated asset to evaluate its quality against the prompt and references.
+- Uses multimodal `generate_content` capabilities (e.g. `gemini-3.1-flash-image-preview`).
+- Saves provenance metadata sidecars (`.json`) with the generated image.
+
+### 3. Forensic Video Quality & Biometric Judge (`bin/judge_video.py`)
 
 Evaluates an AI-generated video (`.mp4`) against authentic reference photographs using `gemini-3.5-flash`.
 
@@ -57,7 +83,7 @@ Evaluates an AI-generated video (`.mp4`) against authentic reference photographs
 - Strictly penalizes generic AI facial drift (AI doll appearance).
 - Outputs a clean JSON report alongside the video asset with tilde-shortened paths (`~/...`).
 
-### 3. GenAI Model Lister (`bin/list-gemini-models.py`)
+### 4. GenAI Model Lister (`bin/list-gemini-models.py`)
 
 Discovers and filters available Gemini models by capability or keyword.
 
@@ -72,7 +98,7 @@ Discovers and filters available Gemini models by capability or keyword.
 ./bin/list-gemini-models.py --full
 ```
 
-### 4. Veo Video Generation Harness (`bin/omni-video-gen.py`)
+### 5. Veo Video Generation Harness (`bin/omni-video-gen.py`)
 
 Orchestrates AI video generation using Google Veo models (`veo-2.0`, `veo-3.0`).
 
@@ -84,7 +110,7 @@ Orchestrates AI video generation using Google Veo models (`veo-2.0`, `veo-3.0`).
 ./bin/omni-video-gen.py --status
 ```
 
-### 5. Comic Strip Panel Slicer (`bin/slice_comic.py`)
+### 6. Comic Strip Panel Slicer (`bin/slice_comic.py`)
 
 Slices a 2x3 or custom grid comic strip image into individual panel images.
 
@@ -92,7 +118,7 @@ Slices a 2x3 or custom grid comic strip image into individual panel images.
 ./bin/slice_comic.py -i data/fumetti/altomincio_strip.png --rows 2 --cols 3
 ```
 
-### 6. Multi-Scene Comic Video Orchestrator (`bin/comic_to_video.py`)
+### 7. Multi-Scene Comic Video Orchestrator (`bin/comic_to_video.py`)
 
 Slices comic panels, generates Veo video clips for each panel, and stitches them with `ffmpeg`.
 
@@ -100,7 +126,7 @@ Slices comic panels, generates Veo video clips for each panel, and stitches them
 ./bin/comic_to_video.py -i data/fumetti/altomincio_strip.png --rows 2 --cols 3 --character alessandro
 ```
 
-### 7. Deterministic 10x10 Grid Overlay Person Isolator (`bin/crop.py`)
+### 8. Deterministic 10x10 Grid Overlay Person Isolator (`bin/crop.py`)
 
 Uses **Grid Overlay Visual Grounding** (`gemini-3.5-flash`) to draw a 10x10 coordinate grid over group photos, locate the exact target person matching single-subject reference photos, and deterministically crop the subject with Pillow while cutting out surrounding individuals.
 
