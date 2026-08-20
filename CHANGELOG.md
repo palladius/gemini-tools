@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.6] - 2026-08-20
+### Added
+- 🖥️ Configured automatic popup on Mac (`open`) for every newly synthesized image asset via `bin/run_family_vacation_pipeline.py`.
+
 ## [0.2.5] - 2026-08-20
+
 ### Added
 - 👤 Created `character.yaml` definition for Kate (born 1981, target perceived age 38-42, radiant youthful smile guidelines).
 - 📋 Automatic prompt injection of `character.yaml` guidelines in `bin/generate_photo.py` to prevent artificial aging or over-shadowing.
