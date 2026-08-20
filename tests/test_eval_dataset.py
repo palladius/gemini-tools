@@ -73,6 +73,27 @@ class TestEvalDataset(unittest.TestCase):
 
         self.assertEqual(len(missing_files), 0, f"Found missing image files referenced in evals: {missing_files}")
 
+    def test_kate_bad_examples_registered(self):
+        """Verify that bad examples of wrinkled/cloned photos are registered under kate/bad_examples/."""
+        kate_dir = Path("data/characters/kate").resolve()
+        bad_dir = kate_dir / "bad_examples"
+        self.assertTrue(bad_dir.exists(), "data/characters/kate/bad_examples/ directory must exist")
+        
+        bad_files = list(bad_dir.glob("*.png")) + list(bad_dir.glob("*.jpg"))
+        self.assertGreaterEqual(len(bad_files), 2, f"Expected at least 2 bad example images in {bad_dir}, found {len(bad_files)}")
+        
+        for p in bad_files:
+            self.assertTrue(p.exists(), f"Bad example {p.name} must exist on disk")
+            self.assertGreater(p.stat().st_size, 0, f"Bad example {p.name} must not be empty")
+
+        # Verify active clean reference set in grid_cleaned/ does NOT include legacy harsh anchor
+        clean_dir = kate_dir / "grid_cleaned"
+        if clean_dir.exists():
+            clean_names = [p.name for p in clean_dir.glob("*")]
+            self.assertNotIn("kate_golden_wine_anchor.png", clean_names, "Legacy harsh anchor must not be in active grid_cleaned set")
+
+
+
 
 if __name__ == "__main__":
     unittest.main()

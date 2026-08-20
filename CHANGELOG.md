@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.9] - 2026-08-20
+### Added
+- 📁 Registered bad examples in `data/characters/kate/bad_examples/` (`kate_positano_v1_wrinkled_table_clone.png` & `kate_santorini_v2_wrinkled_table_clone.png`).
+- 🧪 Added unit test `test_kate_bad_examples_registered` in `tests/test_eval_dataset.py` verifying bad examples registration and ensuring legacy harsh anchor exclusion from active reference set.
+
 ## [0.2.8] - 2026-08-20
+
 ### Fixed
 - 🧹 Cleaned reference image dataset for Kate (`data/characters/kate/grid_cleaned/`). Removed `kate_golden_wine_anchor.png` (harsh side-sunlight crop) which was causing identical aging and pose cloning artifacts.
 
