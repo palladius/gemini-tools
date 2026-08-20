@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.15] - 2026-08-20
+### Added
+- 👕 Created `character.yaml` for `riccardo2016` prohibiting formal wedding suit/tie/vest to remove the "wedding groom aura".
+- 📸 Synthesized casual portrait `solo_riccardo_casual_tshirt_v1.png` in navy t-shirt at Shibuya Crossing (Likeness Score: 7.2/10 GOOD).
+
 ## [0.2.14] - 2026-08-20
+
 ### Added
 - 🔍 Integrated automated Face Scale & Framing Audit in `bin/judge_image.py`. Any photo with a face occupying <15% of frame (or distant full-body shot) is automatically penalized (<5/10 TRASH) and filtered out.
 - 📸 Re-generated `out/solo_riccardo_2.png` as a 85mm medium close-up Shibuya Crossing portrait (Likeness Score: 7.6/10 GOOD).
