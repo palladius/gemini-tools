@@ -62,6 +62,29 @@ def resolve_character_images(character_name: str, max_images: int = 4) -> list[s
         
     return found
 
+def load_character_guidelines(character_name: str) -> str:
+    """Loads prompt guidelines from data/characters/<cname>/character.yaml if available."""
+    guidelines = []
+    char_names = [c.strip().lower() for c in character_name.split(",") if c.strip()]
+    for cname in char_names:
+        yaml_p = Path(f"data/characters/{cname}/character.yaml")
+        if yaml_p.exists():
+            try:
+                import yaml
+                with open(yaml_p, "r", encoding="utf-8") as f:
+                    data = yaml.safe_load(f)
+                    must_inc = data.get("prompt_guidelines", {}).get("must_include", [])
+                    must_avd = data.get("prompt_guidelines", {}).get("must_avoid", [])
+                    if must_inc:
+                        guidelines.append(f"Subject '{cname}': " + ", ".join(must_inc))
+                    if must_avd:
+                        guidelines.append(f"Avoid for '{cname}': " + ", ".join(must_avd))
+            except Exception:
+                pass
+    return " ".join(guidelines)
+
+
+
 def main():
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
@@ -186,7 +209,16 @@ def main():
         if d not in models_to_try:
             models_to_try.append(d)
 
-    payload = loaded_images + [args.prompt]
+    # Append YAML character guidelines if character specified
+    final_prompt = args.prompt
+    if args.character:
+        guidelines = load_character_guidelines(args.character)
+        if guidelines:
+            final_prompt = f"{args.prompt} [{guidelines}]"
+            console.print(f"📋 [bold cyan]Injected Character Guidelines:[/bold cyan] {guidelines}")
+
+    payload = loaded_images + [final_prompt]
+
 
     console.print(f"\n🎨 [bold magenta]Starting Synthesis...[/bold magenta]")
     console.print(f"📝 Prompt: [italic]'{args.prompt}'[/italic]")

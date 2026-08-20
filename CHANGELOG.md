@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.5] - 2026-08-20
+### Added
+- 👤 Created `character.yaml` definition for Kate (born 1981, target perceived age 38-42, radiant youthful smile guidelines).
+- 📋 Automatic prompt injection of `character.yaml` guidelines in `bin/generate_photo.py` to prevent artificial aging or over-shadowing.
+
 ## [0.2.4] - 2026-08-20
+
 ### Added
 - 🔑 Unique `eval_id` & `MD5` hash calculation for all image assets.
 - 📋 Click-to-copy `eval_id` and `MD5` badges rendered on the Voting Workspace header and Leaderboard album cards.
