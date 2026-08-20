@@ -143,7 +143,30 @@ def sync_out_folder():
             eval_dataset.upsert_evaluation_record(rec)
             added += 1
 
+    # Purge records from out/evals/ whose image files no longer exist on disk
+    purge_deleted_image_records()
+
     return added
+
+def purge_deleted_image_records():
+    eval_base = Path("out/evals")
+    if not eval_base.exists():
+        return
+    for d in eval_base.iterdir():
+        if d.is_dir():
+            jsonl = d / "evaluations.jsonl"
+            if jsonl.exists():
+                valid_recs = []
+                with open(jsonl, "r", encoding="utf-8") as f:
+                    for line in f:
+                        if not line.strip():
+                            continue
+                        r = json.loads(line)
+                        raw_p = r.get("generated_image", {}).get("raw_path")
+                        if raw_p and Path(raw_p).exists():
+                            valid_recs.append(r)
+                eval_dataset.save_subject_evaluations(d.name, valid_recs)
+
 
 
 

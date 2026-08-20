@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.10] - 2026-08-20
+### Fixed
+- 🗑️ Trashed generic stock model photo `kate_tokyo_v1.png` and archived under `data/characters/kate/bad_examples/kate_tokyo_v1_generic_stock_model.png`.
+- 🧹 Added automatic purging of deleted image records from `out/evals/` dataset index via `bin/sync_out_to_evals.py`.
+
 ## [0.2.9] - 2026-08-20
+
 ### Added
 - 📁 Registered bad examples in `data/characters/kate/bad_examples/` (`kate_positano_v1_wrinkled_table_clone.png` & `kate_santorini_v2_wrinkled_table_clone.png`).
 - 🧪 Added unit test `test_kate_bad_examples_registered` in `tests/test_eval_dataset.py` verifying bad examples registration and ensuring legacy harsh anchor exclusion from active reference set.
