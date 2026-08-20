@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.7] - 2026-08-20
+### Added
+- 🖥️ Shortened flag `-s` / `--show` (with `--no-show` fallback, `default=True`) for cross-platform auto-open on Mac (`open`), Linux (`xdg-open`), and Windows (`os.startfile`).
+
 ## [0.2.6] - 2026-08-20
+
 ### Added
 - 🖥️ Configured automatic popup on Mac (`open`) for every newly synthesized image asset via `bin/run_family_vacation_pipeline.py`.
 

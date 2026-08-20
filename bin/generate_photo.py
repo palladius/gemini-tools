@@ -24,7 +24,24 @@ from google.genai import types
 
 console = Console()
 
+import platform
+import subprocess
+
+def open_image_on_system(file_path: str | Path):
+    p = str(Path(file_path).resolve())
+    sys_name = platform.system()
+    try:
+        if sys_name == "Darwin":
+            subprocess.run(["open", p], check=False)
+        elif sys_name == "Linux":
+            subprocess.run(["xdg-open", p], check=False)
+        elif sys_name == "Windows":
+            os.startfile(p)
+    except Exception as e:
+        console.print(f"[yellow]Could not auto-open image {p}: {e}[/yellow]")
+
 def to_tilde_path(p: str | Path) -> str:
+
     res = str(Path(p).resolve())
     home = str(Path.home())
     if res.startswith(home):
@@ -121,10 +138,12 @@ def main():
         help="Primary image model to try (default: imagen-4.0-generate-001)"
     )
     parser.add_argument(
-        "--open",
-        action="store_true",
-        help="Automatically open the generated picture on screen."
+        "-s", "--show", "--open",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Automatically open generated photo on Mac/Linux screen (default: True, use --no-show to disable)."
     )
+
 
     parser.add_argument(
         "--files-api",
@@ -270,8 +289,9 @@ def main():
                     out_img.save(output_path)
                     console.print(f"✅ [bold green]SUCCESS![/bold green] Saved photo to: [blue]{output_path}[/blue]")
                     save_provenance(output_path, model_name)
-                    if args.open:
-                        os.system(f"open '{output_path}'")
+                    if args.show:
+                        open_image_on_system(output_path)
+
                     return
             except Exception as e:
                 console.print(f"[red]Imagen failed with {model_name}: {e}[/red]")
@@ -291,8 +311,9 @@ def main():
                         out_img.save(output_path)
                         console.print(f"✅ [bold green]SUCCESS![/bold green] Saved photo to: [blue]{output_path}[/blue]")
                         save_provenance(output_path, model_name)
-                        if args.open:
-                            os.system(f"open '{output_path}'")
+                        if args.show:
+                            open_image_on_system(output_path)
+
                         return
             console.print(f"[dim]No image data returned from {model_name}.[/dim]")
         except Exception as e:
@@ -328,8 +349,9 @@ def main():
                                 out_img.save(output_path)
                                 console.print(f"✅ [bold green]SUCCESS![/bold green] Saved photo to: [blue]{output_path}[/blue]")
                                 save_provenance(output_path, model_name)
-                                if args.open:
-                                    os.system(f"open '{output_path}'")
+                                if args.show:
+                                    open_image_on_system(output_path)
+
                                 return
                 except Exception as fb_e:
                     console.print(f"[red]Fallback failed with {model_name}: {fb_e}[/red]")

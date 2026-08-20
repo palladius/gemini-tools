@@ -79,7 +79,8 @@ def run_synthesis_batch():
             "-c", subjects,
             "-m", "gemini-3.1-flash-image-preview",
             "-o", str(out_img),
-            "--open"
+            "--show"
+
         ]
         subprocess.run(gen_cmd)
 
