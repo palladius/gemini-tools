@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.11] - 2026-08-20
+### Added
+- 📄 Enhanced JSON provenance metadata (`.json`) with `md5`, `seed`, `software_version`, `git_commit`, and `final_injected_prompt` for full reproducibility.
+
 ## [0.2.10] - 2026-08-20
+
 ### Fixed
 - 🗑️ Trashed generic stock model photo `kate_tokyo_v1.png` and archived under `data/characters/kate/bad_examples/kate_tokyo_v1_generic_stock_model.png`.
 - 🧹 Added automatic purging of deleted image records from `out/evals/` dataset index via `bin/sync_out_to_evals.py`.

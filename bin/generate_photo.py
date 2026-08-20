@@ -256,12 +256,42 @@ def main():
             cmd.extend(["--note", note_str])
             subprocess.run(cmd)
 
+    def get_git_commit():
+        try:
+            res = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=False)
+            return res.stdout.strip()
+        except Exception:
+            return None
+
+    def get_software_version():
+        ver_file = Path("VERSION")
+        if ver_file.exists():
+            try:
+                return ver_file.read_text(encoding="utf-8").strip()
+            except Exception:
+                pass
+        return "0.2.11"
+
     def save_provenance(out_path, win_model):
+        import hashlib
+        img_md5 = ""
+        if out_path.exists():
+            try:
+                with open(out_path, "rb") as f:
+                    img_md5 = hashlib.md5(f.read()).hexdigest()
+            except Exception:
+                pass
+
         meta = {
             "generated_asset_path": to_tilde_path(out_path),
+            "md5": img_md5,
             "source_reference_paths": [to_tilde_path(p) for p in image_paths],
             "prompt": args.prompt,
+            "final_injected_prompt": final_prompt,
             "model_used": win_model,
+            "seed": getattr(args, "seed", None),
+            "software_version": get_software_version(),
+            "git_commit": get_git_commit(),
             "generation_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
         meta_file = out_path.with_suffix(".json")
@@ -269,6 +299,7 @@ def main():
             json.dump(meta, f, indent=2, ensure_ascii=False)
         console.print(f"📊 Provenance metadata saved to: [blue]{meta_file}[/blue]")
         run_auto_judge(out_path, args.character)
+
 
     # Try Imagen direct API if model starts with imagen
     for model_name in models_to_try:
