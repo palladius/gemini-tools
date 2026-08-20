@@ -8,10 +8,23 @@ Manages reading, writing, querying, and aggregating per-subject evaluation JSONL
 import os
 import json
 import time
+import hashlib
 from pathlib import Path
 from slugify import slugify
 
 BASE_EVAL_DIR = Path("out/evals")
+
+def compute_image_md5(img_path: str | Path) -> str:
+    if not img_path:
+        return ""
+    p = Path(img_path)
+    if not p.exists():
+        return ""
+    try:
+        with open(p, "rb") as f:
+            return hashlib.md5(f.read()).hexdigest()
+    except Exception:
+        return ""
 
 def get_subject_eval_dir(subject: str) -> Path:
     subject_slug = slugify(subject)
@@ -56,6 +69,14 @@ def upsert_evaluation_record(record: dict) -> dict:
         timestamp_str = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
         eval_id = f"{slugify(subject)}_{model_slug}_{timestamp_str}"
         record["eval_id"] = eval_id
+
+    # Compute MD5 if missing
+    if not record.get("md5"):
+        img_info = record.get("generated_image", {})
+        raw_p = img_info.get("raw_path") or img_info.get("face_crop_path") or img_info.get("annotated_path")
+        if raw_p:
+            record["md5"] = compute_image_md5(raw_p)
+
 
     records = load_subject_evaluations(subject)
     updated = False

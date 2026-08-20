@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.4] - 2026-08-20
+### Added
+- 🔑 Unique `eval_id` & `MD5` hash calculation for all image assets.
+- 📋 Click-to-copy `eval_id` and `MD5` badges rendered on the Voting Workspace header and Leaderboard album cards.
+
 ## [0.2.3] - 2026-08-15
+
 ### Fixed
 - 🚫 Strict filtering out of non-character assets (e.g., generic scenery, Lido checkpoint zanzikappas) from human evaluation queues.
 - 🗑️ Completely purged legacy `General` subject category from `out/evals/`.

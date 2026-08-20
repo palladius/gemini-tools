@@ -222,6 +222,7 @@ async function loadLeaderboardAlbum() {
             else if (numScore <= 4.0) badgeClass += ' low-tier';
 
             const rawPath = imgObj.annotated_path || imgObj.raw_path || '';
+            const md5Short = item.md5 ? item.md5.substring(0, 8) : 'n/a';
             const card = document.createElement('div');
             card.className = 'album-card';
             card.innerHTML = `
@@ -232,11 +233,13 @@ async function loadLeaderboardAlbum() {
                 </div>
                 <div class="album-card-body">
                     <div class="model-name">${item.model_name} (${item.subject || 'Subject'})</div>
+                    <div class="card-id-badge" title="Click to copy ID & MD5" onclick="navigator.clipboard.writeText('${item.eval_id} (MD5: ${item.md5 || ''})')">🔑 ${item.eval_id} <span class="md5-code">MD5: ${md5Short}</span></div>
                     <p class="prompt-snippet">${item.prompt || ''}</p>
                     ${item.human_eval && item.human_eval.critique ? `<div class="critique-snippet">"${item.human_eval.critique}"</div>` : ''}
                     <button class="edit-vote-btn" data-eval-id="${item.eval_id}">✏️ Edit Rating</button>
                 </div>
             `;
+
             
             const editBtn = card.querySelector('.edit-vote-btn');
             editBtn.addEventListener('click', () => {
@@ -331,7 +334,19 @@ function renderCurrentItem() {
     modelTitle.textContent = item.model_name || 'Gemini Model';
     promptText.textContent = item.prompt || 'No prompt specified';
 
+    const idMd5Badge = document.getElementById('idMd5Badge');
+    if (idMd5Badge) {
+        const md5Str = item.md5 ? item.md5.substring(0, 8) : 'n/a';
+        idMd5Badge.textContent = `🔑 ID: ${item.eval_id} | MD5: ${md5Str}`;
+        idMd5Badge.title = `Click to copy full ID and MD5 hash (${item.eval_id})`;
+        idMd5Badge.onclick = () => {
+            navigator.clipboard.writeText(`${item.eval_id} (MD5: ${item.md5 || ''})`);
+            alert(`Copied ID & MD5 to clipboard!\nID: ${item.eval_id}\nMD5: ${item.md5 || 'N/A'}`);
+        };
+    }
+
     updateTargetImageDisplay();
+
 
     // Robot LLM judge
     const robot = item.robot_eval || {};

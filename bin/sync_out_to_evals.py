@@ -121,9 +121,11 @@ def sync_out_folder():
 
             rec = {
                 "eval_id": eval_id,
+                "md5": eval_dataset.compute_image_md5(img_png),
                 "subject": clean_sub,
                 "model_name": model_name,
                 "prompt": prompt or f"Synthesized asset: {base_name}",
+
                 "reference_images": ref_imgs,
                 "generated_image": {
                     "raw_path": str(img_png),
