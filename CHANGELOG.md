@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.8] - 2026-08-20
+### Fixed
+- 🧹 Cleaned reference image dataset for Kate (`data/characters/kate/grid_cleaned/`). Removed `kate_golden_wine_anchor.png` (harsh side-sunlight crop) which was causing identical aging and pose cloning artifacts.
+
 ## [0.2.7] - 2026-08-20
+
 ### Added
 - 🖥️ Shortened flag `-s` / `--show` (with `--no-show` fallback, `default=True`) for cross-platform auto-open on Mac (`open`), Linux (`xdg-open`), and Windows (`os.startfile`).
 

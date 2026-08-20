@@ -48,7 +48,8 @@ def to_tilde_path(p: str | Path) -> str:
         return "~" + res[len(home):]
     return res
 
-def resolve_character_images(character_name: str, max_images: int = 4) -> list[str]:
+def resolve_character_images(character_name: str, max_images: int = 3) -> list[str]:
+
     """Finds reference photos for a character, prioritizing grid_cleaned/ crops if available."""
     found = []
     char_names = [c.strip().lower() for c in character_name.split(",") if c.strip()]
@@ -134,9 +135,10 @@ def main():
     )
     parser.add_argument(
         "-m", "--model",
-        default="imagen-4.0-generate-001",
-        help="Primary image model to try (default: imagen-4.0-generate-001)"
+        default="gemini-3.1-flash-image-preview",
+        help="Primary image model to try (default: gemini-3.1-flash-image-preview)"
     )
+
     parser.add_argument(
         "-s", "--show", "--open",
         action=argparse.BooleanOptionalAction,
