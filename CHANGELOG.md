@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.13] - 2026-08-20
+### Added
+- 📐 Added `--framing` argument (`portrait` default) in `bin/generate_photo.py` enforcing medium close-up (85mm chest-up) portrait composition so faces are prominent, large, and easy to evaluate.
+
 ## [0.2.12] - 2026-08-20
+
 ### Added
 - 👑 Updated Kate's `character.yaml` with British fashion elegance and royal purple/violet color preferences.
 - 📸 Synthesized and verified 8 high-quality solo family photos (2 for Kate, 2 for Riccardo, 2 for Alessandro, 2 for Sebastian) passing AI Judge (>5/10).

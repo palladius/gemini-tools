@@ -158,10 +158,18 @@ def main():
         help="Private GCS bucket containing character photos for direct gs:// URI references (default: ricc-family-character-vault-pvt)"
     )
     parser.add_argument(
+        "--framing",
+        default="portrait",
+        choices=["portrait", "full-body", "any"],
+        help="Composition framing preference (default: 'portrait' for large, clear, easily evaluable faces)."
+    )
+    parser.add_argument(
         "--use-gcs",
         action="store_true",
         help="Pass references as direct gs:// URIs (types.Part.from_uri) via Google Cloud Storage."
     )
+
+
 
     args = parser.parse_args()
 
@@ -230,15 +238,25 @@ def main():
         if d not in models_to_try:
             models_to_try.append(d)
 
-    # Append YAML character guidelines if character specified
+    # Append framing & YAML character guidelines if applicable
     final_prompt = args.prompt
+    framing_rule = ""
+    if args.framing == "portrait":
+        framing_rule = "Composition requirement: Medium close-up 85mm portrait shot, chest-up framing with a prominent, large, clearly detailed face for biometric evaluation. Avoid tiny distant faces or wide full-body landscape shots where the face is too small."
+    elif args.framing == "full-body":
+        framing_rule = "Composition requirement: Full-body photograph showing head to toe."
+
+    char_guidelines = ""
     if args.character:
-        guidelines = load_character_guidelines(args.character)
-        if guidelines:
-            final_prompt = f"{args.prompt} [{guidelines}]"
-            console.print(f"📋 [bold cyan]Injected Character Guidelines:[/bold cyan] {guidelines}")
+        char_guidelines = load_character_guidelines(args.character)
+
+    combined_rules = [r for r in [framing_rule, char_guidelines] if r]
+    if combined_rules:
+        final_prompt = f"{args.prompt} [{'; '.join(combined_rules)}]"
+        console.print(f"📋 [bold cyan]Injected Composition & Guidelines:[/bold cyan] {'; '.join(combined_rules)}")
 
     payload = loaded_images + [final_prompt]
+
 
 
     console.print(f"\n🎨 [bold magenta]Starting Synthesis...[/bold magenta]")
