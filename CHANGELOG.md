@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.19] - 2026-08-22
+### Added
+- 📄 Registered prompt templates for ornate totem logos in [`prompts/ornate_totem_logo.md`](file:///Users/ricc/git/gemini-tools/prompts/ornate_totem_logo.md).
+- 🥇 Synthesized metallic gold & silver Sebi donkey logo `sebi_donkey_ornate_logo_v3_metallic.png` on pure black background.
+
 ## [0.2.18] - 2026-08-22
+
 ### Added
 - 🎨 Synthesized ornate, intricate multi-color black-background logo `sebi_donkey_ornate_logo_v2.png` with stylized letter 'S' intertwined with a kaleidoscope totem donkey.
 
