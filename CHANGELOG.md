@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.18] - 2026-08-22
+### Added
+- 🎨 Synthesized ornate, intricate multi-color black-background logo `sebi_donkey_ornate_logo_v2.png` with stylized letter 'S' intertwined with a kaleidoscope totem donkey.
+
 ## [0.2.17] - 2026-08-22
+
 ### Added
 - 🫏 Synthesized photo `sebi_petting_donkey_v1.png` of Sebastian hugging/petting a friendly donkey on a farm (Likeness Score: 7.8/10 GOOD).
 - 🎨 Synthesized graphic logo `sebi_donkey_logo_v1.png` featuring a bold letter 'S' intertwined with a cute totem donkey emblem.
