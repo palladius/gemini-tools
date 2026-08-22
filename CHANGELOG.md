@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.21] - 2026-08-22
+### Added
+- 🔲 Synthesized 1:1 square aspect ratio maximum quality logo `sebi_donkey_rococo_google_colors_v5_square.png` featuring centered metallic gold/silver 'S' and Google 4-color Rococo vortex on black background.
+- 📄 Registered Prompt V5 (Square 1:1) in [`prompts/ornate_totem_logo.md`](file:///Users/ricc/git/gemini-tools/prompts/ornate_totem_logo.md).
+
 ## [0.2.20] - 2026-08-22
+
 ### Added
 - 🌀 Synthesized Rococo Google colors logo `sebi_donkey_rococo_google_colors_v4.png` featuring metallic gold/silver 'S' and totem donkey amidst a swirling vortex of red, blue, green, and yellow filigree.
 - 📄 Registered Prompt V4 in [`prompts/ornate_totem_logo.md`](file:///Users/ricc/git/gemini-tools/prompts/ornate_totem_logo.md).

@@ -15,6 +15,12 @@ An intricate, ornate, highly detailed abstract graphic logo artwork set against 
 An intricate, ornate, highly detailed Rococo abstract graphic logo artwork set against a deep pitch black background. Featuring a large, prominent, beautifully stylized capital letter 'S' (for Sebi) crafted in gleaming metallic gold and silver to stand out distinctly. The letter S is gracefully intertwined with a majestic totem donkey motif, surrounded by a rich swirling vortex of rococo filigree threads in the iconic four Google logo colors: vibrant red, blue, green, and yellow. Complex rococo filigree, gold and silver highlights, high contrast, fine detail.
 ```
 
+## Prompt V5 (Square 1:1 Aspect Ratio + Maximum Quality Google Rococo Logo)
+```text
+A perfectly centered square 1:1 aspect ratio logo emblem, highest ultra-fine resolution quality on a deep pitch black background. Featuring a large, prominent, beautifully stylized capital letter 'S' (for Sebi) crafted in gleaming polished metallic gold and silver to stand out distinctly. The letter S is gracefully intertwined with a majestic totem donkey motif, surrounded by an ultra-intricate swirling vortex of Rococo filigree threads in the iconic four Google logo colors: vibrant red, blue, green, and yellow. Square 1:1 framing, pristine vector line art, metallic gold and silver filigree highlights, rich color saturation, extreme contrast.
+```
+
+
 
 ## How to execute with generate_photo.py:
 ```bash
