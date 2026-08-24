@@ -1,0 +1,63 @@
+{
+  "target_asset_path": "~/git/gemini-tools/out/snowglobe_20260821_195528.png",
+  "source_reference_paths": [
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260419_080152278.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260220_063947480.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260220_060800602.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260218_151036231.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260220_061600965.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260221_105523356.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260413_053421019.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260405_050819472.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/alessandro/PXL_20260403_100103962.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/sebastian/PXL_20260310_195431489-seby-serioso-tragicomico-con-mac.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/sebastian/PXL_20260413_044744178-seby-toilet.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/sebastian/PXL_20260311_192252746-seby-con-vino.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/sebastian/20260418_094506-seby-lingua.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/sebastian/PXL_20260310_195345815-seby-felice-con-mac.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/sebastian/seby-irlandese-celtico.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-za-view-with-kids.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-za-lake.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-za-wine-tasting.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-pineapple-pizza.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/ricc-google-switzerland.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/riccardo/riccardosouthafrica.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/COLOR_POP (2).jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/PXL_20210729_191121625.MP.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/IMG_9817.JPG",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/COLOR_POP (1).jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/PXL_20230106_141651928.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/kate_golden_wine_anchor.png",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/PXL_20210404_120950729.jpg",
+    "~/git/gic25/private/projects/git-privatize/github.com__palladius__media-arneis/data/characters/kate/COLOR_POP.jpg"
+  ],
+  "evaluation_timestamp": "2026-08-21T19:56:09.504490",
+  "character_scores": [
+    {
+      "character_name": "alessandro",
+      "biometric_resemblance_score": 6.8,
+      "specific_critique": "The figurine captures the signature striped shirt and yellow-brimmed hat from the reference photos. The facial features are simplified into a toy-like aesthetic, which reduces fine biometric details, but the overall eye shape and gentle smile are recognizable."
+    },
+    {
+      "character_name": "sebastian",
+      "biometric_resemblance_score": 6.7,
+      "specific_critique": "The playful tongue-out expression directly references the source photo. The facial structure is simplified for the snow globe figurine style, but the hair shape and mischievous expression are well-represented."
+    },
+    {
+      "character_name": "riccardo",
+      "biometric_resemblance_score": 6.9,
+      "specific_critique": "The bald head, facial shape, and friendly smile match the subject's likeness. The simplification into a plastic figurine softens the realistic skin textures and stubble, but the overall structure is highly recognizable."
+    },
+    {
+      "character_name": "kate",
+      "biometric_resemblance_score": 6.5,
+      "specific_critique": "The blonde hair and facial shape are consistent with the references, though the toy-like rendering makes her features appear somewhat generic and lacks the distinct jawline and eye details of the subject."
+    }
+  ],
+  "image_quality_score": 7,
+  "overall_score": 7,
+  "verdict": "GOOD",
+  "expert_critique": "The composition is highly creative, successfully translating the family members into stylized snow globe figurines. The iconic outfits and poses are excellent touchpoints that aid recognition despite the simplified toy-like medium.",
+  "actionable_next_step": "To improve biometric fidelity, increase the detail of the facial textures on the figurines, particularly adding subtle stubble for Riccardo and more defined eye/lip shapes for Kate.",
+  "note": "Auto-evaluated photo generated with prompt 'snowglobe'"
+}
