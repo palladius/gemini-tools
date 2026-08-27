@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.24] - 2026-08-27
+### Added
+- ☁️ Synced all generated assets, metadata, and evaluations from `out/` to Google Cloud Storage via `storagify out/ --public`.
+
 ## [0.2.23] - 2026-08-27
+
 ### Added
 - 🏆 Created `bin/run_couple_high_rating_batch.py` enforcing strict **AI Judge Rating > 8.0** filtering (auto-pruning any candidate <= 8.0).
 - 🛶 Synthesized **9.0/10 CAPOLAVORO** couple asset `riccardo_kate_venice_gondola_v1.png` (Riccardo and Kate on a gondola in Venice along the Grand Canal at sunset).
