@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.22] - 2026-08-27
+### Added
+- 👩‍❤️‍👨 Enhanced `bin/generate_photo.py` to support multi-character inputs (`-c riccardo2016 -c kate`) loading reference sets and guidelines for all subjects simultaneously.
+- 📸 Synthesized 2 romantic couple photos for Riccardo and Kate (`riccardo_kate_positano_sunset_v2.png` and `riccardo_kate_rome_bistro_v1.png`), both achieving **9/10 CAPOLAVORO** AI Judge scores.
+
 ## [0.2.21] - 2026-08-22
+
 ### Added
 - 🔲 Synthesized 1:1 square aspect ratio maximum quality logo `sebi_donkey_rococo_google_colors_v5_square.png` featuring centered metallic gold/silver 'S' and Google 4-color Rococo vortex on black background.
 - 📄 Registered Prompt V5 (Square 1:1) in [`prompts/ornate_totem_logo.md`](file:///Users/ricc/git/gemini-tools/prompts/ornate_totem_logo.md).

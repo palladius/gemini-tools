@@ -125,9 +125,11 @@ def main():
     )
     parser.add_argument(
         "-c", "--character",
-        default=None,
-        help="Load reference images automatically from data/characters/<name>/"
+        action="append",
+        default=[],
+        help="Load reference images automatically from data/characters/<name>/ (can be specified multiple times)."
     )
+
     parser.add_argument(
         "-o", "--output",
         default=None,
@@ -175,13 +177,15 @@ def main():
 
     # Gather images
     image_paths = list(args.image)
-    if args.character:
-        char_imgs = resolve_character_images(args.character)
+    characters = args.character if isinstance(args.character, list) else ([args.character] if args.character else [])
+    for cname in characters:
+        char_imgs = resolve_character_images(cname)
         if not char_imgs:
-            console.print(f"[bold yellow]⚠️ No images found for character '{args.character}' in data/.[/bold yellow]")
+            console.print(f"[bold yellow]⚠️ No images found for character '{cname}' in data/.[/bold yellow]")
         else:
-            console.print(f"👤 Found {len(char_imgs)} reference photo(s) for character [bold cyan]{args.character}[/bold cyan]: {char_imgs}")
+            console.print(f"👤 Found {len(char_imgs)} reference photo(s) for character [bold cyan]{cname}[/bold cyan]: {char_imgs}")
             image_paths.extend(char_imgs)
+
 
     client = genai.Client(api_key=api_key)
     loaded_images = []
@@ -246,14 +250,18 @@ def main():
     elif args.framing == "full-body":
         framing_rule = "Composition requirement: Full-body photograph showing head to toe."
 
-    char_guidelines = ""
-    if args.character:
-        char_guidelines = load_character_guidelines(args.character)
+    char_guidelines_list = []
+    for cname in characters:
+        g = load_character_guidelines(cname)
+        if g:
+            char_guidelines_list.append(f"Character '{cname}': {g}")
+    char_guidelines = "; ".join(char_guidelines_list)
 
     combined_rules = [r for r in [framing_rule, char_guidelines] if r]
     if combined_rules:
         final_prompt = f"{args.prompt} [{'; '.join(combined_rules)}]"
         console.print(f"📋 [bold cyan]Injected Composition & Guidelines:[/bold cyan] {'; '.join(combined_rules)}")
+
 
     payload = loaded_images + [final_prompt]
 
@@ -262,15 +270,19 @@ def main():
     console.print(f"\n🎨 [bold magenta]Starting Synthesis...[/bold magenta]")
     console.print(f"📝 Prompt: [italic]'{args.prompt}'[/italic]")
 
-    def run_auto_judge(out_path, char_name, prompt_note=None):
-        if not char_name:
+    def run_auto_judge(out_path, char_list, prompt_note=None):
+        if not char_list:
             return
+        if isinstance(char_list, str):
+            char_list = [char_list]
         import subprocess
         judge_script = Path("bin/judge_image.py")
         if judge_script.exists():
             console.print(f"\n👨‍⚖️ [bold cyan]Automatically running AI Judge on generated asset...[/bold cyan]")
-            cmd = ["python3", str(judge_script), "-i", str(out_path), "-c", char_name]
-            note_str = f"Auto-evaluated photo generated with character '{char_name}'"
+            cmd = ["python3", str(judge_script), "-i", str(out_path)]
+            for cname in char_list:
+                cmd.extend(["-c", cname])
+            note_str = f"Auto-evaluated photo generated with character(s) '{', '.join(char_list)}'"
             cmd.extend(["--note", note_str])
             subprocess.run(cmd)
 
@@ -316,7 +328,8 @@ def main():
         with open(meta_file, "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=2, ensure_ascii=False)
         console.print(f"📊 Provenance metadata saved to: [blue]{meta_file}[/blue]")
-        run_auto_judge(out_path, args.character)
+        run_auto_judge(out_path, characters)
+
 
 
     # Try Imagen direct API if model starts with imagen
