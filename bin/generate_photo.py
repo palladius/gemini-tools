@@ -90,16 +90,30 @@ def load_character_guidelines(character_name: str) -> str:
             try:
                 import yaml
                 with open(yaml_p, "r", encoding="utf-8") as f:
-                    data = yaml.safe_load(f)
+                    data = yaml.safe_load(f) or {}
+
                     must_inc = data.get("prompt_guidelines", {}).get("must_include", [])
                     must_avd = data.get("prompt_guidelines", {}).get("must_avoid", [])
+
+                    asp = data.get("aspirational", {})
+                    if asp:
+                        if asp.get("target_perceived_age"):
+                            must_inc.append(f"youthful perceived age {asp.get('target_perceived_age')}")
+                        if asp.get("beauty_style"):
+                            must_inc.append(asp.get("beauty_style"))
+                        if asp.get("prompt_anchors"):
+                            must_inc.extend(asp.get("prompt_anchors"))
+                        if asp.get("must_avoid"):
+                            must_avd.extend(asp.get("must_avoid"))
+
                     if must_inc:
-                        guidelines.append(f"Subject '{cname}': " + ", ".join(must_inc))
+                        guidelines.append(f"Subject '{cname}' rules: " + ", ".join(must_inc))
                     if must_avd:
                         guidelines.append(f"Avoid for '{cname}': " + ", ".join(must_avd))
             except Exception:
                 pass
     return " ".join(guidelines)
+
 
 
 

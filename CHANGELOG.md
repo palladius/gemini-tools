@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.26] - 2026-08-28
+### Added
+- 💄 Updated Kate's `character.yaml` with tasteful light makeup directives (mascara, soft pink lip tint, smooth radiant skin looking 35-38).
+- 📸 Synthesized youngified Kate solo portrait `kate_youthful_makeup_venice_v2.png` and couple portrait `riccardo_kate_venice_youthful_v1.png`.
+
 ## [0.2.25] - 2026-08-28
+
 ### Added
 - ⚡ Set `gemini-3.1-flash-image` as the default primary image model in `bin/generate_photo.py` and `bin/run_couple_high_rating_batch.py`.
 - 📸 Synthesized 9.8/10 CAPOLAVORO couple portrait `riccardo_kate_florence_v1.png` on a balcony overlooking Ponte Vecchio in Florence.

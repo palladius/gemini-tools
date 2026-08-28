@@ -66,7 +66,11 @@ def main():
     parser = argparse.ArgumentParser(description="👨‍⚖️ Image Biometric & Quality Judge (Multi-Character Support).")
     parser.add_argument("-i", "--image", required=True, help="Path to the generated image to evaluate.")
     parser.add_argument("-c", "--character", required=True, help="Character name(s), comma-separated for multi-subject evaluation (e.g. alessandro,sebastian).")
-    parser.add_argument("-m", "--model", default="gemini-3.5-flash", help="Model to use for judging (default: gemini-3.5-flash).")
+    parser.add_argument("-m", "--model", default="gemini-2.0-flash", help="Model to use for judging (default: gemini-2.0-flash).")
+
+
+
+
     parser.add_argument("-n", "--note", default=None, help="Optional out-of-band experimental note or version metadata to log into JSON and JSONL.")
 
     args = parser.parse_args()
