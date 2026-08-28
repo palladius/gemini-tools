@@ -137,9 +137,10 @@ def main():
     )
     parser.add_argument(
         "-m", "--model",
-        default="gemini-3.1-flash-image-preview",
-        help="Primary image model to try (default: gemini-3.1-flash-image-preview)"
+        default="gemini-3.1-flash-image",
+        help="Primary image model to try (default: gemini-3.1-flash-image)"
     )
+
 
     parser.add_argument(
         "-s", "--show", "--open",
@@ -234,10 +235,11 @@ def main():
     # Prepare Models with Fallbacks
     models_to_try = [args.model]
     defaults = [
-        "gemini-3.1-flash-image-preview",
         "gemini-3.1-flash-image",
+        "gemini-3.1-flash-image-preview",
         "gemini-2.5-flash-image"
     ]
+
     for d in defaults:
         if d not in models_to_try:
             models_to_try.append(d)

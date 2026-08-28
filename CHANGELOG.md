@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.25] - 2026-08-28
+### Added
+- ⚡ Set `gemini-3.1-flash-image` as the default primary image model in `bin/generate_photo.py` and `bin/run_couple_high_rating_batch.py`.
+- 📸 Synthesized 9.8/10 CAPOLAVORO couple portrait `riccardo_kate_florence_v1.png` on a balcony overlooking Ponte Vecchio in Florence.
+
 ## [0.2.24] - 2026-08-27
+
 ### Added
 - ☁️ Synced all generated assets, metadata, and evaluations from `out/` to Google Cloud Storage via `storagify out/ --public`.
 

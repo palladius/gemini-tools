@@ -44,7 +44,8 @@ def main():
             "-c", "riccardo2016",
             "-c", "kate",
             "-p", prompt,
-            "-m", "gemini-3.1-flash-image-preview",
+            "-m", "gemini-3.1-flash-image",
+
             "--framing", "portrait",
             "-o", str(out_path),
             "--show"
