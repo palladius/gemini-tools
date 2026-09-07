@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.27] - 2026-09-07
+### Added
+- 🎠 Added `gemini-tools` entry to [`palladius/vetrina`](https://github.com/palladius/vetrina) showcase (`data/games.yaml`), compiled assets, verified tests, and deployed to live GitHub Pages.
+
 ## [0.2.26] - 2026-08-28
+
 ### Added
 - 💄 Updated Kate's `character.yaml` with tasteful light makeup directives (mascara, soft pink lip tint, smooth radiant skin looking 35-38).
 - 📸 Synthesized youngified Kate solo portrait `kate_youthful_makeup_venice_v2.png` and couple portrait `riccardo_kate_venice_youthful_v1.png`.
