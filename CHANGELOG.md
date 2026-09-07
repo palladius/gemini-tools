@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.29] - 2026-09-07
+### Changed
+- 🖼️ Replaced `gemini-tools` Vetrina showcase screenshot with local asset `out/solo_riccardo_2.png`.
+
 ## [0.2.28] - 2026-09-07
+
 ### Security
 - 🔒 Removed GCS Storagify URL link from `gemini-tools` entry in `palladius/vetrina` (`data/games.yaml`).
 
