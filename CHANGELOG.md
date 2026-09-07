@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.28] - 2026-09-07
+### Security
+- 🔒 Removed GCS Storagify URL link from `gemini-tools` entry in `palladius/vetrina` (`data/games.yaml`).
+
 ## [0.2.27] - 2026-09-07
+
 ### Added
 - 🎠 Added `gemini-tools` entry to [`palladius/vetrina`](https://github.com/palladius/vetrina) showcase (`data/games.yaml`), compiled assets, verified tests, and deployed to live GitHub Pages.
 
