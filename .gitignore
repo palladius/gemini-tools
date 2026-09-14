@@ -20,3 +20,7 @@ data/characters/sebastian*
 data/characters/riccardo*
 data/characters/kate*
 logs/
+combined.log
+error.log
+.worktrees/
+

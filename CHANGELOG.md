@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.30] - 2026-09-14
+### Maintenance
+- 🙈 Updated `.gitignore` to ignore `.worktrees/`, `combined.log`, and `error.log`.
+
 ## [0.2.29] - 2026-09-07
+
 ### Changed
 - 🖼️ Replaced `gemini-tools` Vetrina showcase screenshot with local asset `out/solo_riccardo_2.png`.
 
