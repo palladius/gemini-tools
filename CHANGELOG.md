@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.32] - 2026-09-15
+### Fixed
+- 👨‍⚖️ Recalibrated AI Forensic Judge in `bin/judge_image.py` to eliminate generous baseline soft bias and heavily penalize facial drift (fixes #2).
+- 🔍 Added `--crop-face` support in `bin/judge_image.py` to isolate target faces from clothing/hair distractions using Gemini spatial bounding boxes.
+- 🧪 Added regression unit test in `tests/test_eval_dataset.py` verifying `--crop-face` and strict calibrated rating scale.
+- 📊 Updated `docs/EVAL.md` benchmark matrix with calibrated post-fix scores.
+
 ## [0.2.31] - 2026-09-17
 ### Added
 - ☁️ Implemented GCS asset backup and reconciliation pipeline (`gcs_backup.py` and `bin/backup_to_gcs.py`).

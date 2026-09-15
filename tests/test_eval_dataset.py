@@ -92,7 +92,16 @@ class TestEvalDataset(unittest.TestCase):
             clean_names = [p.name for p in clean_dir.glob("*")]
             self.assertNotIn("kate_golden_wine_anchor.png", clean_names, "Legacy harsh anchor must not be in active grid_cleaned set")
 
-
+    def test_judge_image_calibrated_prompt_and_crop_cli(self):
+        """Verify bin/judge_image.py supports --crop-face and uses strict calibrated scoring rules."""
+        judge_script = Path("bin/judge_image.py").resolve()
+        self.assertTrue(judge_script.exists(), "bin/judge_image.py must exist")
+        
+        content = judge_script.read_text(encoding="utf-8")
+        self.assertIn("--crop-face", content, "judge_image.py must expose --crop-face flag")
+        self.assertIn("STRICT BIOMETRIC IDENTITY IS PARAMOUNT", content, "judge_image.py must contain strict biometric criteria")
+        self.assertIn("CALIBRATION SCALE", content, "judge_image.py must contain calibrated rating scale")
+        self.assertIn("non le somiglia per niente", content, "judge_image.py must penalize zero likeness correctly")
 
 
 if __name__ == "__main__":

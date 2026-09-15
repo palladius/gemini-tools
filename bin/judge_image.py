@@ -38,6 +38,39 @@ class ImageAuditReport(BaseModel):
     expert_critique: str = Field(description="Summary critique of overall composition and multi-subject fidelity.")
     actionable_next_step: str = Field(description="Concrete recommendation to improve biometric fidelity.")
 
+class FaceBoxResult(BaseModel):
+    found: bool = Field(description="True if face is clearly detected")
+    box_2d: list[int] = Field(default_factory=list, description="Normalized bounding box [ymin, xmin, ymax, xmax] 0-1000 for the face and head")
+
+def get_face_crop(client: genai.Client, img: PILImage.Image, char_name: str) -> PILImage.Image | None:
+    """Detects and crops the face of the target character to eliminate body/clothing bias."""
+    prompt = f"Detect the bounding box for the face and head of character '{char_name}'. Return box_2d [ymin, xmin, ymax, xmax] on a 0-1000 normalized scale."
+    try:
+        resp = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=[img, prompt],
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+                response_schema=FaceBoxResult,
+                temperature=0.0,
+            )
+        )
+        res = json.loads(resp.text.strip())
+        if res.get("found") and len(res.get("box_2d", [])) == 4:
+            ymin, xmin, ymax, xmax = res["box_2d"]
+            w, h = img.size
+            pad_y = int((ymax - ymin) * 0.10)
+            pad_x = int((xmax - xmin) * 0.10)
+            y0 = max(0, int((ymin - pad_y) * h / 1000))
+            x0 = max(0, int((xmin - pad_x) * w / 1000))
+            y1 = min(h, int((ymax + pad_y) * h / 1000))
+            x1 = min(w, int((xmax + pad_x) * w / 1000))
+            if x1 > x0 and y1 > y0:
+                return img.crop((x0, y0, x1, y1))
+    except Exception as e:
+        console.print(f"[yellow]Warning: Face cropping skipped ({e})[/yellow]")
+    return None
+
 def to_tilde_path(p: str | Path) -> str:
     res = str(Path(p).resolve())
     home = str(Path.home())
@@ -72,6 +105,7 @@ def main():
 
 
     parser.add_argument("-n", "--note", default=None, help="Optional out-of-band experimental note or version metadata to log into JSON and JSONL.")
+    parser.add_argument("--crop-face", action="store_true", help="Auto-crop target character face before judging to isolate biometrics from hair/wardrobe bias.")
 
     args = parser.parse_args()
     img_path = Path(args.image)
@@ -97,7 +131,19 @@ def main():
 
     contents = []
     try:
-        contents.append(PILImage.open(img_path))
+        target_img = PILImage.open(img_path)
+        if args.crop_face:
+            console.print("[cyan]🔍 Auto-cropping target character face to isolate facial biometrics...[/cyan]")
+            face_crop = get_face_crop(client, target_img, char_names[0])
+            if face_crop:
+                console.print("[green]✅ Isolated target face crop for biometric evaluation.[/green]")
+                contents.append(face_crop)
+            else:
+                console.print("[yellow]⚠️ Face bounding box not found; falling back to full image.[/yellow]")
+                contents.append(target_img)
+        else:
+            contents.append(target_img)
+
         for rpath in all_ref_images:
             contents.append(PILImage.open(rpath))
     except Exception as err:
@@ -109,15 +155,24 @@ def main():
     Target subject character(s) to evaluate: {', '.join(char_names).upper()}.
     
     INPUT IMAGE ORDER:
-    - Image 1: The AI-generated target image under evaluation.
+    - Image 1: The AI-generated target image (or isolated face crop) under evaluation.
     - Subsequent images: Authentic real-life reference photographs for each character listed ({char_ref_map}).
 
-    REQUIREMENTS:
+    REQUIREMENTS & FORENSIC SCORING CALIBRATION:
     1. Evaluate EACH character listed in {char_names} individually.
     2. Populate the 'character_scores' array with one entry for each character ({', '.join(char_names)}).
-    3. Calculate their specific 'biometric_resemblance_score' (1.0 to 10.0) by scrutinizing facial bone structure, eye color, nose shape, lip shape, hair texture, and distinct facial traits against their authentic reference photos.
-    4. FACE SCALE & FRAMING CHECK: Check if any target character's face in Image 1 is TOO SMALL or DISTANT (e.g. distant full-body shot where facial features occupy less than ~15% of image height or are tiny/un-evaluable). IF THE FACE IS TOO SMALL OR DISTANT TO PROPERLY EVALUATE BIOMETRICS, YOU MUST SET overall_score TO LESS THAN 5.0 (e.g., 3.0 or 4.0), set verdict to 'TRASH', and explain in expert_critique that the face is too small for evaluation.
-    5. Be brutally honest. If a character looks like a generic stock child/person rather than the authentic reference subject, penalize their resemblance score (3.0 - 6.0).
+    3. STRICT BIOMETRIC IDENTITY IS PARAMOUNT:
+       - Hair color, hairstyle, lighting, clothing, and background MUST NEVER inflate the likeness score.
+       - A blonde woman in a safari outfit is NOT Kate if her nose, eyes, smile lines, and jaw structure do not match.
+       - If hair or outfit match but the facial bone structure or eyes belong to a generic model or different person, the score MUST NOT exceed 2.5 ("non le somiglia per niente").
+    4. CALIBRATION SCALE (DO NOT BE GENEROUS - ELIMINATE SOFT BIAS):
+       - 9.0 - 10.0: Flawless biometric twin. Indistinguishable from an authentic photo of the specific individual.
+       - 7.5 - 8.9: Strong resemblance. Clear facial identity match with subtle expression/lighting variance.
+       - 5.0 - 7.4: Noticeable facial drift. Resembles an acquaintance or distant cousin; clearly recognizable as a different individual upon close inspection.
+       - 2.5 - 4.9: Severe facial mismatch. Superficial similarities only (e.g. blonde hair, gender), but entirely wrong face.
+       - 1.0 - 2.4: Zero biometric resemblance. Total identity mismatch. Generic stock face or completely different person ("non le somiglia per niente").
+    5. FACE SCALE & FRAMING CHECK: Check if any target character's face in Image 1 is TOO SMALL or DISTANT (e.g. distant full-body shot where facial features occupy less than ~15% of image height or are tiny/un-evaluable). IF THE FACE IS TOO SMALL OR DISTANT TO PROPERLY EVALUATE BIOMETRICS, YOU MUST SET overall_score TO LESS THAN 5.0 (e.g., 3.0 or 4.0), set verdict to 'TRASH', and explain in expert_critique that the face is too small for evaluation.
+    6. Be brutally honest. If human inspection would conclude "non le somiglia per niente", assign 1.0 - 2.0.
 
     Output strictly according to the requested JSON schema.
     """

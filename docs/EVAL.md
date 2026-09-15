@@ -58,7 +58,7 @@ Passing reference images via **Google Files API** (`client.files.upload` / `--fi
 | `kate_greece_batch_cand4.png` | Corfu Salad | **3.5 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ **Exact AI-Human Rank Alignment!** "non le somiglia per niente". |
 | `3a` (`kate_greece_refined_cand3a.png`) | Crete Portrait | **4.2 / 10.0** (TRASH 🗑️) | **5.0 / 10** | 🗑️ "bad". Abbellimento artificiale. |
 | **`kate2016_kenya_cheetah.png`** | **Kenya Safari (Maasai Mara Cheetah)** | 👑 **6.8 / 10.0** (GOOD) | 👑 **7.0 / 10** | 🎯 **Matched AI-Human Rank!** Accurate nose shape, jawline, & smile lines. |
-| **`kate2016_kenya_lion.png`** | **Kenya Safari (Maasai Mara Lion)** | ⚠️ **7.0 / 10.0** (MISCALIBRATED 🚨) | 🤮 **1.0 / 10** | 🚨 **AI Judge Miscalibration!** ("non le somiglia per niente"). See GHI #2. |
+| **`kate2016_kenya_lion.png`** | **Kenya Safari (Maasai Mara Lion)** | 🗑️ **1.5 / 10.0** (CALIBRATED 🎯, was 7.0) | 🤮 **1.0 / 10** | 🎯 **Aligned Post-Calibration!** Eliminated soft bias & penalized facial drift via strict biometric identity guidelines (Fixes GHI #2). |
 | **`kate2016_kenya_elephant.png`** | **Kenya Safari (Amboseli Elephants)** | 👑 **7.3 / 10.0** (GOOD) | *Pending Rickurdo ♊* | 🐘 Preserved smile structure, nasolabial folds, & eye shape. |
 | `kate2016_kenya_giraffe.png` | Kenya Safari (Giraffe Manor) | ⚠️ **5.8 / 10.0** (GOOD) | *Pending Rickurdo ♊* | 🦒 Hair color drift (silver-grey instead of ash-blonde). |
 | **`kate2016_greece_cand1.png`** | **Crete Taverna (kate2016 Wedding Dataset)** | 👑 **7.2 / 10.0** (GOOD) | *Pending Riccardo* | 👑 Preserved natural smile dimples, eye shape, & cool ash hair from 2016 wedding dataset. |
