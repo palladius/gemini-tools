@@ -78,6 +78,26 @@ def main():
             with open(out_path, "wb") as vf:
                 vf.write(raw_bytes)
             console.print(f"\n✅ [bold green]SUCCESS! Saved video to:[/bold green] [blue]{out_path}[/blue]")
+
+            # Save provenance metadata and backup to GCS if configured (P1)
+            try:
+                import json
+                meta_file = out_path.with_suffix(".json")
+                vmeta = {
+                    "generated_asset_path": str(out_path),
+                    "anchor_image": str(img_path),
+                    "prompt": args.prompt,
+                    "character": args.character,
+                    "generation_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                }
+                with open(meta_file, "w", encoding="utf-8") as mf:
+                    json.dump(vmeta, mf, indent=2)
+                sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+                from gcs_backup import backup_asset
+                backup_asset(out_path, meta_path=meta_file, quiet=False)
+            except Exception as e:
+                console.print(f"[yellow]⚠️ GCS video backup skipped: {e}[/yellow]")
+
             os.system(f"open '{out_path}'")
 
             if args.character:

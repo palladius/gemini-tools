@@ -344,6 +344,14 @@ def main():
         with open(meta_file, "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=2, ensure_ascii=False)
         console.print(f"📊 Provenance metadata saved to: [blue]{meta_file}[/blue]")
+
+        # P1: Automatic GCS asset backup if GEMINI_TOOLS_BUCKET is set
+        try:
+            from gcs_backup import backup_asset
+            backup_asset(out_path, meta_path=meta_file, quiet=False)
+        except Exception as e:
+            console.print(f"[yellow]⚠️ GCS backup skipped: {e}[/yellow]")
+
         run_auto_judge(out_path, characters)
 
 

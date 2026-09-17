@@ -27,6 +27,14 @@ models filter="":
 video-status:
     ./bin/omni-video-gen.py --status
 
+# Backup a media asset to GCS
+backup-asset asset="":
+    ./bin/backup_to_gcs.py --backup "{{asset}}"
+
+# Reconcile missing assets from GCS via local metadata JSONs in out/
+reconcile-assets dir="out/":
+    ./bin/backup_to_gcs.py --reconcile-dir "{{dir}}"
+
 # Run help on all scripts
 help:
     ./bin/generate_photo.py --help
@@ -35,3 +43,4 @@ help:
     ./bin/omni-video-gen.py --help
     ./bin/slice_comic.py --help
     ./bin/comic_to_video.py --help
+    ./bin/backup_to_gcs.py --help

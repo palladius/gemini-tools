@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.31] - 2026-09-17
+### Added
+- ☁️ Implemented GCS asset backup and reconciliation pipeline (`gcs_backup.py` and `bin/backup_to_gcs.py`).
+  - Automatically uploads generated images/videos to `$GEMINI_TOOLS_BUCKET`.
+  - Enriches local metadata JSON files with GCS coordinates (`bucket`, `object_name`, `gcs_uri`, `public_url`, `md5`, `size_bytes`).
+  - Enables local deletion of large media files while retaining full ability to reconcile ("git pull" from GCS) via companion JSON.
+  - Implemented remote URI resolver (`resolve_remote_uri`) to support referencing existing GCS assets directly (resolves #1).
+- 🧪 Added comprehensive unit tests in `tests/test_gcs_backup.py`.
+- 🛠️ Added `just backup-asset` and `just reconcile-assets` recipes to `Justfile`.
+
 ## [0.2.30] - 2026-09-14
 ### Maintenance
 - 🙈 Updated `.gitignore` to ignore `.worktrees/`, `combined.log`, and `error.log`.
