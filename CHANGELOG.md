@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.33] - 2026-11-02
+### Added
+- 🤖 **`--ai-help` & Self-Healing `UNKNOWN (*)` Protocol** in `bin/list-gemini-models.py` (following `create-cli-best-practices` skill):
+  - Added `📅 Released` date column, `--by-date` sorting flag, and `-n` / `--max-items` limit flag to `bin/list-gemini-models.py` (resolving dates via `tuned_model_info.create_time`, official Gemini API release notes map including `gemini-4-argon` / `gemini-nano-banana-2.1`, and version/description regex fallback).
+  - Returns `UNKNOWN (*)` (and sorts to the top of `--by-date`) whenever a new model appears without a release date, while marking `-latest` rolling pointers as `rolling`.
+  - Prints an actionable `(*) TODO(Gemini)` footer pointing to `https://ai.google.dev/gemini-api/docs/changelog` and `~/git/gemini-tools/bin/list-gemini-models.py` (`KNOWN_RELEASE_DATES`).
+  - Added `--ai-help` Markdown output and TDD unit tests in `tests/test_eval_dataset.py`.
+
 ## [0.2.32] - 2026-09-15
 ### Fixed
 - 👨‍⚖️ Recalibrated AI Forensic Judge in `bin/judge_image.py` to eliminate generous baseline soft bias and heavily penalize facial drift (fixes #2).

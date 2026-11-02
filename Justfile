@@ -4,7 +4,7 @@ list:
 
 # Run unit tests for evaluation datasets and web portal static integrity
 test:
-    uv run --with python-slugify python -m unittest discover -s tests
+    uv run --default-index https://pypi.org/simple --with python-slugify --with google-genai --with rich python -m unittest discover -s tests
 
 # Serve interactive Character Consistency Approval Web App (Queue & Ranked Leaderboard)
 

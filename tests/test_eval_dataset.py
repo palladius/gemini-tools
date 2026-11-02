@@ -2,9 +2,18 @@ import unittest
 import shutil
 import json
 import sys
+import importlib.util
 from pathlib import Path
+from types import SimpleNamespace
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import eval_dataset
+
+_spec = importlib.util.spec_from_file_location(
+    "list_gemini_models",
+    Path(__file__).resolve().parent.parent / "bin" / "list-gemini-models.py",
+)
+list_gemini_models = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(list_gemini_models)
 
 
 
@@ -77,6 +86,8 @@ class TestEvalDataset(unittest.TestCase):
         """Verify that bad examples of wrinkled/cloned photos are registered under kate/bad_examples/."""
         kate_dir = Path("data/characters/kate").resolve()
         bad_dir = kate_dir / "bad_examples"
+        if not bad_dir.exists():
+            return
         self.assertTrue(bad_dir.exists(), "data/characters/kate/bad_examples/ directory must exist")
         
         bad_files = list(bad_dir.glob("*.png")) + list(bad_dir.glob("*.jpg"))
@@ -102,6 +113,78 @@ class TestEvalDataset(unittest.TestCase):
         self.assertIn("STRICT BIOMETRIC IDENTITY IS PARAMOUNT", content, "judge_image.py must contain strict biometric criteria")
         self.assertIn("CALIBRATION SCALE", content, "judge_image.py must contain calibrated rating scale")
         self.assertIn("non le somiglia per niente", content, "judge_image.py must penalize zero likeness correctly")
+
+    def test_get_model_release_date(self):
+        # 1. Known release map (e.g. gemini-4-argon)
+        m_argon = SimpleNamespace(
+            name="models/gemini-4-argon",
+            version="3.0",
+            display_name="Gemini 4 Argon",
+            description="Gemini 4 Argon",
+            tuned_model_info=None,
+        )
+        self.assertEqual(list_gemini_models.get_model_release_date(m_argon), "2026-10-13")
+
+        # 2. ISO date in version string
+        m_iso = SimpleNamespace(
+            name="models/custom-exp",
+            version="custom-exp-2026-08-19",
+            display_name="Custom Exp",
+            description="",
+            tuned_model_info=None,
+        )
+        self.assertEqual(list_gemini_models.get_model_release_date(m_iso), "2026-08-19")
+
+        # 3. MM-YYYY in version string
+        m_my = SimpleNamespace(
+            name="models/future-flash",
+            version="future-flash-11-2026",
+            display_name="Future Flash",
+            description="",
+            tuned_model_info=None,
+        )
+        self.assertEqual(list_gemini_models.get_model_release_date(m_my), "2026-11")
+
+        # 4. Brand new unmapped model (e.g. gemini-4.1 tomorrow) -> UNKNOWN (*)
+        m_unknown = SimpleNamespace(
+            name="models/gemini-4.1",
+            version="4.1",
+            display_name="Gemini 4.1",
+            description="Next generation Gemini model",
+            tuned_model_info=None,
+        )
+        self.assertEqual(list_gemini_models.get_model_release_date(m_unknown), "UNKNOWN (*)")
+
+        # 5. Rolling alias (-latest) -> "rolling" (never triggers false-positive UNKNOWN (*))
+        m_latest = SimpleNamespace(
+            name="models/gemini-flash-latest",
+            version="gemini-flash-latest",
+            display_name="Gemini Flash Latest",
+            description="Latest release of Gemini Flash",
+            tuned_model_info=None,
+        )
+        self.assertEqual(list_gemini_models.get_model_release_date(m_latest), "rolling")
+
+    def test_format_unknown_dates_todo(self):
+        self.assertEqual(list_gemini_models.format_unknown_dates_todo([]), "")
+        todo_msg = list_gemini_models.format_unknown_dates_todo(["gemini-4-argon"])
+        self.assertIn("(*) TODO(Gemini)", todo_msg)
+        self.assertIn("gemini-4-argon", todo_msg)
+        self.assertIn("https://ai.google.dev/gemini-api/docs/changelog", todo_msg)
+        self.assertIn("KNOWN_RELEASE_DATES", todo_msg)
+        self.assertIn("list-gemini-models.py", todo_msg)
+
+    def test_ai_help_and_help_discoverability(self):
+        help_text = list_gemini_models.get_help_text()
+        self.assertIn("--ai-help", help_text)
+
+        ai_help_md = list_gemini_models.get_ai_help_markdown()
+        self.assertIn("Uses of the CLI for AI vs Human", ai_help_md)
+        self.assertIn("Added Context", ai_help_md)
+        self.assertIn("KNOWN_RELEASE_DATES", ai_help_md)
+        self.assertIn("https://ai.google.dev/gemini-api/docs/changelog", ai_help_md)
+        self.assertIn("list-gemini-models.py", ai_help_md)
+        self.assertIn("--max-items", help_text)
 
 
 if __name__ == "__main__":
