@@ -171,8 +171,41 @@ class TestEvalDataset(unittest.TestCase):
         self.assertIn("(*) TODO(Gemini)", todo_msg)
         self.assertIn("gemini-4-argon", todo_msg)
         self.assertIn("https://ai.google.dev/gemini-api/docs/changelog", todo_msg)
-        self.assertIn("KNOWN_RELEASE_DATES", todo_msg)
-        self.assertIn("list-gemini-models.py", todo_msg)
+        self.assertIn("etc/gemini_models.yaml", todo_msg)
+        self.assertIn("twitter_description", todo_msg)
+
+    def test_gemini_models_yaml_and_twitter_descriptions(self):
+        yaml_path = Path(__file__).resolve().parent.parent / "etc" / "gemini_models.yaml"
+        self.assertTrue(yaml_path.exists(), "etc/gemini_models.yaml must exist")
+
+        catalog = list_gemini_models.load_models_catalog()
+        self.assertGreaterEqual(len(catalog), 40)
+
+        for model_id, meta in catalog.items():
+            self.assertIn("release_date", meta, f"{model_id} missing release_date")
+            self.assertIn("twitter_description", meta, f"{model_id} missing twitter_description")
+            desc = meta["twitter_description"]
+            self.assertTrue(desc and desc != "UNKNOWN (*)", f"{model_id} has empty twitter_description")
+            self.assertLessEqual(
+                len(desc.encode("utf-8")),
+                280,
+                f"{model_id} twitter_description exceeds 280 bytes ({len(desc.encode('utf-8'))}B)",
+            )
+
+        # Spot check Omni 1.1 Flash & Lyria 3.5 twitter descriptions
+        m_omni = SimpleNamespace(name="models/gemini-omni-1.1-flash", description="Gemini Omni 1.1 Flash")
+        omni_desc = list_gemini_models.get_model_twitter_description(m_omni)
+        self.assertIn("40s", omni_desc)
+        self.assertIn("interactions", omni_desc.lower())
+
+        m_lyria = SimpleNamespace(name="models/lyria-3.5", description="Lyria 3.5")
+        lyria_desc = list_gemini_models.get_model_twitter_description(m_lyria)
+        self.assertIn("30s", lyria_desc)
+        self.assertIn("2-3 min", lyria_desc)
+
+        # Unknown model -> UNKNOWN (*)
+        m_unknown = SimpleNamespace(name="models/gemini-4.1", description="Gemini 4.1")
+        self.assertEqual(list_gemini_models.get_model_twitter_description(m_unknown), "UNKNOWN (*)")
 
     def test_ai_help_and_help_discoverability(self):
         help_text = list_gemini_models.get_help_text()
@@ -181,7 +214,8 @@ class TestEvalDataset(unittest.TestCase):
         ai_help_md = list_gemini_models.get_ai_help_markdown()
         self.assertIn("Uses of the CLI for AI vs Human", ai_help_md)
         self.assertIn("Added Context", ai_help_md)
-        self.assertIn("KNOWN_RELEASE_DATES", ai_help_md)
+        self.assertIn("etc/gemini_models.yaml", ai_help_md)
+        self.assertIn("twitter_description", ai_help_md)
         self.assertIn("https://ai.google.dev/gemini-api/docs/changelog", ai_help_md)
         self.assertIn("list-gemini-models.py", ai_help_md)
         self.assertIn("--max-items", help_text)

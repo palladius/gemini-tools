@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.34] - 2026-11-05
+### Added
+- 🐦📄 **Curated YAML Catalog (`etc/gemini_models.yaml`) & Twitter Descriptions**:
+  - Extracted all 46 model `release_date`, `category`, and punchy (`<=280B`) `twitter_description` entries into `etc/gemini_models.yaml`.
+  - Replaced the redundant API `Description` column in `bin/list-gemini-models.py --full` with `🐦 What It Does (Twitter Desc)` (and appended it to the default bash-friendly view).
+  - Updated `(*) TODO(Gemini)` and `--ai-help` self-healing protocol to trigger whenever a model is missing either `release_date` or `twitter_description` in `etc/gemini_models.yaml`.
+  - Added TDD unit test `test_gemini_models_yaml_and_twitter_descriptions` verifying schema completeness and the 280-byte limit.
+
 ## [0.2.33] - 2026-11-02
 ### Added
 - 🤖 **`--ai-help` & Self-Healing `UNKNOWN (*)` Protocol** in `bin/list-gemini-models.py` (following `create-cli-best-practices` skill):

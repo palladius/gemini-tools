@@ -1,0 +1,385 @@
+# Official Gemini & GenAI Public Model Catalog
+# Single source of truth for release dates and punchy (<280B) Twitter descriptions.
+# Used by bin/list-gemini-models.py and the gemini-model-selector skill.
+# Docs: https://ai.google.dev/gemini-api/docs/changelog | https://ai.google.dev/gemini-api/docs/models
+
+models:
+  gemini-4-argon:
+    release_date: "2026-10-13"
+    category: "flagship-reasoning"
+    twitter_description: "Flagship 1M-ctx reasoning, coding & research powerhouse (65k out). Replaces 3.1-pro for complex architecture, STEM, and multi-step agentic workflows."
+
+  gemini-nano-banana-2.1:
+    release_date: "2026-10-06"
+    category: "image-generation"
+    twitter_description: "Nano Banana 2.1: flagship high-efficiency 1K/2K/4K image generator & conversational editor supporting multi-image fusion with up to 14 reference images."
+
+  gemini-3.8-flash-tts:
+    release_date: "2026-09-22"
+    category: "audio-tts"
+    twitter_description: "Expressive studio TTS: Voice Design from text prompts, Voice Replication, dual-speaker podcasts, backchanneling (|mhm|, |yeah|) & vocal bursts (<laugh>, <gasp>)."
+
+  gemini-3.8-flash-lite-tts:
+    release_date: "2026-09-22"
+    category: "audio-tts"
+    twitter_description: "Ultra-fast, low-cost TTS for high-volume voice agents, article reading, IVR, global dubbing, and accessibility screen readers."
+
+  antigravity-preview-09-2026:
+    release_date: "2026-09-17"
+    category: "managed-agent"
+    twitter_description: "Managed Antigravity Agent with sandboxed Linux code execution, file management & web access. Call via client.interactions.create(environment='remote')."
+
+  gemini-3.8-live-extended-thinking:
+    release_date: "2026-09-15"
+    category: "live-audio"
+    twitter_description: "'Thinker-Talker' Live API (bidiGenerateContent) model for real-time voice conversations requiring deep reasoning and multi-step tool execution."
+
+  gemini-3.8-live:
+    release_date: "2026-09-15"
+    category: "live-audio"
+    twitter_description: "Low-latency real-time bidirectional voice & video conversation model via the Gemini Live API (bidiGenerateContent)."
+
+  lyria-3.5:
+    release_date: "2026-09-03"
+    category: "music-generation"
+    twitter_description: "Lyria 3.5 music & vocals generator: creates 30s clips (lyria-3-clip-preview) or full 2-3 min songs with custom lyrics, vocals & genre control (lyria-3-pro-preview)."
+
+  gemini-3.8-flash:
+    release_date: "2026-09-02"
+    category: "fast-multimodal"
+    twitter_description: "Default 1M-ctx fast workhorse (65k out) balancing thinking, multimodal understanding, and low-latency agentic tool calling."
+
+  gemini-omni-1.1-flash:
+    release_date: "2026-08-27"
+    category: "video-generation"
+    twitter_description: "Omni Flash video+audio generator & editor: text/image-to-video, first/last frame transitions, object add/remove, AR zoom & 40s extensions via client.interactions API."
+
+  gemini-3.5-transcribe:
+    release_date: "2026-08-26"
+    category: "audio-stt"
+    twitter_description: "Dedicated high-speed Speech-to-Text (ASR) model for pre-recorded audio with smart formatting and verbatim transcription modes."
+
+  gemini-3.5-transcribe-live:
+    release_date: "2026-08-26"
+    category: "audio-stt"
+    twitter_description: "Real-time streaming Speech-to-Text and live speech translation model via the Live API."
+
+  gemini-3.7-flash:
+    release_date: "2026-08-13"
+    category: "fast-multimodal"
+    twitter_description: "August 2026 1M-ctx Flash release; superseded by gemini-3.8-flash for new agentic and multimodal workloads."
+
+  gemini-robotics-er-2-preview:
+    release_date: "2026-07-30"
+    category: "robotics"
+    twitter_description: "Embodied Reasoning 2.0 model for physical robotics: 3D spatial grounding, trajectory planning, and manipulation task decomposition."
+
+  gemini-robotics-er-2-streaming-preview:
+    release_date: "2026-07-30"
+    category: "robotics"
+    twitter_description: "Low-latency streaming variant of Gemini Robotics ER 2.0 for continuous closed-loop robot control."
+
+  gemini-3.6-flash:
+    release_date: "2026-07-21"
+    category: "fast-multimodal"
+    twitter_description: "July 2026 1M-ctx Flash release; upgrade to gemini-3.8-flash for improved reasoning and tool use."
+
+  gemini-3.5-flash-lite:
+    release_date: "2026-07-21"
+    category: "high-throughput"
+    twitter_description: "Fastest, lowest-cost 1M-ctx 3.5 model engineered for high-throughput batch classification, extraction, and routing."
+
+  gemini-omni-flash-preview:
+    release_date: "2026-06-30"
+    category: "video-generation"
+    twitter_description: "Early preview of Omni Flash video generation & editing; upgrade to GA gemini-omni-1.1-flash."
+
+  gemini-3.1-flash-lite-image:
+    release_date: "2026-06-30"
+    category: "image-generation"
+    twitter_description: "Nano Banana 2 Lite: ultra-fast, cost-efficient general image generation and conversational editing (65k in / 32k out)."
+
+  gemini-3.5-live-translate-preview:
+    release_date: "2026-06-01"
+    category: "live-audio"
+    twitter_description: "Preview bidirectional speech-to-speech live translation model; superseded by gemini-3.5-transcribe-live."
+
+  gemini-3.1-flash-image:
+    release_date: "2026-05-28"
+    category: "image-generation"
+    twitter_description: "Nano Banana 2 standard image model; deprecated in favor of gemini-nano-banana-2.1 (which adds 14-image reference fusion)."
+
+  gemini-3-pro-image:
+    release_date: "2026-05-28"
+    category: "image-generation"
+    twitter_description: "Nano Banana Pro: studio-grade photorealistic image generation and typography rendering (65k in / 32k out)."
+
+  gemini-3.5-flash:
+    release_date: "2026-05-19"
+    category: "fast-multimodal"
+    twitter_description: "Google I/O 2026 3.5 Flash baseline; upgrade to gemini-3.8-flash for current projects."
+
+  antigravity-preview-05-2026:
+    release_date: "2026-05-19"
+    category: "managed-agent"
+    twitter_description: "Initial I/O 2026 preview of the managed Antigravity coding agent; upgrade to antigravity-preview-09-2026."
+
+  gemini-3.1-flash-lite:
+    release_date: "2026-05-07"
+    category: "high-throughput"
+    twitter_description: "Ultra-lightweight, cost-efficient model for high-frequency micro-tasks, linting, and low-latency classifications."
+
+  gemini-embedding-2:
+    release_date: "2026-04-22"
+    category: "embeddings"
+    twitter_description: "Unified multimodal embedding model: maps text, images, video, audio, and PDFs into a single shared vector space via embed_content."
+
+  deep-research-preview-04-2026:
+    release_date: "2026-04-21"
+    category: "managed-agent"
+    twitter_description: "Fast, interactive autonomous Deep Research agent via client.interactions API for multi-source web synthesis and cited reports."
+
+  deep-research-max-preview-04-2026:
+    release_date: "2026-04-21"
+    category: "managed-agent"
+    twitter_description: "Maximum-exhaustiveness Deep Research agent via client.interactions API for long-horizon literature and market investigations."
+
+  gemini-3.1-flash-tts-preview:
+    release_date: "2026-04-15"
+    category: "audio-tts"
+    twitter_description: "Preview 3.1 TTS model; upgrade to gemini-3.8-flash-tts or gemini-3.8-flash-lite-tts."
+
+  gemma-4-26b-a4b-it:
+    release_date: "2026-04-02"
+    category: "open-weights"
+    twitter_description: "Gemma 4 instruction-tuned Mixture-of-Experts (MoE) open-weights model: 26B total parameters with only 4B active per token."
+
+  gemma-4-31b-it:
+    release_date: "2026-04-02"
+    category: "open-weights"
+    twitter_description: "Gemma 4 flagship dense 31B instruction-tuned open-weights model for high-accuracy self-hosted and API reasoning."
+
+  veo-3.1-lite-generate-preview:
+    release_date: "2026-03-31"
+    category: "video-generation"
+    twitter_description: "Lightweight Veo 3.1 video generation preview; for interactive editing and extensions up to 40s, prefer gemini-omni-1.1-flash."
+
+  gemini-3.1-flash-live-preview:
+    release_date: "2026-03-26"
+    category: "live-audio"
+    twitter_description: "Preview 3.1 Live API audio model; upgrade to gemini-3.8-live or gemini-3.8-live-extended-thinking."
+
+  lyria-3-clip-preview:
+    release_date: "2026-03-25"
+    category: "music-generation"
+    twitter_description: "Dedicated Lyria 3 endpoint for generating 30-second music clips with vocals, lyrics, and genre styling via client.interactions."
+
+  lyria-3-pro-preview:
+    release_date: "2026-03-25"
+    category: "music-generation"
+    twitter_description: "Dedicated Lyria 3 Pro endpoint for generating full-length 2-3 minute songs with structured verses, chorus, and vocals."
+
+  gemini-embedding-2-preview:
+    release_date: "2026-03-10"
+    category: "embeddings"
+    twitter_description: "Preview of Multimodal Embedding 2; use GA gemini-embedding-2 for production."
+
+  gemini-3.1-flash-lite-preview:
+    release_date: "2026-03-03"
+    category: "high-throughput"
+    twitter_description: "Preview of 3.1 Flash-Lite; use GA gemini-3.1-flash-lite or gemini-3.5-flash-lite."
+
+  gemini-3.1-flash-image-preview:
+    release_date: "2026-02-26"
+    category: "image-generation"
+    twitter_description: "Preview 3.1 image generator; replaced by gemini-nano-banana-2.1 and gemini-3.1-flash-lite-image."
+
+  gemini-3.1-pro-preview:
+    release_date: "2026-02-19"
+    category: "legacy"
+    twitter_description: "Early 2026 3.1 Pro preview; superseded by flagship gemini-4-argon for complex reasoning and coding."
+
+  gemini-3.1-pro-preview-customtools:
+    release_date: "2026-02-19"
+    category: "legacy"
+    twitter_description: "Variant of 3.1 Pro preview tuned for custom bash/file tool schemas; superseded by gemini-4-argon."
+
+  gemini-3-flash-preview:
+    release_date: "2025-12-17"
+    category: "legacy"
+    twitter_description: "December 2025 Gemini 3.0 Flash preview; upgrade to gemini-3.8-flash."
+
+  gemini-2.5-flash-native-audio-preview-12-2025:
+    release_date: "2025-12-12"
+    category: "legacy"
+    twitter_description: "Legacy 2.5 Live native audio preview (Dec 2025); upgrade to gemini-3.8-live."
+
+  deep-research-pro-preview-12-2025:
+    release_date: "2025-12-11"
+    category: "legacy"
+    twitter_description: "First-gen Dec 2025 Deep Research agent preview; upgrade to deep-research-preview-04-2026 or deep-research-max-preview-04-2026."
+
+  gemini-3-pro-image-preview:
+    release_date: "2025-11-20"
+    category: "legacy"
+    twitter_description: "Preview of Nano Banana Pro; upgrade to GA gemini-3-pro-image or gemini-nano-banana-2.1."
+
+  nano-banana-pro-preview:
+    release_date: "2025-11-20"
+    category: "legacy"
+    twitter_description: "Alias preview for Nano Banana Pro; upgrade to gemini-nano-banana-2.1 or gemini-3-pro-image."
+
+  veo-3.1-generate-preview:
+    release_date: "2025-10-15"
+    category: "video-generation"
+    twitter_description: "Veo 3.1 high-definition video generator (8s clips with audio); for 40s extensions & conversational editing use gemini-omni-1.1-flash."
+
+  veo-3.1-fast-generate-preview:
+    release_date: "2025-10-15"
+    category: "video-generation"
+    twitter_description: "Fast-render variant of Veo 3.1 for rapid storyboard and B-roll video generation."
+
+  gemini-2.5-computer-use-preview-10-2025:
+    release_date: "2025-10-01"
+    category: "legacy"
+    twitter_description: "Legacy 2.5 browser/UI computer-use preview; superseded by gemini-3.8-flash and antigravity-preview-09-2026."
+
+  gemini-robotics-er-1.5-preview:
+    release_date: "2025-09-25"
+    category: "legacy"
+    twitter_description: "First-gen Embodied Reasoning 1.5 robotics preview; upgrade to gemini-robotics-er-2-preview."
+
+  gemini-2.5-flash-native-audio-preview-09-2025:
+    release_date: "2025-09-01"
+    category: "legacy"
+    twitter_description: "Legacy Sept 2025 2.5 native audio preview; upgrade to gemini-3.8-live."
+
+  gemini-2.5-flash-image:
+    release_date: "2025-08-26"
+    category: "legacy"
+    twitter_description: "First-gen Nano Banana (2.5 Flash Image); deprecated—migrate to gemini-nano-banana-2.1."
+
+  imagen-4.0-generate-001:
+    release_date: "2025-08-14"
+    category: "image-generation"
+    twitter_description: "Imagen 4.0 standard text-to-image model (predict API); for conversational multi-turn editing use gemini-nano-banana-2.1."
+
+  imagen-4.0-ultra-generate-001:
+    release_date: "2025-08-14"
+    category: "image-generation"
+    twitter_description: "Imagen 4.0 Ultra for maximum single-shot photorealism and fine texture detail."
+
+  imagen-4.0-fast-generate-001:
+    release_date: "2025-08-14"
+    category: "image-generation"
+    twitter_description: "Imagen 4.0 Fast for low-latency single-shot text-to-image synthesis."
+
+  veo-3.0-generate-001:
+    release_date: "2025-07-29"
+    category: "deprecated"
+    twitter_description: "DEPRECATED (cutoff June 30, 2026): Veo 3.0 video generator. Migrate to gemini-omni-1.1-flash or veo-3.1-generate-preview."
+
+  veo-3.0-fast-generate-001:
+    release_date: "2025-07-29"
+    category: "deprecated"
+    twitter_description: "DEPRECATED (cutoff June 30, 2026): Veo 3.0 Fast video generator. Migrate to gemini-omni-1.1-flash or veo-3.1-lite-generate-preview."
+
+  gemini-2.5-flash-lite:
+    release_date: "2025-07-22"
+    category: "deprecated"
+    twitter_description: "DEPRECATED legacy 2.5 Flash-Lite; replace with gemini-3.5-flash-lite or gemini-3.1-flash-lite."
+
+  gemini-embedding-001:
+    release_date: "2025-07-01"
+    category: "embeddings"
+    twitter_description: "Standard text-only embedding model via embed_content (use gemini-embedding-2 for multimodal embeddings)."
+
+  gemini-2.5-pro:
+    release_date: "2025-06-17"
+    category: "deprecated"
+    twitter_description: "DEPRECATED legacy 2.5 Pro; replace with gemini-4-argon for complex reasoning and coding."
+
+  gemini-2.5-flash:
+    release_date: "2025-06-17"
+    category: "deprecated"
+    twitter_description: "DEPRECATED legacy 2.5 Flash; replace with gemini-3.8-flash."
+
+  gemma-3n-e4b-it:
+    release_date: "2025-05-20"
+    category: "open-weights"
+    twitter_description: "Gemma 3n (MatFormer mobile-first architecture) 4B effective parameter on-device open model."
+
+  gemma-3n-e2b-it:
+    release_date: "2025-05-20"
+    category: "open-weights"
+    twitter_description: "Gemma 3n ultra-compact 2B effective parameter on-device open model for edge/mobile deployment."
+
+  lyria-realtime-exp:
+    release_date: "2025-05-20"
+    category: "music-generation"
+    twitter_description: "Experimental real-time interactive music streaming model (client.aio.live.music) with continuous BPM/genre steering."
+
+  gemini-2.5-flash-preview-tts:
+    release_date: "2025-05-19"
+    category: "deprecated"
+    twitter_description: "DEPRECATED 2.5 Flash TTS preview; upgrade to gemini-3.8-flash-lite-tts or gemini-3.8-flash-tts."
+
+  gemini-2.5-pro-preview-tts:
+    release_date: "2025-05-19"
+    category: "deprecated"
+    twitter_description: "DEPRECATED 2.5 Pro TTS preview; upgrade to gemini-3.8-flash-tts."
+
+  veo-2.0-generate-001:
+    release_date: "2025-04-09"
+    category: "deprecated"
+    twitter_description: "DEPRECATED (cutoff June 30, 2026): Silent Veo 2.0 video generator. Migrate to gemini-omni-1.1-flash."
+
+  gemma-3-1b-it:
+    release_date: "2025-03-12"
+    category: "open-weights"
+    twitter_description: "Gemma 3 1B lightweight text-only open-weights model; see Gemma 4 for latest generation."
+
+  gemma-3-4b-it:
+    release_date: "2025-03-12"
+    category: "open-weights"
+    twitter_description: "Gemma 3 4B multimodal (image+text) open-weights model."
+
+  gemma-3-12b-it:
+    release_date: "2025-03-12"
+    category: "open-weights"
+    twitter_description: "Gemma 3 12B multimodal open-weights model; upgrade to gemma-4-26b-a4b-it."
+
+  gemma-3-27b-it:
+    release_date: "2025-03-12"
+    category: "open-weights"
+    twitter_description: "Gemma 3 27B open-weights model; superseded by gemma-4-31b-it."
+
+  aqa:
+    release_date: "2024-04-09"
+    category: "legacy"
+    twitter_description: "Legacy Attributed Question Answering (AQA) grounded passage model from 2024."
+
+  gemini-pro-latest:
+    release_date: "rolling"
+    category: "rolling-alias"
+    twitter_description: "Rolling evergreen alias pointing to the latest stable Pro-tier Gemini model (prefer explicit gemini-4-argon in production)."
+
+  gemini-flash-latest:
+    release_date: "rolling"
+    category: "rolling-alias"
+    twitter_description: "Rolling evergreen alias pointing to the latest stable Flash model (currently gemini-3.8-flash)."
+
+  gemini-flash-lite-latest:
+    release_date: "rolling"
+    category: "rolling-alias"
+    twitter_description: "Rolling evergreen alias pointing to the latest Flash-Lite model (currently gemini-3.5-flash-lite / 3.1-flash-lite)."
+
+  gemini-2.5-flash-native-audio-latest:
+    release_date: "rolling"
+    category: "rolling-alias"
+    twitter_description: "Rolling alias for legacy 2.5 native audio; migrate to gemini-3.8-live."
+
+  antigravity-preview-latest:
+    release_date: "rolling"
+    category: "rolling-alias"
+    twitter_description: "Rolling alias pointing to the latest managed Antigravity Agent preview (antigravity-preview-09-2026)."
