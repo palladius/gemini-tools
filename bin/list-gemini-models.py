@@ -69,12 +69,35 @@ def _parse_simple_models_yaml(text: str) -> dict[str, dict[str, str]]:
 
 
 def load_models_catalog(yaml_path: Path | None = None) -> dict[str, dict[str, str]]:
-    """Loads the curated model catalog (release_date, category, twitter_description) from etc/gemini_models.yaml."""
+    """Loads the curated model catalog (release_date, category, short_description) from etc/gemini_models.yaml."""
     if yaml_path is None:
         yaml_path = Path(__file__).resolve().parent.parent / "etc" / "gemini_models.yaml"
     if not yaml_path.exists():
         return {}
     return _parse_simple_models_yaml(yaml_path.read_text(encoding="utf-8"))
+
+
+MAX_SHORT_DESC_CHARS = 280
+
+
+def validate_models_catalog(
+    catalog: dict[str, dict[str, str]],
+    max_chars: int = MAX_SHORT_DESC_CHARS,
+) -> list[str]:
+    """Validates that every catalog entry has release_date and a short_description within max_chars."""
+    errors: list[str] = []
+    for model_id, meta in catalog.items():
+        if not meta.get("release_date", "").strip():
+            errors.append(f"{model_id}: missing release_date")
+        desc = meta.get("short_description", "").strip()
+        if not desc or desc == "UNKNOWN (*)":
+            errors.append(f"{model_id}: missing short_description")
+        elif len(desc) > max_chars or len(desc.encode("utf-8")) > max_chars:
+            errors.append(
+                f"{model_id}: short_description exceeds {max_chars} chars/bytes "
+                f"({len(desc)} chars, {len(desc.encode('utf-8'))} bytes)"
+            )
+    return errors
 
 
 MODELS_CATALOG = load_models_catalog()
@@ -134,11 +157,11 @@ def get_model_release_date(model) -> str:
     return "UNKNOWN (*)"
 
 
-def get_model_twitter_description(model) -> str:
-    """Returns the punchy (<280B) twitter_description from etc/gemini_models.yaml, or 'UNKNOWN (*)' if unmapped."""
+def get_model_short_description(model) -> str:
+    """Returns the concise (<=280 chars) short_description from etc/gemini_models.yaml, or 'UNKNOWN (*)' if unmapped."""
     clean_name = (getattr(model, "name", "") or "").replace("models/", "", 1)
     entry = MODELS_CATALOG.get(clean_name, {})
-    desc = entry.get("twitter_description", "").strip()
+    desc = entry.get("short_description", "").strip()
     if desc:
         return desc
     return "UNKNOWN (*)"
@@ -149,14 +172,14 @@ def format_unknown_dates_todo(
     yaml_path: str = YAML_DISPLAY_PATH,
     as_comment: bool = False,
 ) -> str:
-    """Formats an actionable self-healing TODO footer for AI agents when unknown model dates or twitter_descriptions are detected."""
+    """Formats an actionable self-healing TODO footer for AI agents when unknown model dates or short_descriptions are detected."""
     if not unknown_models:
         return ""
     models_csv = ", ".join(unknown_models)
     lines = [
-        f"(*) TODO(Gemini): Found {len(unknown_models)} model(s) missing release_date or twitter_description: {models_csv}",
+        f"(*) TODO(Gemini): Found {len(unknown_models)} model(s) missing release_date or short_description: {models_csv}",
         f"    1. Scrape latest release notes & capabilities at {CHANGELOG_URL} (or {MODELS_DOCS_URL}).",
-        f"    2. Add 'release_date' (YYYY-MM-DD) and a punchy 'twitter_description' (<=280B) to {yaml_path} ({YAML_REL_PATH}).",
+        f"    2. Add 'release_date' (YYYY-MM-DD) and a concise 'short_description' (<=280 chars) to {yaml_path} ({YAML_REL_PATH}).",
         f"    3. Run `list-gemini-models.py --ai-help` for the step-by-step AI self-healing instructions.",
     ]
     if as_comment:
@@ -172,10 +195,10 @@ def get_help_text() -> str:
   list-gemini-models.py [search_term] [flags]
 
 [yellow]Arguments:[/yellow]
-  [cyan]search_term[/cyan]    Optional string to filter models by name, description, or twitter_description (e.g., 'argon', 'omni', 'lyria').
+  [cyan]search_term[/cyan]    Optional string to filter models by name, description, or short_description (e.g., 'argon', 'omni', 'lyria').
 
 [yellow]Flags:[/yellow]
-  [cyan]--full[/cyan]             Display full table including release date, supported actions, version, and Twitter description.
+  [cyan]--full[/cyan]             Display full table including release date, supported actions, version, and short description.
   [cyan]--by-date[/cyan]          Sort models by release date (newest first) instead of alphabetically.
   [cyan]-n, --max-items N[/cyan]  Limit output to the first N models (e.g. `-n 10` for the 10 newest with `--by-date`).
   [cyan]--ai-help[/cyan]          Output Markdown instructions for AI agents (including self-healing YAML catalog).
@@ -184,7 +207,7 @@ def get_help_text() -> str:
 [yellow]Examples:[/yellow]
   list-gemini-models.py                        # List all models in bash-friendly format
   list-gemini-models.py veo                    # List only Veo models
-  list-gemini-models.py --full                 # Show full table of all models (with release dates & Twitter descriptions)
+  list-gemini-models.py --full                 # Show full table of all models (with release dates & short descriptions)
   list-gemini-models.py --full --by-date -n 10 # Show full table of the 10 newest models
   list-gemini-models.py --ai-help              # Show AI-friendly Markdown instructions
 
@@ -201,8 +224,8 @@ def get_ai_help_markdown() -> str:
 
 ## 1. Uses of the CLI for AI vs Human
 
-- **Default mode (`list-gemini-models.py [filter]`)**: Emits bash-parsable lines (`🟣 <model-id>\\t# <emoji> <Display Name> (<YYYY-MM-DD>) — <twitter_description>`) suitable for piping into `grep`, `awk`, or shell loops.
-- **Full table mode (`list-gemini-models.py --full --by-date -n 10`)**: Renders a Rich table sorted from newest to oldest release date (`📅 Released`), including `Supported Actions`, `Thinking`, and a curated `<280B` `🐦 What It Does (Twitter Desc)` column.
+- **Default mode (`list-gemini-models.py [filter]`)**: Emits bash-parsable lines (`🟣 <model-id>\\t# <emoji> <Display Name> (<YYYY-MM-DD>) — <short_description>`) suitable for piping into `grep`, `awk`, or shell loops.
+- **Full table mode (`list-gemini-models.py --full --by-date -n 10`)**: Renders a Rich table sorted from newest to oldest release date (`📅 Released`), including `Supported Actions`, `Thinking`, and a curated `<=280` char `📝 What It Does (Short Desc)` column.
 - **When an AI agent is asked for the "latest" or "newest" Gemini model**: Run `list-gemini-models.py --full --by-date -n 10` and inspect the top rows alongside any `UNKNOWN (*)` entries.
 
 ## 2. Added Context & Architecture
@@ -214,18 +237,18 @@ def get_ai_help_markdown() -> str:
 - **Why `{YAML_REL_PATH}` Exists**:
   1. The public `generativelanguage.googleapis.com/v1beta/models` protobuf (`Model`) does not expose a `create_time` field for foundation models (`tuned_model_info.create_time` is only populated on fine-tuned models).
   2. The API `description` field on newer models merely repeats the display name (e.g. `"Gemini 4 Argon"` or `"Gemini Omni 1.1 Flash"`) without explaining what the model actually does or which SDK endpoint it requires (`client.interactions` vs `generateContent`).
-  3. Therefore, `{YAML_DISPLAY_PATH}` is the single source of truth for each model's `release_date`, `category`, and punchy (`<=280` bytes) `twitter_description`.
+  3. Therefore, `{YAML_DISPLAY_PATH}` is the single source of truth for each model's `release_date`, `category`, and concise (`<=280` chars) `short_description`.
 
 ## 3. Self-Healing Playbook for `UNKNOWN (*)` Models
 
-Whenever a newly released model (e.g. `gemini-4.1`) appears in the API without a `release_date` or `twitter_description` in `{YAML_DISPLAY_PATH}`, the CLI marks the missing field as `UNKNOWN (*)` and prints a `(*) TODO(Gemini)` footer.
+Whenever a newly released model (e.g. `gemini-4.1`) appears in the API without a `release_date` or `short_description` in `{YAML_DISPLAY_PATH}`, the CLI marks the missing field as `UNKNOWN (*)` and prints a `(*) TODO(Gemini)` footer.
 
 **As an AI agent, follow these exact steps to self-heal the catalog:**
 1. Fetch the official Gemini API Release Notes from `{CHANGELOG_URL}` and `{MODELS_DOCS_URL}` (if inside Google3, check `//depot/google3/alkali/apps/makersuite/launchpad/googledevai/en/gemini-api/docs/changelog.md`).
 2. For each model listed in the `(*) TODO(Gemini)` message, add an entry under `models:` in `{YAML_DISPLAY_PATH}` with:
    - `release_date: "YYYY-MM-DD"` (or `"rolling"` for `-latest` aliases)
    - `category: "<category>"`
-   - `twitter_description: "<punchy <=280 byte summary of what it does, limits, and API endpoint>"`
+   - `short_description: "<concise <=280 char summary of what it does, limits, and API endpoint>"`
 3. Bump `~/git/gemini-tools/VERSION`, document the update in `~/git/gemini-tools/CHANGELOG.md`, and run `just test` inside `~/git/gemini-tools`.
 """
 
@@ -347,12 +370,12 @@ def main():
                 name_lower = model.name.lower()
                 display_lower = model.display_name.lower() if model.display_name else ""
                 description_lower = model.description.lower() if model.description else ""
-                tw_lower = get_model_twitter_description(model).lower()
+                short_lower = get_model_short_description(model).lower()
                 if (
                     search_term not in name_lower
                     and search_term not in display_lower
                     and search_term not in description_lower
-                    and search_term not in tw_lower
+                    and search_term not in short_lower
                 ):
                     continue
 
@@ -380,20 +403,20 @@ def main():
             table.add_column("Ver.", style="yellow")
             table.add_column("🧠", justify="center")
             table.add_column("Supported Actions", style="green")
-            table.add_column("🐦 What It Does (Twitter Desc)", style="white")
+            table.add_column("📝 What It Does (Short Desc)", style="white")
 
             for model in models:
                 emojis = get_emojis(model)
                 display_name = f"{emojis} {model.display_name}" if model.display_name else f"{emojis} {model.name}"
                 clean_name = model.name.replace("models/", "", 1)
                 release_date = get_model_release_date(model)
-                twitter_desc = get_model_twitter_description(model)
+                short_desc = get_model_short_description(model)
 
-                if release_date == "UNKNOWN (*)" or twitter_desc == "UNKNOWN (*)":
+                if release_date == "UNKNOWN (*)" or short_desc == "UNKNOWN (*)":
                     unknown_models.append(clean_name)
 
                 release_display = "[bold yellow]UNKNOWN (*)[/bold yellow]" if release_date == "UNKNOWN (*)" else release_date
-                desc_display = "[bold yellow]UNKNOWN (*)[/bold yellow]" if twitter_desc == "UNKNOWN (*)" else twitter_desc
+                desc_display = "[bold yellow]UNKNOWN (*)[/bold yellow]" if short_desc == "UNKNOWN (*)" else short_desc
                 actions_display = ", ".join(model.supported_actions) if model.supported_actions else "None"
                 version = model.version if hasattr(model, "version") else "-"
                 thinking = "✅" if hasattr(model, "thinking") and model.thinking else "❌"
@@ -409,14 +432,14 @@ def main():
                 display_name = f"{emojis} {model.display_name}" if model.display_name else f"{emojis} {model.name}"
                 clean_name = model.name.replace("models/", "", 1)
                 release_date = get_model_release_date(model)
-                twitter_desc = get_model_twitter_description(model)
-                if release_date == "UNKNOWN (*)" or twitter_desc == "UNKNOWN (*)":
+                short_desc = get_model_short_description(model)
+                if release_date == "UNKNOWN (*)" or short_desc == "UNKNOWN (*)":
                     unknown_models.append(clean_name)
                 date_suffix = f" ({release_date})" if release_date != "-" else ""
 
-                console.print(f"🟣 {clean_name}\t[dim]# {display_name}{date_suffix} — {twitter_desc}[/dim]")
+                console.print(f"🟣 {clean_name}\t[dim]# {display_name}{date_suffix} — {short_desc}[/dim]")
 
-            console.print("\n[dim]# 💡 Invoke with --full (and optionally --by-date -n 10) to see release dates, supported actions, and Twitter descriptions as a table.[/dim]")
+            console.print("\n[dim]# 💡 Invoke with --full (and optionally --by-date -n 10) to see release dates, supported actions, and short descriptions as a table.[/dim]")
             if unknown_models:
                 console.print(f"[yellow]{format_unknown_dates_todo(unknown_models, as_comment=True)}[/yellow]")
 

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.35] - 2026-11-05
+### Changed
+- 📝🧪 **Renamed `twitter_description` to `short_description` in `etc/gemini_models.yaml`**:
+  - Removed all mentions of "twitter" from `etc/gemini_models.yaml` (`short_description`).
+  - Added `validate_models_catalog()` in `bin/list-gemini-models.py` and strict TDD enforcement (`test_gemini_models_yaml_and_short_descriptions` in `tests/test_eval_dataset.py`) asserting both `self.assertNotIn("twitter", raw_yaml.lower())` and `<= 280` chars/bytes (with negative test ensuring `> 280` chars fails the test).
+
 ## [0.2.34] - 2026-11-05
 ### Added
 - 🐦📄 **Curated YAML Catalog (`etc/gemini_models.yaml`) & Twitter Descriptions**:
