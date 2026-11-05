@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.36] - 2026-11-05
+### Added
+- 📸 Added cropped terminal output screenshot (`docs/assets/output-screenshot.png`) of `bin/list-gemini-models.py --full --by-date -n 10` showcasing `📅 Released`, `📝 What It Does (Short Desc)`, and the `UNKNOWN (*)` / `(*) TODO(Gemini)` self-healing footer.
+
 ## [0.2.35] - 2026-11-05
 ### Changed
 - 📝🧪 **Renamed `twitter_description` to `short_description` in `etc/gemini_models.yaml`**:
