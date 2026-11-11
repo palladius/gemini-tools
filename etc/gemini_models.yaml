@@ -4,10 +4,20 @@
 # Docs: https://ai.google.dev/gemini-api/docs/changelog | https://ai.google.dev/gemini-api/docs/models
 
 models:
+  gemini-4-carbon:
+    release_date: "2026-11-10"
+    category: "flagship-reasoning"
+    short_description: "Strongest 1M-ctx frontier reasoning model for sustained agentic coding, multimodal knowledge work, scientific proofs & security auditing ($2/$10 per 1M intro pricing, up to 1M decode with background=True)."
+
+  gemini-omni-1.2-flash:
+    release_date: "2026-11-05"
+    category: "video-generation"
+    short_description: "Omni 1.2 Flash video+audio generator & editor: 3-15s clips (10s default), 3-10s keyframe transitions & extensions up to 30s total, up to 6 ref images, 30% lower output pricing ($12/1M) & 2x rate limits via client.interactions."
+
   gemini-4-argon:
     release_date: "2026-10-13"
     category: "flagship-reasoning"
-    short_description: "Flagship 1M-ctx reasoning, coding & research powerhouse (65k out). Replaces 3.1-pro for complex architecture, STEM, and multi-step agentic workflows."
+    short_description: "Efficient 1M-ctx frontier reasoning model for interactive coding, research, and fast production loops (65k out; pairs with gemini-4-carbon for sustained deep reasoning)."
 
   gemini-nano-banana-2.1:
     release_date: "2026-10-06"
@@ -52,7 +62,7 @@ models:
   gemini-omni-1.1-flash:
     release_date: "2026-08-27"
     category: "video-generation"
-    short_description: "Omni Flash video+audio generator & editor: text/image-to-video, first/last frame transitions, object add/remove, AR zoom & 40s extensions via client.interactions API."
+    short_description: "Omni 1.1 Flash video+audio generator & editor via client.interactions; superseded by gemini-omni-1.2-flash (auto-routes to 1.2 starting Dec 3, 2026)."
 
   gemini-3.5-transcribe:
     release_date: "2026-08-26"
@@ -181,8 +191,8 @@ models:
 
   gemini-embedding-2-preview:
     release_date: "2026-03-10"
-    category: "embeddings"
-    short_description: "Preview of Multimodal Embedding 2; use GA gemini-embedding-2 for production."
+    category: "deprecated"
+    short_description: "DEPRECATED (Nov 6, 2026): Preview of Multimodal Embedding 2; automatically routes to GA gemini-embedding-2."
 
   gemini-3.1-flash-lite-preview:
     release_date: "2026-03-03"

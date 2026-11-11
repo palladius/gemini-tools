@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.37] - 2026-11-11
+### Added
+- 🚀🤖 **Self-healed `etc/gemini_models.yaml` with 2 newly released November 2026 models**:
+  - Added `gemini-4-carbon` (`2026-11-10`, GA): strongest 1M-ctx frontier reasoning model for sustained agentic coding, multimodal knowledge work, scientific proofs, and security auditing.
+  - Added `gemini-omni-1.2-flash` (`2026-11-05`, GA): 3–15s video+audio generation & conversational editing, 3–10s keyframe transitions & extensions up to 30s total, up to 6 reference images, 30% lower output pricing ($12/1M), and 2x rate limits via `client.interactions`.
+  - Updated `gemini-omni-1.1-flash` (auto-routes to `1.2` on Dec 3, 2026), `gemini-4-argon`, and `gemini-embedding-2-preview` (deprecated Nov 6, 2026) descriptions and unit tests in `tests/test_eval_dataset.py`.
+
 ## [0.2.36] - 2026-11-05
 ### Added
 - 📸 Added cropped terminal output screenshot (`docs/assets/output-screenshot.png`) of `bin/list-gemini-models.py --full --by-date -n 10` showcasing `📅 Released`, `📝 What It Does (Short Desc)`, and the `UNKNOWN (*)` / `(*) TODO(Gemini)` self-healing footer.

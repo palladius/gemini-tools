@@ -252,10 +252,21 @@ class TestEvalDataset(unittest.TestCase):
         self.assertEqual(len(bad_errors), 1)
         self.assertIn("exceeds 280 chars/bytes", bad_errors[0])
 
-        # Spot check Omni 1.1 Flash & Lyria 3.5 short descriptions
+        # Spot check Carbon 4, Omni 1.2 Flash, Omni 1.1 Flash & Lyria 3.5 short descriptions
+        m_carbon = SimpleNamespace(name="models/gemini-4-carbon", description="Gemini 4 Carbon")
+        self.assertEqual(list_gemini_models.get_model_release_date(m_carbon), "2026-11-10")
+        carbon_desc = list_gemini_models.get_model_short_description(m_carbon)
+        self.assertIn("frontier reasoning", carbon_desc.lower())
+
+        m_omni12 = SimpleNamespace(name="models/gemini-omni-1.2-flash", description="Gemini Omni 1.2 Flash")
+        self.assertEqual(list_gemini_models.get_model_release_date(m_omni12), "2026-11-05")
+        omni12_desc = list_gemini_models.get_model_short_description(m_omni12)
+        self.assertIn("3-15s", omni12_desc)
+        self.assertIn("interactions", omni12_desc.lower())
+
         m_omni = SimpleNamespace(name="models/gemini-omni-1.1-flash", description="Gemini Omni 1.1 Flash")
         omni_desc = list_gemini_models.get_model_short_description(m_omni)
-        self.assertIn("40s", omni_desc)
+        self.assertIn("gemini-omni-1.2-flash", omni_desc)
         self.assertIn("interactions", omni_desc.lower())
 
         m_lyria = SimpleNamespace(name="models/lyria-3.5", description="Lyria 3.5")
