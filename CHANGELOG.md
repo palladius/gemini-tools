@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.38] - 2026-11-18
+### Added
+- 🚀🤖 **Self-healed `etc/gemini_models.yaml` with `gemini-4-hydrogen` & `gemini-decision-1`**:
+  - Added `gemini-4-hydrogen` (`2026-11-12`, GA): default 1M-ctx Gemini 4 daily driver for coding, agentic, and multimodal workflows (free tier + $1.50/$7.50 per 1M; introduces `xhigh` thinking level; default model for Antigravity agent; replaces `gemini-3.8-flash`).
+  - Added `gemini-decision-1` (`2026-11-11`, Decisions API `v1beta`): 262k-in / 0-out token calibrated classifier (`client.decisions.create`) for binary yes/no (`noul`), categorical `choice`, and rubric `score` across text, images, audio, video, and PDFs.
+  - Updated `gemini-3.8-flash` (superseded by `gemini-4-hydrogen`) and `gemini-3.5-transcribe` / `gemini-3.5-transcribe-live` (Nov 17 voice-driven text editing) and unit tests in `tests/test_eval_dataset.py`.
+
 ## [0.2.37] - 2026-11-11
 ### Added
 - 🚀🤖 **Self-healed `etc/gemini_models.yaml` with 2 newly released November 2026 models**:

@@ -4,6 +4,16 @@
 # Docs: https://ai.google.dev/gemini-api/docs/changelog | https://ai.google.dev/gemini-api/docs/models
 
 models:
+  gemini-4-hydrogen:
+    release_date: "2026-11-12"
+    category: "fast-multimodal"
+    short_description: "Default 1M-ctx Gemini 4 daily driver for coding, agentic & multimodal workflows (free tier + $1.50/$7.50 per 1M; adds 'xhigh' thinking level; default for Antigravity agent). Replaces gemini-3.8-flash."
+
+  gemini-decision-1:
+    release_date: "2026-11-11"
+    category: "decisions-api"
+    short_description: "262k-in / 0-out token calibrated classifier via Decisions API (client.decisions.create, v1beta): fast binary yes/no (noul), categorical choice, and rubric scoring across text, images, audio, video & PDFs."
+
   gemini-4-carbon:
     release_date: "2026-11-10"
     category: "flagship-reasoning"
@@ -56,8 +66,8 @@ models:
 
   gemini-3.8-flash:
     release_date: "2026-09-02"
-    category: "fast-multimodal"
-    short_description: "Default 1M-ctx fast workhorse (65k out) balancing thinking, multimodal understanding, and low-latency agentic tool calling."
+    category: "legacy"
+    short_description: "September 2026 1M-ctx Flash workhorse; superseded by gemini-4-hydrogen as the default daily driver for coding, agentic, and multimodal workloads."
 
   gemini-omni-1.1-flash:
     release_date: "2026-08-27"
@@ -67,12 +77,12 @@ models:
   gemini-3.5-transcribe:
     release_date: "2026-08-26"
     category: "audio-stt"
-    short_description: "Dedicated high-speed Speech-to-Text (ASR) model for pre-recorded audio with smart formatting and verbatim transcription modes."
+    short_description: "Dedicated high-speed Speech-to-Text (ASR) model with smart/verbatim modes and voice-driven editing, rewriting & formatting of dictated or source_text."
 
   gemini-3.5-transcribe-live:
     release_date: "2026-08-26"
     category: "audio-stt"
-    short_description: "Real-time streaming Speech-to-Text and live speech translation model via the Live API."
+    short_description: "Real-time streaming Speech-to-Text, live speech translation, and voice-driven text editing model via the Live API."
 
   gemini-3.7-flash:
     release_date: "2026-08-13"

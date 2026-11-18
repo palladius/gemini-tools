@@ -252,7 +252,17 @@ class TestEvalDataset(unittest.TestCase):
         self.assertEqual(len(bad_errors), 1)
         self.assertIn("exceeds 280 chars/bytes", bad_errors[0])
 
-        # Spot check Carbon 4, Omni 1.2 Flash, Omni 1.1 Flash & Lyria 3.5 short descriptions
+        # Spot check Hydrogen 4, Decision 1, Carbon 4, Omni 1.2 Flash, Omni 1.1 Flash & Lyria 3.5 short descriptions
+        m_hydrogen = SimpleNamespace(name="models/gemini-4-hydrogen", description="Gemini 4 Hydrogen")
+        self.assertEqual(list_gemini_models.get_model_release_date(m_hydrogen), "2026-11-12")
+        hydrogen_desc = list_gemini_models.get_model_short_description(m_hydrogen)
+        self.assertIn("xhigh", hydrogen_desc)
+
+        m_decision = SimpleNamespace(name="models/gemini-decision-1", description="Gemini Decision 1")
+        self.assertEqual(list_gemini_models.get_model_release_date(m_decision), "2026-11-11")
+        decision_desc = list_gemini_models.get_model_short_description(m_decision)
+        self.assertIn("decisions.create", decision_desc)
+
         m_carbon = SimpleNamespace(name="models/gemini-4-carbon", description="Gemini 4 Carbon")
         self.assertEqual(list_gemini_models.get_model_release_date(m_carbon), "2026-11-10")
         carbon_desc = list_gemini_models.get_model_short_description(m_carbon)
